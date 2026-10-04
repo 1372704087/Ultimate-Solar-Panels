@@ -3,6 +3,7 @@ package com.example.solarpower.registry;
 import com.example.solarpower.SolarPower;
 import com.example.solarpower.block.ChargepadBlock;
 import com.example.solarpower.block.GlassCableBlock;
+import com.example.solarpower.block.MolecularTransformerBlock;
 import com.example.solarpower.block.SolarPanelBlock;
 import com.example.solarpower.block.StorageBoxBlock;
 import com.example.solarpower.block.TransformerBlock;
@@ -31,7 +32,9 @@ public final class ModBlocks {
     private static final Map<GlassCableTier, DeferredBlock<GlassCableBlock>> CABLES = new EnumMap<>(GlassCableTier.class);
     private static final Map<SolarTier, DeferredBlock<StorageBoxBlock>> STORAGE_BOXES = new EnumMap<>(SolarTier.class);
     private static final Map<EuTier, DeferredBlock<TransformerBlock>> TRANSFORMERS = new EnumMap<>(EuTier.class);
+    public static final List<DeferredBlock<TransformerBlock>> TRANSFORMER_LIST = new ArrayList<>();
     private static final Map<SolarTier, DeferredBlock<ChargepadBlock>> CHARGEPADS = new EnumMap<>(SolarTier.class);
+    private static DeferredBlock<MolecularTransformerBlock> molecularTransformer;
     public static final List<DeferredBlock<StorageBoxBlock>> STORAGE_LIST = new ArrayList<>();
     public static final List<DeferredBlock<ChargepadBlock>> CHARGEPAD_LIST = new ArrayList<>();
     public static final List<DeferredBlock<SolarPanelBlock>> PANEL_LIST = new ArrayList<>();
@@ -52,13 +55,16 @@ public final class ModBlocks {
         for (GlassCableTier tier : GlassCableTier.values()) {
             CABLES.put(tier, BLOCKS.register(tier.id(), () -> new GlassCableBlock(tier)));
         }
+        molecularTransformer = BLOCKS.register("molecular_transformer", MolecularTransformerBlock::new);
         for (EuTier tier : EuTier.values()) {
             if (tier.iuTier() > 65) {
                 continue;
             }
             // 命名跟随太阳能面板档（首个匹配 iuTier 的面板），与资产生成器一致
-            TRANSFORMERS.put(tier, BLOCKS.register(representativePanel(tier.iuTier()).id() + "_transformer",
-                    () -> new TransformerBlock(tier)));
+            DeferredBlock<TransformerBlock> tb = BLOCKS.register(representativePanel(tier.iuTier()).id() + "_transformer",
+                    () -> new TransformerBlock(tier));
+            TRANSFORMERS.put(tier, tb);
+            TRANSFORMER_LIST.add(tb);
         }
     }
 
@@ -80,6 +86,10 @@ public final class ModBlocks {
 
     public static ChargepadBlock chargepad(SolarTier tier) {
         return CHARGEPADS.get(tier).get();
+    }
+
+    public static MolecularTransformerBlock molecularTransformer() {
+        return molecularTransformer.get();
     }
 
     /** 该电压档的代表面板档（首个匹配 iuTier 的 SolarTier；变压器命名/贴图跟随它）。 */

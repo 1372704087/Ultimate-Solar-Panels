@@ -37,6 +37,7 @@ public final class ModCreativeTabs {
                         for (GlassCableTier tier : GlassCableTier.values()) {
                             output.accept(new ItemStack(ModItems.cableItem(tier)));
                         }
+                        output.accept(new ItemStack(ModItems.molecularTransformerItem()));
                     })
                     .build());
 

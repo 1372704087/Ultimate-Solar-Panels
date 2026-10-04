@@ -3,6 +3,7 @@ package com.example.solarpower.registry;
 import com.example.solarpower.SolarPower;
 import com.example.solarpower.tileentity.ChargepadTile;
 import com.example.solarpower.tileentity.GlassCableTile;
+import com.example.solarpower.tileentity.MolecularTransformerTile;
 import com.example.solarpower.tileentity.SolarPanelTile;
 import com.example.solarpower.tileentity.StorageBoxTile;
 import com.example.solarpower.tileentity.TransformerTile;
@@ -22,6 +23,10 @@ public final class ModBlockEntities {
     public static final Supplier<BlockEntityType<SolarPanelTile>> SOLAR_PANEL =
             BLOCK_ENTITIES.register("solar_panel", () -> BlockEntityType.Builder.of(
                     SolarPanelTile::new, ModBlocks.allPanels()).build(null));
+
+    public static final Supplier<BlockEntityType<MolecularTransformerTile>> MOLECULAR_TRANSFORMER =
+            BLOCK_ENTITIES.register("molecular_transformer", () -> BlockEntityType.Builder.of(
+                    MolecularTransformerTile::new, ModBlocks.molecularTransformer()).build(null));
 
     public static final Supplier<BlockEntityType<GlassCableTile>> GLASS_CABLE =
             BLOCK_ENTITIES.register("glass_cable", () -> BlockEntityType.Builder.of(

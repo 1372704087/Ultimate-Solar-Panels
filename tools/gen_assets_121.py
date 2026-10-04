@@ -158,6 +158,53 @@ def copy_cable_block_models():
     print('cable block models copied:', n)
 
 
+def copy_remaining_assets():
+    """把 1.12 资产里剩余的物品/方块模型与贴图整体复制（物品族/分子机/合成材料）。
+    新项目已生成的文件不覆盖（电缆 multipart、机器 blockstate 均由生成器产出）。"""
+    n = 0
+    for sub in ('textures/item', 'textures/block', 'textures/gui',
+                'models/item', 'models/block', 'models'):
+        old_dir = os.path.join(OLD_ASSETS, sub)
+        if not os.path.isdir(old_dir):
+            continue
+        for root, _dirs, files in os.walk(old_dir):
+            rel = os.path.relpath(root, old_dir)
+            for f in files:
+                src = os.path.join(root, f)
+                dst = os.path.join(new_base_dir(sub, rel), f)
+                if os.path.exists(dst):
+                    continue
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                shutil.copyfile(src, dst)
+                n += 1
+    old_bs = os.path.join(OLD_ASSETS, 'blockstates')
+    for f in os.listdir(old_bs):
+        dst = os.path.join(NEW_ASSETS, 'blockstates', f)
+        if f == 'molecular_transformer.json' and not os.path.exists(dst):
+            shutil.copyfile(os.path.join(old_bs, f), dst)
+            n += 1
+    print('remaining assets copied:', n)
+
+
+def new_base_dir(sub, rel):
+    d = os.path.join(NEW_ASSETS, sub) if rel == '.' else os.path.join(NEW_ASSETS, sub, rel)
+    return d
+
+
+def item_lang_names():
+    """item.solarpower.<id> 物品名（从 1.12 lang 提取，含全部物品族）。"""
+    names = {}
+    for code in ('zh_cn', 'en_us'):
+        path = os.path.join(OLD_ASSETS, 'lang', code + '.lang')
+        table = {}
+        for line in open(path, encoding='utf-8'):
+            m = re.match(r'item\.solarpower\.([a-z_0-9]+)\.name=(.+)', line.strip())
+            if m:
+                table[m.group(1)] = m.group(2)
+        names[code] = table
+    return names
+
+
 def gen_lang():
     names = panel_names()
     os.makedirs(NEW_LANG, exist_ok=True)
@@ -186,6 +233,8 @@ def gen_lang():
         obj['gui.solarpower.chargepad.status.idle'] = '待机（站上来即充电）' if code == 'zh_cn' else 'Idle (stand on top to charge)'
         obj['gui.solarpower.chargepad.status.charging'] = '充电中' if code == 'zh_cn' else 'Charging'
         obj['container.inventory'] = '物品栏' if code == 'zh_cn' else 'Inventory'
+        for iid, iname in item_lang_names().get(code, {}).items():
+            obj.setdefault('item.solarpower.' + iid, iname)
         write_json(os.path.join(NEW_LANG, code + '.json'), obj)
 
 
@@ -249,5 +298,6 @@ if __name__ == '__main__':
     gen_cables()
     gen_cable_blockstates()
     gen_machines()
+    copy_remaining_assets()
     gen_lang()
     print('done: %d panels, %d cables' % (len(PANEL_IDS), len(CABLE_IDS)))

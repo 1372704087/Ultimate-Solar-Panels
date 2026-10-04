@@ -11,6 +11,7 @@ import com.example.solarpower.tileentity.GlassCableTile;
 import com.example.solarpower.tileentity.SolarPanelTile;
 import com.example.solarpower.tileentity.StorageBoxTile;
 import com.example.solarpower.tileentity.TransformerTile;
+import com.example.solarpower.tileentity.MolecularTransformerTile;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -51,5 +52,8 @@ public final class SolarPower {
                 ModBlockEntities.TRANSFORMER.get(), (TransformerTile be, net.minecraft.core.Direction side) -> be);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
                 ModBlockEntities.CHARGEPAD.get(), (ChargepadTile be, net.minecraft.core.Direction side) -> be);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.MOLECULAR_TRANSFORMER.get(),
+                (MolecularTransformerTile be, net.minecraft.core.Direction side) -> be);
     }
 }
