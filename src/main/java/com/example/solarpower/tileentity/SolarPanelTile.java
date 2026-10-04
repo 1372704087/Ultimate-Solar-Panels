@@ -91,7 +91,7 @@ public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
     // ------------------------------------------------------------------
 
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level.isClientSide()) {
             return;
         }
         SolarTier tier = this.getTier();

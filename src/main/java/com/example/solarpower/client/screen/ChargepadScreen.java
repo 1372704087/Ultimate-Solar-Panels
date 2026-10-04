@@ -7,7 +7,7 @@ import com.example.solarpower.solar.SolarTier;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -16,8 +16,8 @@ import java.math.RoundingMode;
 /** 充电座界面：能量条 + 蓄电量/充电速率/状态三行（状态行充电中为绿色）。 */
 public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
 
     private static final int WIDTH = 176;
     private static final int HEIGHT = 166;

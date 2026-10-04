@@ -7,7 +7,7 @@ import com.example.solarpower.registry.ModMenus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigInteger;
@@ -15,8 +15,8 @@ import java.math.BigInteger;
 /** 分子重组仪界面（底图照搬 ASP 官方素材，布局 220×193）：进度计 + 能量文本。 */
 public class MolecularTransformerScreen extends AbstractContainerScreen<MolecularTransformerMenu> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/molecular_transformer.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/molecular_transformer.png");
 
     private static final int WIDTH = 220;
     private static final int HEIGHT = 193;

@@ -6,7 +6,7 @@ import com.example.solarpower.solar.SolarTier;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -15,8 +15,8 @@ import java.math.RoundingMode;
 /** 储电盒界面：宽能量条（档位主题色）+ 蓄电量/容量/输出三行。 */
 public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
 
     private static final int WIDTH = 176;
     private static final int HEIGHT = 166;

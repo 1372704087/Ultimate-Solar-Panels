@@ -142,7 +142,7 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
     }
 
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level.isClientSide()) {
             return;
         }
         boolean active = false;

@@ -29,7 +29,9 @@ public class SolarPanelBlock extends BaseEntityBlock {
     private final SolarTier tier;
 
     public SolarPanelBlock(SolarTier tier) {
-        super(Properties.ofFullCopy(Blocks.IRON_BLOCK));
+        super(Properties.of()
+                .strength(3.0F)
+                .sound(net.minecraft.world.level.block.SoundType.METAL));
         this.tier = tier;
     }
 
@@ -58,7 +60,7 @@ public class SolarPanelBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                net.minecraft.world.entity.player.Player player,
                                                BlockHitResult hit) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof SolarPanelTile) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof SolarPanelTile) {
             player.openMenu(new net.minecraft.world.SimpleMenuProvider(
                     (id, inv, p) -> new com.example.solarpower.menu.SolarPanelMenu(id, inv,
                             level.getBlockEntity(pos) instanceof SolarPanelTile tile ? tile : null),
@@ -72,7 +74,7 @@ public class SolarPanelBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return null;
         }
         return type == ModBlockEntities.SOLAR_PANEL.get()

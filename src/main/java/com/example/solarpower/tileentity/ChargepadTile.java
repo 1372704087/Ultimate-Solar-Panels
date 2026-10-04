@@ -90,7 +90,7 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
     }
 
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level.isClientSide()) {
             return;
         }
         BigInteger capacity = capacityEu();

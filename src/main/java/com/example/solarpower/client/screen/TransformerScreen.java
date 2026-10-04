@@ -9,7 +9,7 @@ import com.example.solarpower.tileentity.TransformerTile;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -21,8 +21,8 @@ import java.util.Map;
 /** 变压器界面：低压/高压双池条（各自档位主题色）+ 存量/吞吐/电压桥接行。 */
 public class TransformerScreen extends AbstractContainerScreen<TransformerMenu> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/transformer.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/transformer.png");
 
     private static final int WIDTH = 176;
     private static final int HEIGHT = 190;

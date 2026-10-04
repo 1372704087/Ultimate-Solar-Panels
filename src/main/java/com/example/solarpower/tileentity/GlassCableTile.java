@@ -41,7 +41,7 @@ public class GlassCableTile extends BlockEntity implements IEnergyStorage {
     /** 网络当前可抽出的 FE（来源于相连的太阳能板）。 */
     @Override
     public int getEnergyStored() {
-        return this.level != null && !this.level.isClientSide
+        return this.level != null && !this.level.isClientSide()
                 ? FeConvert.toFe(EuCableNet.storedEu(this.level, this.worldPosition)) : 0;
     }
 
@@ -63,7 +63,7 @@ public class GlassCableTile extends BlockEntity implements IEnergyStorage {
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        if (this.level == null || this.level.isClientSide) {
+        if (this.level == null || this.level.isClientSide()) {
             return 0;
         }
         return FeConvert.toFe(EuCableNet.drain(this.level, this.worldPosition, FeConvert.toEu(maxExtract), simulate));
@@ -71,7 +71,7 @@ public class GlassCableTile extends BlockEntity implements IEnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        if (this.level == null || this.level.isClientSide) {
+        if (this.level == null || this.level.isClientSide()) {
             return 0;
         }
         return FeConvert.toFe(EuCableNet.fill(this.level, this.worldPosition, FeConvert.toEu(maxReceive), simulate));

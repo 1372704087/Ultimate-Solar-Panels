@@ -63,7 +63,7 @@ public final class EuCableNet {
      */
     public static int push(Level level, BlockPos panelPos, IEuEnergy source, EuTier packetTier,
                            BigInteger maxOutput) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return 0;
         }
         int settled = 0;
@@ -91,7 +91,7 @@ public final class EuCableNet {
      */
     public static int pushFromFacing(Level level, BlockPos devicePos, IEuEnergy source,
                                      EuTier packetTier, BigInteger maxOutput, Direction facing) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return 0;
         }
         BlockPos side = devicePos.relative(facing);
@@ -146,7 +146,7 @@ public final class EuCableNet {
      * @return 扣线损后实际送出的 EU
      */
     public static BigInteger drain(Level level, BlockPos anchor, BigInteger amount, boolean simulate) {
-        if (level.isClientSide || amount == null || amount.signum() <= 0) {
+        if (level.isClientSide() || amount == null || amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
         Net net = collect(level, anchor, EuTier.LV);
@@ -172,7 +172,7 @@ public final class EuCableNet {
      * @return 扣线损后实际送达的 EU
      */
     public static BigInteger fill(Level level, BlockPos anchor, BigInteger amount, boolean simulate) {
-        if (level.isClientSide || amount == null || amount.signum() <= 0) {
+        if (level.isClientSide() || amount == null || amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
         Net net = collect(level, anchor, EuTier.LV);
@@ -194,7 +194,7 @@ public final class EuCableNet {
 
     /** 网络相邻源（太阳能板）的存量之和，夹到本档每 tick 上限；供电缆对外报告"可抽取量"。 */
     public static BigInteger storedEu(Level level, BlockPos anchor) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return BigInteger.ZERO;
         }
         Net net = collect(level, anchor, EuTier.LV);

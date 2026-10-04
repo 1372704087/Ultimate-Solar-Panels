@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -40,7 +40,7 @@ import java.math.BigInteger;
  */
 public class StorageBoxBlock extends BaseEntityBlock {
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final SolarTier tier;
 
@@ -75,7 +75,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return null;
         }
         return type == ModBlockEntities.STORAGE_BOX.get()
@@ -108,11 +108,11 @@ public class StorageBoxBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof StorageBoxTile) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof StorageBoxTile) {
             player.openMenu(new net.minecraft.world.SimpleMenuProvider(
                     (id, inv, p) -> new StorageBoxMenu(id, inv,
                             level.getBlockEntity(pos) instanceof StorageBoxTile box ? box : null),
-                    Component.translatable("block.solarpower." + this.tier.id() + "_storage_box.name")),
+                    Component.translatable("block.solarpower." + this.tier.id() + "_storage_box")),
                     buf -> buf.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;

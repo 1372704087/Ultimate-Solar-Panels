@@ -134,7 +134,7 @@ public class TransformerTile extends BlockEntity implements IEuEnergy, IEnergySt
     // ------------------------------------------------------------------
 
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level.isClientSide()) {
             return;
         }
         BigInteger cap = poolCapacity();

@@ -111,7 +111,7 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
     }
 
     public void tick() {
-        if (this.level.isClientSide) {
+        if (this.level.isClientSide()) {
             return;
         }
         BigInteger capacity = capacityEu();

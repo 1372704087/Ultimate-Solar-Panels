@@ -65,7 +65,7 @@ public class MolecularTransformerBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        return level.isClientSide ? null
+        return level.isClientSide() ? null
                 : type == ModBlockEntities.MOLECULAR_TRANSFORMER.get()
                         ? (BlockEntityTicker<T>) (BlockEntityTicker<MolecularTransformerTile>) (l, p, s, be) -> be.tick()
                         : null;
@@ -74,7 +74,7 @@ public class MolecularTransformerBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof MolecularTransformerTile tile) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof MolecularTransformerTile tile) {
             player.openMenu(new net.minecraft.world.SimpleMenuProvider(
                     (id, inv, p) -> new com.example.solarpower.menu.MolecularTransformerMenu(id, inv, tile),
                     Component.translatable("block.solarpower.molecular_transformer.name")),

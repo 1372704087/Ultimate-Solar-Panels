@@ -7,7 +7,7 @@ import com.example.solarpower.solar.SolarTier;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -20,8 +20,8 @@ import javax.annotation.Nullable;
 /** 太阳能板界面（1:1 复刻旧版布局：能量管 + 指示灯 + 三行数据）。 */
 public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
 
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/solar_panel.png");
+    private static final Identifier TEXTURE =
+            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/solar_panel.png");
 
     private static final int PANEL_WIDTH = 200;
     private static final int PANEL_HEIGHT = 166;

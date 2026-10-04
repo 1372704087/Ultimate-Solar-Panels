@@ -74,7 +74,7 @@ public class ChargepadBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        return level.isClientSide ? null
+        return level.isClientSide() ? null
                 : type == ModBlockEntities.CHARGEPAD.get()
                         ? (BlockEntityTicker<T>) (BlockEntityTicker<ChargepadTile>) (l, p, s, be) -> be.tick()
                         : null;
@@ -84,11 +84,11 @@ public class ChargepadBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof ChargepadTile) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof ChargepadTile) {
             player.openMenu(new net.minecraft.world.SimpleMenuProvider(
                     (id, inv, p) -> new ChargepadMenu(id, inv,
                             level.getBlockEntity(pos) instanceof ChargepadTile pad ? pad : null),
-                    Component.translatable("block.solarpower." + this.tier.id() + "_chargepad.name")),
+                    Component.translatable("block.solarpower." + this.tier.id() + "_chargepad")),
                     buf -> buf.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;

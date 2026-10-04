@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
  */
 public class TransformerBlock extends BaseEntityBlock {
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final EuTier tier;
 
@@ -75,7 +75,7 @@ public class TransformerBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
                                                                   BlockEntityType<T> type) {
-        return level.isClientSide ? null
+        return level.isClientSide() ? null
                 : type == ModBlockEntities.TRANSFORMER.get()
                         ? (BlockEntityTicker<T>) (BlockEntityTicker<TransformerTile>) (l, p, s, be) -> be.tick()
                         : null;
@@ -106,7 +106,7 @@ public class TransformerBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof TransformerTile) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof TransformerTile) {
             player.openMenu(new net.minecraft.world.SimpleMenuProvider(
                     (id, inv, p) -> new TransformerMenu(id, inv,
                             level.getBlockEntity(pos) instanceof TransformerTile transformer

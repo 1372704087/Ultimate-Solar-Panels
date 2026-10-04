@@ -220,6 +220,9 @@ def gen_lang():
                 obj[key] = names[code][tid].replace(zh_from, zh_to) if code == 'zh_cn' \
                     else names[code][tid].replace(en_from, en_to)
         # GUI 文案
+        obj['gui.solarpower.generation'] = 'Output: %s EU/t' if code == 'en_us' else '发电量：%s EU/t'
+        obj['gui.solarpower.voltage'] = 'Voltage: %s' if code == 'en_us' else '电压：%s'
+        obj['gui.solarpower.energy'] = 'Energy: %s / %s EU' if code == 'en_us' else '蓄电量：%s / %s EU'
         obj['gui.solarpower.storage.energy'] = '蓄电量：%s / %s EU' if code == 'zh_cn' else 'Energy: %s / %s EU'
         obj['gui.solarpower.storage.capacity'] = '容量：%s EU' if code == 'zh_cn' else 'Capacity: %s EU'
         obj['gui.solarpower.storage.output'] = '输出：%s EU/t' if code == 'zh_cn' else 'Output: %s EU/t'
