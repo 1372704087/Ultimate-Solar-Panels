@@ -1,0 +1,545 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :createMinecraftArtifacts UP-TO-DATE
+
+> Task :compileJava FAILED
+gradle.bat : G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:34: 警告: [removal] net.
+neoforged.neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+所在位置 行:4 字符: 1
++ & $gradle compileJava --no-daemon 2>&1 | Out-File -FilePath 'G:\ultim ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (G:\ultimatesola...ge 已过时, 且标记为待删除:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                     ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:245: 警告: [removal] IEnergyStorage 中
+的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:240: 警告: [removal] IEnergyStorage 中
+的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:235: 警告: [removal] IEnergyStorage 中
+的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:230: 警告: [removal] IEnergyStorage 中
+的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 警告: [removal] IEnergyStorage 中
+的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:255: 警告: [removal] IEnergyStorage 中
+的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:56: 警告: [removal] net.neoforge
+d.neoforge.items 中的 IItemHandler 已过时, 且标记为待删除
+        IItemHandler input = tile != null ? tile.getInput() : null;
+        ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:57: 警告: [removal] net.neoforge
+d.neoforge.items 中的 IItemHandler 已过时, 且标记为待删除
+        IItemHandler output = tile != null ? tile.getOutput() : null;
+        ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:59: 警告: [removal] net.neoforge
+d.neoforge.items 中的 SlotItemHandler 已过时, 且标记为待删除
+        this.addSlot(new SlotItemHandler(input != null ? input : new net.neoforged.neoforge.items.ItemStackHandler(1), 
+0, 20, 27));
+                         ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:59: 警告: [removal] net.neoforge
+d.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+        this.addSlot(new SlotItemHandler(input != null ? input : new net.neoforged.neoforge.items.ItemStackHandler(1), 
+0, 20, 27));
+                                                                                                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:60: 警告: [removal] net.neoforge
+d.neoforge.items 中的 SlotItemHandler 已过时, 且标记为待删除
+        this.addSlot(new SlotItemHandler(output != null ? output : new net.neoforged.neoforge.items.ItemStackHandler(1)
+, 0, 20, 68));
+                         ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:60: 警告: [removal] net.neoforge
+d.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+        this.addSlot(new SlotItemHandler(output != null ? output : new net.neoforged.neoforge.items.ItemStackHandler(1)
+, 0, 20, 68));
+                                                                                                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:35: 警告: [removal] net.ne
+oforged.neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                                ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:246: 警告: [removal] IEner
+gyStorage 中的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:241: 警告: [removal] IEner
+gyStorage 中的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:236: 警告: [removal] IEner
+gyStorage 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:231: 警告: [removal] IEner
+gyStorage 中的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:251: 警告: [removal] IEner
+gyStorage 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:256: 警告: [removal] IEner
+gyStorage 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:49: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    private final ItemStackHandler input = new ItemStackHandler(1) {
+                  ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:49: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    private final ItemStackHandler input = new ItemStackHandler(1) {
+                                               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:56: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    private final ItemStackHandler output = new ItemStackHandler(1) {
+                  ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:56: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    private final ItemStackHandler output = new ItemStackHandler(1) {
+                                                ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:75: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    public ItemStackHandler getInput() {
+           ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:79: 警告: [removal] net.ne
+oforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+    public ItemStackHandler getOutput() {
+           ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:132: 警告: [removal] net.n
+eoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+        for (ItemStackHandler handler : new ItemStackHandler[]{this.input, this.output}) {
+                                            ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:132: 警告: [removal] net.n
+eoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+        for (ItemStackHandler handler : new ItemStackHandler[]{this.input, this.output}) {
+             ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:29: 警告: [removal] net.neoforged.ne
+oforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
+                                                           ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:180: 警告: [removal] IEnergyStorage 
+中的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:175: 警告: [removal] IEnergyStorage 
+中的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:170: 警告: [removal] IEnergyStorage 
+中的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:165: 警告: [removal] IEnergyStorage 
+中的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:185: 警告: [removal] IEnergyStorage 
+中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:190: 警告: [removal] IEnergyStorage 
+中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:30: 警告: [removal] net.neoforged.ne
+oforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                      ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:209: 警告: [removal] IEnergyStorage 
+中的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:204: 警告: [removal] IEnergyStorage 
+中的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:199: 警告: [removal] IEnergyStorage 
+中的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:194: 警告: [removal] IEnergyStorage 
+中的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:214: 警告: [removal] IEnergyStorage 
+中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:219: 警告: [removal] IEnergyStorage 
+中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:29: 警告: [removal] net.neoforged.n
+eoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+public class TransformerTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                       ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:266: 警告: [removal] IEnergyStorage
+ 中的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:261: 警告: [removal] IEnergyStorage
+ 中的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+
+[Incubating] Problems report is available at: file:///G:/ultimatesolar/build/reports/problems/problems-report.html
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:256: 警告: [removal] IEnergyStorage
+ 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:251: 警告: [removal] IEnergyStorage
+ 中的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:271: 警告: [removal] IEnergyStorage
+ 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:276: 警告: [removal] IEnergyStorage
+ 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:22: 警告: [removal] net.neoforged.ne
+oforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+public class GlassCableTile extends BlockEntity implements IEnergyStorage {
+                                                           ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:60: 警告: [removal] IEnergyStorage 中
+的 canReceive() 已过时, 且标记为待删除
+    public boolean canReceive() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:55: 警告: [removal] IEnergyStorage 中
+的 canExtract() 已过时, 且标记为待删除
+    public boolean canExtract() {
+                   ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:50: 警告: [removal] IEnergyStorage 中
+的 getMaxEnergyStored() 已过时, 且标记为待删除
+    public int getMaxEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:43: 警告: [removal] IEnergyStorage 中
+的 getEnergyStored() 已过时, 且标记为待删除
+    public int getEnergyStored() {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:65: 警告: [removal] IEnergyStorage 中
+的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+    public int extractEnergy(int maxExtract, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:73: 警告: [removal] IEnergyStorage 中
+的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:45: 警告: [removal] net.neoforged.neoforge.energy 中
+的 IEnergyStorage 已过时, 且标记为待删除
+    private static EnergyHandler bridge(IEnergyStorage storage) {
+                                        ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:47: 警告: [removal] IEnergyStorage 中的 getEnergyStor
+ed() 已过时, 且标记为待删除
+            @Override public long getAmountAsLong() { return storage.getEnergyStored(); }
+                                                                    ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:48: 警告: [removal] IEnergyStorage 中的 getMaxEnergyS
+tored() 已过时, 且标记为待删除
+            @Override public long getCapacityAsLong() { return storage.getMaxEnergyStored(); }
+                                                                      ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:49: 错误: 找不到符号
+            @Override public int insert(int amount, TransactionContext ctx) { return storage.receiveEnergy(amount, ctx.
+simulate()); }
+                                                                                                                      ^
+  符号:   方法 simulate()
+  位置: 类型为TransactionContext的变量 ctx
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:50: 错误: 找不到符号
+            @Override public int extract(int amount, TransactionContext ctx) { return storage.extractEnergy(amount, ctx
+.simulate()); }
+                                                                                                                       
+^
+  符号:   方法 simulate()
+  位置: 类型为TransactionContext的变量 ctx
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+注: 某些输入文件使用了未经检查或不安全的操作。
+注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+2 个错误
+59 个警告
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+  注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+  注: 某些输入文件使用或覆盖了已过时的 API。
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:34: 警告: [removal] net.neoforged.n
+eoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                       ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:245: 警告: [removal] IEnergyStorage
+ 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:240: 警告: [removal] IEnergyStorage
+ 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:235: 警告: [removal] IEnergyStorage
+ 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:230: 警告: [removal] IEnergyStorage
+ 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 警告: [removal] IEnergyStorage
+ 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:255: 警告: [removal] IEnergyStorage
+ 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:56: 警告: [removal] net.neofor
+ged.neoforge.items 中的 IItemHandler 已过时, 且标记为待删除
+          IItemHandler input = tile != null ? tile.getInput() : null;
+          ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:57: 警告: [removal] net.neofor
+ged.neoforge.items 中的 IItemHandler 已过时, 且标记为待删除
+          IItemHandler output = tile != null ? tile.getOutput() : null;
+          ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:59: 警告: [removal] net.neofor
+ged.neoforge.items 中的 SlotItemHandler 已过时, 且标记为待删除
+          this.addSlot(new SlotItemHandler(input != null ? input : new net.neoforged.neoforge.items.ItemStackHandler(1)
+, 0, 20, 27));
+                           ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:59: 警告: [removal] net.neofor
+ged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+          this.addSlot(new SlotItemHandler(input != null ? input : new net.neoforged.neoforge.items.ItemStackHandler(1)
+, 0, 20, 27));
+                                                                                                   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:60: 警告: [removal] net.neofor
+ged.neoforge.items 中的 SlotItemHandler 已过时, 且标记为待删除
+          this.addSlot(new SlotItemHandler(output != null ? output : new net.neoforged.neoforge.items.ItemStackHandler(
+1), 0, 20, 68));
+                           ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\menu\MolecularTransformerMenu.java:60: 警告: [removal] net.neofor
+ged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+          this.addSlot(new SlotItemHandler(output != null ? output : new net.neoforged.neoforge.items.ItemStackHandler(
+1), 0, 20, 68));
+                                                                                                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:35: 警告: [removal] net.
+neoforged.neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                                  ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:246: 警告: [removal] IEn
+ergyStorage 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:241: 警告: [removal] IEn
+ergyStorage 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:236: 警告: [removal] IEn
+ergyStorage 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:231: 警告: [removal] IEn
+ergyStorage 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:251: 警告: [removal] IEn
+ergyStorage 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:256: 警告: [removal] IEn
+ergyStorage 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:49: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      private final ItemStackHandler input = new ItemStackHandler(1) {
+                    ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:49: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      private final ItemStackHandler input = new ItemStackHandler(1) {
+                                                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:56: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      private final ItemStackHandler output = new ItemStackHandler(1) {
+                    ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:56: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      private final ItemStackHandler output = new ItemStackHandler(1) {
+                                                  ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:75: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      public ItemStackHandler getInput() {
+             ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:79: 警告: [removal] net.
+neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+      public ItemStackHandler getOutput() {
+             ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:132: 警告: [removal] net
+.neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+          for (ItemStackHandler handler : new ItemStackHandler[]{this.input, this.output}) {
+                                              ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\MolecularTransformerTile.java:132: 警告: [removal] net
+.neoforged.neoforge.items 中的 ItemStackHandler 已过时, 且标记为待删除
+          for (ItemStackHandler handler : new ItemStackHandler[]{this.input, this.output}) {
+               ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:29: 警告: [removal] net.neoforged.
+neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
+                                                             ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:180: 警告: [removal] IEnergyStorag
+e 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:175: 警告: [removal] IEnergyStorag
+e 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:170: 警告: [removal] IEnergyStorag
+e 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:165: 警告: [removal] IEnergyStorag
+e 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:185: 警告: [removal] IEnergyStorag
+e 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\SolarPanelTile.java:190: 警告: [removal] IEnergyStorag
+e 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:30: 警告: [removal] net.neoforged.
+neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                        ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:209: 警告: [removal] IEnergyStorag
+e 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:204: 警告: [removal] IEnergyStorag
+e 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:199: 警告: [removal] IEnergyStorag
+e 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:194: 警告: [removal] IEnergyStorag
+e 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+2 actionable tasks: 1 executed, 1 up-to-date
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:214: 警告: [removal] IEnergyStorag
+e 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\StorageBoxTile.java:219: 警告: [removal] IEnergyStorag
+e 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:29: 警告: [removal] net.neoforged
+.neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class TransformerTile extends BlockEntity implements IEuEnergy, IEnergyStorage {
+                                                                         ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:266: 警告: [removal] IEnergyStora
+ge 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:261: 警告: [removal] IEnergyStora
+ge 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:256: 警告: [removal] IEnergyStora
+ge 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:251: 警告: [removal] IEnergyStora
+ge 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:271: 警告: [removal] IEnergyStora
+ge 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\TransformerTile.java:276: 警告: [removal] IEnergyStora
+ge 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:22: 警告: [removal] net.neoforged.
+neoforge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+  public class GlassCableTile extends BlockEntity implements IEnergyStorage {
+                                                             ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:60: 警告: [removal] IEnergyStorage
+ 中的 canReceive() 已过时, 且标记为待删除
+      public boolean canReceive() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:55: 警告: [removal] IEnergyStorage
+ 中的 canExtract() 已过时, 且标记为待删除
+      public boolean canExtract() {
+                     ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:50: 警告: [removal] IEnergyStorage
+ 中的 getMaxEnergyStored() 已过时, 且标记为待删除
+      public int getMaxEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:43: 警告: [removal] IEnergyStorage
+ 中的 getEnergyStored() 已过时, 且标记为待删除
+      public int getEnergyStored() {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:65: 警告: [removal] IEnergyStorage
+ 中的 extractEnergy(int,boolean) 已过时, 且标记为待删除
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\GlassCableTile.java:73: 警告: [removal] IEnergyStorage
+ 中的 receiveEnergy(int,boolean) 已过时, 且标记为待删除
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                 ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:45: 警告: [removal] net.neoforged.neoforge.energy
+ 中的 IEnergyStorage 已过时, 且标记为待删除
+      private static EnergyHandler bridge(IEnergyStorage storage) {
+                                          ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:47: 警告: [removal] IEnergyStorage 中的 getEnergySt
+ored() 已过时, 且标记为待删除
+              @Override public long getAmountAsLong() { return storage.getEnergyStored(); }
+                                                                      ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:48: 警告: [removal] IEnergyStorage 中的 getMaxEnerg
+yStored() 已过时, 且标记为待删除
+              @Override public long getCapacityAsLong() { return storage.getMaxEnergyStored(); }
+                                                                        ^
+  注: 某些输入文件使用了未经检查或不安全的操作。
+  G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:49: 错误: 找不到符号
+              @Override public int insert(int amount, TransactionContext ctx) { return storage.receiveEnergy(amount, ct
+x.simulate()); }
+                                                                                                                       
+ ^
+    符号:   方法 simulate()
+    位置: 类型为TransactionContext的变量 ctx
+  G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:50: 错误: 找不到符号
+              @Override public int extract(int amount, TransactionContext ctx) { return storage.extractEnergy(amount, c
+tx.simulate()); }
+                                                                                                                       
+  ^
+    符号:   方法 simulate()
+    位置: 类型为TransactionContext的变量 ctx
+  2 个错误
+  59 个警告
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 4s

@@ -9,12 +9,12 @@ import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.math.BigInteger;
@@ -225,26 +225,16 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
+    protected void saveAdditional(ValueOutput out) {
+        super.saveAdditional(out);
+        out.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        BigInteger value;
-        if (tag.contains(TAG_ENERGY_B64, NBT_STRING)) {
-            value = new BigInteger(Base64.getDecoder().decode(tag.getString(TAG_ENERGY_B64)));
-        } else if (tag.contains(TAG_ENERGY, NBT_STRING)) {
-            try {
-                value = new BigInteger(tag.getString(TAG_ENERGY));
-            } catch (NumberFormatException e) {
-                value = BigInteger.ZERO;
-            }
-        } else {
-            value = BigInteger.valueOf(tag.getLong(TAG_ENERGY));
-        }
-        this.stored = value == null || value.signum() < 0 ? BigInteger.ZERO : value;
+    protected void loadAdditional(ValueInput in) {
+        super.loadAdditional(in);
+        this.stored = in.getString(TAG_ENERGY_B64)
+                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
+                .orElse(BigInteger.ZERO);
     }
 }

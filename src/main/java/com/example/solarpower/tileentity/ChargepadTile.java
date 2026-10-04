@@ -8,23 +8,26 @@ import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import java.math.BigInteger;
 import java.util.Base64;
 import java.util.List;
 
 /**
- * 充电座方块实体（1.21.1，全档位共用，档位绑定 {@link SolarTier}）。
- * IU 语义的简化版：纯受电（不向电缆放电），容量 = 面板缓冲 ×64（同储电盒）；
+ * 充电座方块实体（全档位共用，档位绑定 SolarTier）。
+ * 纯受电（不向电缆放电），容量 = 面板缓冲 x64；
  * 玩家站在顶面上时，按本档面板最大输出（EU/t）给其盔甲 + 背包里所有暴露
  * Forge Energy 的物品充电（1 EU = 4 FE），充电中顶面切换为发光态。
  */
@@ -32,9 +35,7 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
 
     private static final int CAPACITY_SHIFT = 6;
 
-    private static final String TAG_ENERGY = "Energy";
-    private static final String TAG_ENERGY_B64 = TAG_ENERGY + "_b64";
-    private static final int NBT_STRING = 8;
+    private static final String TAG_ENERGY_B64 = "Energy_b64";
 
     private BigInteger stored = BigInteger.ZERO;
     private SolarTier resolvedTier;
@@ -56,14 +57,14 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
     /** 档位由所在方块的实例决定（懒解析，回落基础档）。 */
     public SolarTier getSolarTier() {
         if (this.resolvedTier == null && this.level != null) {
-            if (this.level.getBlockState(this.worldPosition).getBlock() instanceof com.example.solarpower.block.ChargepadBlock pad) {
+            if (this.level.getBlockState(this.worldPosition).getBlock() instanceof ChargepadBlock pad) {
                 this.resolvedTier = pad.tier();
             }
         }
         return this.resolvedTier == null ? SolarTier.BASIC : this.resolvedTier;
     }
 
-    /** 容量 = 面板缓冲 ×64（按档位实例缓存）。 */
+    /** 容量 = 面板缓冲 x64（按档位实例缓存）。 */
     public BigInteger capacityEu() {
         SolarTier tier = getSolarTier();
         if (this.capacityForTier != tier) {
@@ -85,7 +86,7 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
     /** 是否正在给玩家充电（读方块 ACTIVE 态；GUI 显示用）。 */
     public boolean isCharging() {
         return this.level != null
-                && this.level.getBlockState(this.worldPosition).getBlock() instanceof com.example.solarpower.block.ChargepadBlock pad
+                && this.level.getBlockState(this.worldPosition).getBlock() instanceof ChargepadBlock pad
                 && this.level.getBlockState(this.worldPosition).getValue(ChargepadBlock.ACTIVE);
     }
 
@@ -135,15 +136,21 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
         if (stack.isEmpty() || budget.signum() <= 0) {
             return budget;
         }
-        IEnergyStorage item = stack.getCapability(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.ITEM);
-        if (item == null || !item.canReceive()) {
+        EnergyHandler item = stack.getCapability(Capabilities.Energy.ITEM, ItemAccess.forStack(stack));
+        if (item == null) {
             return budget;
         }
         int fe = FeConvert.toFe(budget);
         if (fe <= 0) {
             return budget;
         }
-        int accepted = item.receiveEnergy(fe, false);
+        int accepted;
+        try (Transaction tx = Transaction.openRoot()) {
+            accepted = item.insert(fe, tx);
+            if (accepted > 0) {
+                tx.commit();
+            }
+        }
         if (accepted <= 0) {
             return budget;
         }
@@ -156,7 +163,7 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
     /** 充电中切换顶面发光态。 */
     private void setActive(boolean active) {
         BlockState state = this.level.getBlockState(this.worldPosition);
-        if (state.getBlock() instanceof com.example.solarpower.block.ChargepadBlock pad
+        if (state.getBlock() instanceof ChargepadBlock pad
                 && state.getValue(ChargepadBlock.ACTIVE) != active) {
             this.level.setBlock(this.worldPosition, state.setValue(ChargepadBlock.ACTIVE, active), 3);
         }
@@ -212,7 +219,7 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
 
     @Override
     public BigInteger extractEu(BigInteger amount, boolean simulate) {
-        return BigInteger.ZERO;   // 纯受电：不放电
+        return BigInteger.ZERO;
     }
 
     // ------------------------------------------------------------------
@@ -254,26 +261,16 @@ public class ChargepadTile extends BlockEntity implements IEuEnergy, IEnergyStor
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
+    protected void saveAdditional(ValueOutput out) {
+        super.saveAdditional(out);
+        out.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        BigInteger value;
-        if (tag.contains(TAG_ENERGY_B64, NBT_STRING)) {
-            value = new BigInteger(Base64.getDecoder().decode(tag.getString(TAG_ENERGY_B64)));
-        } else if (tag.contains(TAG_ENERGY, NBT_STRING)) {
-            try {
-                value = new BigInteger(tag.getString(TAG_ENERGY));
-            } catch (NumberFormatException e) {
-                value = BigInteger.ZERO;
-            }
-        } else {
-            value = BigInteger.valueOf(tag.getLong(TAG_ENERGY));
-        }
-        this.stored = value == null || value.signum() < 0 ? BigInteger.ZERO : value;
+    protected void loadAdditional(ValueInput in) {
+        super.loadAdditional(in);
+        this.stored = in.getString(TAG_ENERGY_B64)
+                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
+                .orElse(BigInteger.ZERO);
     }
 }

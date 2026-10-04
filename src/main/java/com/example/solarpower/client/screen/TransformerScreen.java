@@ -8,6 +8,7 @@ import com.example.solarpower.tileentity.TransformerTile;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -38,7 +39,7 @@ public class TransformerScreen extends AbstractContainerScreen<TransformerMenu> 
     private static final int ROW_RATE_Y = 79;
     private static final int ROW_VOLTAGE_Y = 90;
 
-    private static final int TEXT_COLOR = 0x3F444E;
+    private static final int TEXT_COLOR = 0xFF3F444E;
 
     private static final Map<Integer, Integer> ACCENTS = new HashMap<>();
 
@@ -120,7 +121,7 @@ public class TransformerScreen extends AbstractContainerScreen<TransformerMenu> 
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, WIDTH, HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
         TransformerTile tile = this.menu.tile();
         if (tile == null) {
             return;

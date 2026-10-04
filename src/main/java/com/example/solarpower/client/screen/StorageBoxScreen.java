@@ -5,6 +5,7 @@ import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -56,7 +57,7 @@ public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, WIDTH, HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
 
         SolarTier tier = tier();
         BigDecimal capacity = capacityMirror(tier);
@@ -86,13 +87,13 @@ public class StorageBoxScreen extends AbstractContainerScreen<StorageBoxMenu> {
                 Component.translatable("gui.solarpower.storage.energy",
                         com.example.solarpower.energy.EuFormat.formatEu(this.menu.stored),
                         capacityLabel(tier)),
-                8, 40, 0x3F444E, true);
+                8, 40, 0xFF3F444E, true);
         graphics.drawString(this.font,
                 Component.translatable("gui.solarpower.storage.capacity", capacityLabel(tier)),
-                8, 51, 0x3F444E, true);
+                8, 51, 0xFF3F444E, true);
         graphics.drawString(this.font,
                 Component.translatable("gui.solarpower.storage.output",
                         com.example.solarpower.energy.EuFormat.formatEu(tier.maxOutputEu())),
-                8, 62, 0x3F444E, true);
+                8, 62, 0xFF3F444E, true);
     }
 }

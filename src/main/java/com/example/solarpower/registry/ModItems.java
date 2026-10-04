@@ -53,7 +53,9 @@ public final class ModItems {
             CABLE_ITEMS.put(tier, ITEMS.registerSimpleBlockItem(ModBlocks.CABLE_LIST.get(tier.ordinal())));
         }
         // 分子重组仪的方块物品
-        MT_ITEM = ITEMS.register("molecular_transformer", () -> new BlockItem(ModBlocks.molecularTransformer(), new Item.Properties()));
+        MT_ITEM = ITEMS.registerItem("molecular_transformer",
+                props -> new BlockItem(ModBlocks.molecularTransformer(), props),
+                Item.Properties::new);
         // 变压器的方块物品
         for (EuTier tier : EuTier.values()) {
             if (tier.iuTier() > 65) {
@@ -63,27 +65,27 @@ public final class ModItems {
         }
         // 合成链物品
         for (String id : CRAFTING_IDS) {
-            CRAFTING_ITEMS.put(id, ITEMS.register(id, () -> new Item(new Item.Properties())));
+            CRAFTING_ITEMS.put(id, ITEMS.registerItem(id, Item::new, Item.Properties::new));
         }
         // 「XX玻璃板」67 档
         for (SolarTier tier : SolarTier.values()) {
-            PANE_ITEMS.put(tier, ITEMS.register(tier.paneId(), () -> new Item(new Item.Properties())));
+            PANE_ITEMS.put(tier, ITEMS.registerItem(tier.paneId(), Item::new, Item.Properties::new));
         }
         // 「XX核心」65 档（基础档无本体；量子核心走 ASP 官方 quantum_core）
         for (SolarTier tier : SolarTier.values()) {
             if (tier == SolarTier.BASIC || tier == SolarTier.QUANTUM) {
                 continue;
             }
-            CORE_ITEMS.put(tier, ITEMS.register(tier.coreId(), () -> new Item(new Item.Properties())));
+            CORE_ITEMS.put(tier, ITEMS.registerItem(tier.coreId(), Item::new, Item.Properties::new));
         }
         // 阳光化合物/小块/合金 66 档（基础档沿用 ASP 本体，跳过）
         for (SolarTier tier : SolarTier.values()) {
             if (tier == SolarTier.BASIC) {
                 continue;
             }
-            SUNNARIUM_PART_ITEMS.put(tier, ITEMS.register(tier.sunnariumPartId(), () -> new Item(new Item.Properties())));
-            SUNNARIUM_ITEMS.put(tier, ITEMS.register(tier.sunnariumId(), () -> new Item(new Item.Properties())));
-            SUNNARIUM_ALLOY_ITEMS.put(tier, ITEMS.register(tier.sunnariumAlloyId(), () -> new Item(new Item.Properties())));
+            SUNNARIUM_PART_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumPartId(), Item::new, Item.Properties::new));
+            SUNNARIUM_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumId(), Item::new, Item.Properties::new));
+            SUNNARIUM_ALLOY_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumAlloyId(), Item::new, Item.Properties::new));
         }
     }
 

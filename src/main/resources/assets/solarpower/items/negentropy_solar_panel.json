@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "solarpower:item/negentropy_solar_panel"
+  }
+}

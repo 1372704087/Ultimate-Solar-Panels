@@ -7,13 +7,13 @@ import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.solar.MtRecipes;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -263,37 +263,31 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString(TAG_ENERGY, this.storage.getStoredEu().toString());
-        tag.put(TAG_INPUT, this.input.serializeNBT(registries));
-        tag.put(TAG_OUTPUT, this.output.serializeNBT(registries));
+    protected void saveAdditional(ValueOutput out) {
+        super.saveAdditional(out);
+        out.putString(TAG_ENERGY, this.storage.getStoredEu().toString());
+        out.store("input_slot", ItemStack.OPTIONAL_CODEC, this.input.getStackInSlot(0));
+        out.store("output_slot", ItemStack.OPTIONAL_CODEC, this.output.getStackInSlot(0));
         if (!this.jobOutput.isEmpty()) {
-            tag.put(TAG_JOB, this.jobOutput.save(registries));
+            out.store(TAG_JOB, ItemStack.OPTIONAL_CODEC, this.jobOutput);
         }
-        tag.putInt(TAG_TOTAL, this.totalEu);
-        tag.putInt(TAG_USED, this.energyUsed);
+        out.putInt(TAG_TOTAL, this.totalEu);
+        out.putInt(TAG_USED, this.energyUsed);
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        if (tag.contains(TAG_ENERGY, net.minecraft.nbt.Tag.TAG_STRING)) {
-            try {
-                this.storage.setStored(new BigInteger(tag.getString(TAG_ENERGY)));
-            } catch (NumberFormatException e) {
-                this.storage.setStored(BigInteger.ZERO);
-            }
-        } else {
-            this.storage.setStored(BigInteger.valueOf(tag.getLong(TAG_ENERGY)));
-        }
-        this.input.deserializeNBT(registries, tag.getCompound(TAG_INPUT));
-        this.output.deserializeNBT(registries, tag.getCompound(TAG_OUTPUT));
-        this.jobOutput = tag.contains(TAG_JOB)
-                ? ItemStack.parse(registries, tag.getCompound(TAG_JOB)).orElse(ItemStack.EMPTY)
-                : ItemStack.EMPTY;
-        this.totalEu = tag.getInt(TAG_TOTAL);
-        this.energyUsed = tag.getInt(TAG_USED);
+    protected void loadAdditional(ValueInput in) {
+        super.loadAdditional(in);
+        this.storage.setStored(in.getString(TAG_ENERGY)
+                .map(s -> {
+                    try { return new BigInteger(s); } catch (NumberFormatException e) { return BigInteger.ZERO; }
+                })
+                .orElse(BigInteger.ZERO));
+        this.input.setStackInSlot(0, in.read("input_slot", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
+        this.output.setStackInSlot(0, in.read("output_slot", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
+        this.jobOutput = in.read(TAG_JOB, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
+        this.totalEu = in.getInt(TAG_TOTAL).orElse(0);
+        this.energyUsed = in.getInt(TAG_USED).orElse(0);
     }
 
     // ------------------------------------------------------------------

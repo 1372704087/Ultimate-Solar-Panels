@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "solarpower:item/genesis_solar_panel_transformer"
+  }
+}

@@ -6,6 +6,7 @@ import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,8 +31,8 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
     private static final int ROW_RATE_Y = 51;
     private static final int ROW_STATUS_Y = 62;
 
-    private static final int TEXT_COLOR = 0x3F444E;
-    private static final int CHARGING_COLOR = 0x3FA84F;
+    private static final int TEXT_COLOR = 0xFF3F444E;
+    private static final int CHARGING_COLOR = 0xFF3FA84F;
 
     private final ChargepadMenu menu;
 
@@ -64,7 +65,7 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, WIDTH, HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
         SolarTier tier = tier();
         BigDecimal capacity = capacityMirror(tier);
         BigDecimal stored = this.menu.stored;

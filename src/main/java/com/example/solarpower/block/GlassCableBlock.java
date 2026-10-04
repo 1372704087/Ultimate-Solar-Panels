@@ -6,10 +6,12 @@ import com.example.solarpower.tileentity.GlassCableTile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,12 +57,8 @@ public class GlassCableBlock extends Block implements EntityBlock {
 
     private final GlassCableTier tier;
 
-    public GlassCableBlock(GlassCableTier tier) {
-        super(Properties.of()
-                .strength(0.5F)
-                .sound(net.minecraft.world.level.block.SoundType.GLASS)
-                .noOcclusion()
-                .requiresCorrectToolForDrops());
+    public GlassCableBlock(GlassCableTier tier, Properties props) {
+        super(props);
         this.tier = tier;
         registerDefaultState(this.stateDefinition.any()
                 .setValue(NORTH, false).setValue(SOUTH, false)
@@ -76,6 +74,20 @@ public class GlassCableBlock extends Block implements EntityBlock {
     public static boolean connectsTo(BlockState neighbor) {
         return neighbor.getBlock() instanceof GlassCableBlock
                 || neighbor.getBlock() instanceof SolarPanelBlock;
+    }
+
+    /** 该向是否连接：电缆/面板方块，或任何暴露能量的设备（臂伸向机器）。 */
+    private static boolean connects(LevelReader level, BlockPos neighborPos,
+                                    BlockState neighborState, Direction dir) {
+        if (connectsTo(neighborState)) {
+            return true;
+        }
+        // 21.11 起 getCapability 扩展只注入在 Level 上；世界生成期的 LevelReader 一律不连。
+        if (level instanceof Level world) {
+            return world.getCapability(net.neoforged.neoforge.capabilities.Capabilities.Energy.BLOCK,
+                    neighborPos, dir.getOpposite()) != null;
+        }
+        return false;
     }
 
     public static BooleanProperty propOf(Direction dir) {
@@ -97,16 +109,17 @@ public class GlassCableBlock extends Block implements EntityBlock {
         var level = context.getLevel();
         var pos = context.getClickedPos();
         for (Direction dir : Direction.values()) {
-            state = state.setValue(propOf(dir), connectsTo(level.getBlockState(pos.relative(dir))));
+            state = state.setValue(propOf(dir), connects(level, pos.relative(dir), level.getBlockState(pos.relative(dir)), dir));
         }
         return state;
     }
 
     /** 邻居方块变化时刷新该向连接（放置/拆除电缆、面板都会实时伸/收臂）。 */
     @Override
-    protected BlockState updateShape(BlockState state, Direction dir, BlockState neighborState,
-                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        return state.setValue(propOf(dir), connectsTo(neighborState));
+    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess,
+                                     BlockPos pos, Direction dir, BlockPos neighborPos, BlockState neighborState,
+                                     RandomSource random) {
+        return state.setValue(propOf(dir), connects(level, neighborPos, neighborState, dir));
     }
 
     /** 碰撞/轮廓由连接属性直接推导。 */
@@ -129,8 +142,8 @@ public class GlassCableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
-        return false; // 贴图带透明镂空（玻璃质感），避免天光直接穿透
+    protected boolean propagatesSkylightDown(BlockState state) {
+        return false;
     }
 
     @Nullable

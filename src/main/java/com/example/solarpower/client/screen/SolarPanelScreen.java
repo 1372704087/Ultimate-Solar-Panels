@@ -6,6 +6,7 @@ import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -45,7 +46,7 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
     private static final int ROW2_Y = 53;
     private static final int ROW3_Y = 73;
 
-    private static final int TEXT_COLOR = 0xDFEAF4;
+    private static final int TEXT_COLOR = 0xFFDFEAF4;
 
     private final SolarPanelMenu menu;
 
@@ -68,7 +69,7 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
         super.render(graphics, mouseX, mouseY, partialTick);
         List<Component> hover = rowHoverText(mouseX - this.leftPos, mouseY - this.topPos);
         if (hover != null) {
-            graphics.renderComponentTooltip(this.font, hover, mouseX, mouseY);
+            graphics.setComponentTooltipForNextFrame(this.font, hover, mouseX, mouseY);
         }
     }
 
@@ -99,7 +100,7 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, PANEL_WIDTH, PANEL_HEIGHT, 256, 256);
 
         SolarTier tier = tier();
         // 容量用「紧凑镜像」（顶档容量百万位级，直接除会物化整个数）
@@ -116,15 +117,17 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
         }
         filled = Math.max(0, Math.min(TUBE_HEIGHT, filled));
         if (filled > 0) {
-            graphics.blit(TEXTURE, this.leftPos + TUBE_X,
-                    this.topPos + TUBE_Y + TUBE_HEIGHT - filled,
-                    FILL_U, FILL_V + TUBE_HEIGHT - filled, 18, filled);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+                    this.leftPos + TUBE_X, this.topPos + TUBE_Y + TUBE_HEIGHT - filled,
+                    FILL_U, FILL_V + TUBE_HEIGHT - filled, 18, filled, 256, 256);
         }
 
         int ledV = this.menu.generating.signum() > 0
                 ? (this.menu.night ? LED_NIGHT_V : LED_LIT_V)
                 : LED_DIM_V;
-        graphics.blit(TEXTURE, this.leftPos + LED_X, this.topPos + LED_Y, LED_U, ledV, LED_SIZE, LED_SIZE);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+                this.leftPos + LED_X, this.topPos + LED_Y,
+                LED_U, ledV, LED_SIZE, LED_SIZE, 256, 256);
     }
 
     @Override

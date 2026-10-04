@@ -25,39 +25,36 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
 /**
- * 变压器方块（1.21.1，65 档，桥接电压 T↔T+1）。
- * 正面（能量芯）= 高压侧（T+1），其余五面 = 低压侧（T）；转换逻辑全在
- * {@link TransformerTile}，无模式开关（IC2 语义：按进电方向自动升/降压），
- * 右键打开双池条界面，比较器输出两池合计占用比例。
- */
+ * 鍙樺帇鍣ㄦ柟鍧楋紙1.21.1锛?5 妗ｏ紝妗ユ帴鐢靛帇 T鈫擳+1锛夈€? * 姝ｉ潰锛堣兘閲忚姱锛? 楂樺帇渚э紙T+1锛夛紝鍏朵綑浜旈潰 = 浣庡帇渚э紙T锛夛紱杞崲閫昏緫鍏ㄥ湪
+ * {@link TransformerTile}锛屾棤妯″紡寮€鍏筹紙IC2 璇箟锛氭寜杩涚數鏂瑰悜鑷姩鍗?闄嶅帇锛夛紝
+ * 鍙抽敭鎵撳紑鍙屾睜鏉＄晫闈紝姣旇緝鍣ㄨ緭鍑轰袱姹犲悎璁″崰鐢ㄦ瘮渚嬨€? */
 public class TransformerBlock extends BaseEntityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final EuTier tier;
 
-    public TransformerBlock(EuTier tier) {
-        super(Properties.of()
-                .strength(3.0F)
-                .sound(net.minecraft.world.level.block.SoundType.METAL));
+    public TransformerBlock(EuTier tier, Properties props) {
+        super(props);
         this.tier = tier;
         registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
-    /** 低压侧档位（桥接 tier ↔ tier+1）。 */
+    /** 浣庡帇渚ф。浣嶏紙妗ユ帴 tier 鈫?tier+1锛夈€?*/
     public EuTier tier() {
         return this.tier;
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties -> new TransformerBlock(this.tier));
+        return simpleCodec(properties -> new TransformerBlock(this.tier, properties));
     }
 
     @Override
@@ -102,7 +99,7 @@ public class TransformerBlock extends BaseEntityBlock {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
-    /** 右键打开界面（双池条 + 吞吐/电压桥接行）。 */
+    /** 鍙抽敭鎵撳紑鐣岄潰锛堝弻姹犳潯 + 鍚炲悙/鐢靛帇妗ユ帴琛岋級銆?*/
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
@@ -114,13 +111,13 @@ public class TransformerBlock extends BaseEntityBlock {
                     Component.translatable("block.solarpower."
                             + com.example.solarpower.registry.ModBlocks
                                     .representativePanel(this.tier.iuTier()).id()
-                            + "_transformer.name")),
+                            + "_transformer")),
                     buf -> buf.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;
     }
 
-    /** 拆机掉落自身（变压器缓冲为暂存数据，不随掉落物保留）。 */
+    /** 鎷嗘満鎺夎惤鑷韩锛堝彉鍘嬪櫒缂撳啿涓烘殏瀛樻暟鎹紝涓嶉殢鎺夎惤鐗╀繚鐣欙級銆?*/
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
                               @Nullable BlockEntity blockEntity, ItemStack tool) {
@@ -134,7 +131,7 @@ public class TransformerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction side) {
         return level.getBlockEntity(pos) instanceof TransformerTile tile ? tile.comparatorLevel() : 0;
     }
 }

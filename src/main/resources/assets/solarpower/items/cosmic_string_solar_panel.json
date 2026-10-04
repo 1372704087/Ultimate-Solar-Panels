@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "solarpower:item/cosmic_string_solar_panel"
+  }
+}

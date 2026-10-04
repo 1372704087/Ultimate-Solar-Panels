@@ -28,10 +28,8 @@ public class SolarPanelBlock extends BaseEntityBlock {
 
     private final SolarTier tier;
 
-    public SolarPanelBlock(SolarTier tier) {
-        super(Properties.of()
-                .strength(3.0F)
-                .sound(net.minecraft.world.level.block.SoundType.METAL));
+    public SolarPanelBlock(SolarTier tier, Properties props) {
+        super(props);
         this.tier = tier;
     }
 
@@ -41,7 +39,7 @@ public class SolarPanelBlock extends BaseEntityBlock {
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties -> new SolarPanelBlock(this.tier));
+        return simpleCodec(properties -> new SolarPanelBlock(this.tier, properties));
     }
 
     @Override

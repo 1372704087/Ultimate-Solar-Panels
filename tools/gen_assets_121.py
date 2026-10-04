@@ -113,17 +113,26 @@ def gen_panels():
 
 
 def gen_cables():
-    global CABLE_DISPLAY
+    """电缆物品模型：3D 线缆段（IU 实物风格，替代 1.12 的平面 generated）。
+    parent block/block 提供界面等距变换；南北面取贴图中段横臂，端面取中心。"""
     im = os.path.join(NEW_ASSETS, 'models', 'item')
-    # 电缆物品模型：generated + 显示变换（取自 1.12 的 glass_cable.json）
-    old = json.load(open(os.path.join(OLD_ASSETS, 'models', 'item', 'glass_cable.json'),
-                         encoding='utf-8'))
-    display = old.get('display')
     for cid in CABLE_IDS:
-        obj = {'parent': 'minecraft:item/generated',
-               'textures': {'layer0': 'solarpower:item/' + cid}}
-        if display:
-            obj['display'] = display
+        tex = 'solarpower:item/' + cid
+        obj = {
+            'parent': 'minecraft:block/block',
+            'textures': {'particle': tex, '0': tex},
+            'elements': [{
+                'from': [0, 6, 6], 'to': [16, 10, 10],
+                'faces': {
+                    'north': {'uv': [0, 6, 16, 10], 'texture': '#0'},
+                    'south': {'uv': [0, 6, 16, 10], 'texture': '#0'},
+                    'up':    {'uv': [0, 6, 16, 10], 'texture': '#0'},
+                    'down':  {'uv': [0, 6, 16, 10], 'texture': '#0'},
+                    'west':  {'uv': [6, 6, 10, 10], 'texture': '#0'},
+                    'east':  {'uv': [6, 6, 10, 10], 'texture': '#0'},
+                }
+            }]
+        }
         write_json(os.path.join(im, cid + '.json'), obj)
 
 

@@ -8,10 +8,11 @@ import com.example.solarpower.registry.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.math.BigInteger;
@@ -281,20 +282,20 @@ public class TransformerTile extends BlockEntity implements IEuEnergy, IEnergySt
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString(TAG_LOW_B64, Base64.getEncoder().encodeToString(this.lowStored.toByteArray()));
-        tag.putString(TAG_HIGH_B64, Base64.getEncoder().encodeToString(this.highStored.toByteArray()));
+    protected void saveAdditional(ValueOutput out) {
+        super.saveAdditional(out);
+        out.putString(TAG_LOW_B64, Base64.getEncoder().encodeToString(this.lowStored.toByteArray()));
+        out.putString(TAG_HIGH_B64, Base64.getEncoder().encodeToString(this.highStored.toByteArray()));
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        if (tag.contains(TAG_LOW_B64)) {
-            this.lowStored = new BigInteger(Base64.getDecoder().decode(tag.getString(TAG_LOW_B64)));
-        }
-        if (tag.contains(TAG_HIGH_B64)) {
-            this.highStored = new BigInteger(Base64.getDecoder().decode(tag.getString(TAG_HIGH_B64)));
-        }
+    protected void loadAdditional(ValueInput in) {
+        super.loadAdditional(in);
+        this.lowStored = in.getString(TAG_LOW_B64)
+                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
+                .orElse(this.lowStored);
+        this.highStored = in.getString(TAG_HIGH_B64)
+                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
+                .orElse(this.highStored);
     }
 }

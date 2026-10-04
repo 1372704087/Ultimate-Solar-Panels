@@ -6,6 +6,7 @@ import com.example.solarpower.registry.ModMenus;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,7 +28,7 @@ public class MolecularTransformerScreen extends AbstractContainerScreen<Molecula
     private static final int FILL_U = 221;
     private static final int FILL_V = 7;
 
-    private static final int TEXT_COLOR = 0x404040;
+    private static final int TEXT_COLOR = 0xFF404040;
 
     private final MolecularTransformerMenu menu;
 
@@ -47,12 +48,13 @@ public class MolecularTransformerScreen extends AbstractContainerScreen<Molecula
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, WIDTH, HEIGHT);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
         // 进度计：从顶部向下填充（照搬 ASP 的 Down 方向），进度按 0~15 档折算
         int visible = Math.max(0, Math.min(GAUGE_HEIGHT, this.menu.progress * GAUGE_HEIGHT / 15));
         if (visible > 0) {
-            graphics.blit(TEXTURE, this.leftPos + GAUGE_X, this.topPos + GAUGE_Y,
-                    FILL_U, FILL_V, 10, visible);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+                    this.leftPos + GAUGE_X, this.topPos + GAUGE_Y,
+                    FILL_U, FILL_V, 10, visible, 256, 256);
         }
     }
 

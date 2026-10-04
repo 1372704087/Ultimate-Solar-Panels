@@ -1,0 +1,118 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :createMinecraftArtifacts UP-TO-DATE
+
+> Task :compileJava FAILED
+gradle.bat : G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:216: 错误: 需要';'
+所在位置 行:4 字符: 1
++ & $gradle compileJava --no-daemon 2>&1 | Out-File -FilePath 'G:\ultim ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (G:\ultimatesola...:216: 错误: 需要';':String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    public int getEnergyStored() {
+                              ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:221: 错误: 需要';'
+    public int getMaxEnergyStored() {
+                                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:226: 错误: 需要';'
+    public boolean canExtract() {
+                             ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:231: 错误: 需要';'
+    public boolean canReceive() {
+                             ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要';'
+    public int extractEnergy(int maxExtract, boolean simulate) {
+                            ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要<标识符>
+    public int extractEnergy(int maxExtract, boolean simulate) {
+                                            ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要';'
+    public int extractEnergy(int maxExtract, boolean simulate) {
+                                                             ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要';'
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+                            ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要<标识符>
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+                                            ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要';'
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+                                                             ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 错误: 需要';'
+    protected void saveAdditional(ValueOutput out) {
+                                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 错误: 需要';'
+    protected void saveAdditional(ValueOutput out) {
+                                                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:256: 错误: 需要';'
+    protected void loadAdditional(ValueInput in) {
+                                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:256: 错误: 需要';'
+    protected void loadAdditional(ValueInput in) {
+                                               ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:262: 错误: 进行语法分析时已到达文件结尾
+}
+ ^
+15 个错误
+
+[Incubating] Problems report is available at: file:///G:/ultimatesolar/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:262: 错误: 进行语法分析时已到达文件结尾
+  }
+   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:216: 错误: 需要';'
+      public int getEnergyStored() {
+                                ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:221: 错误: 需要';'
+      public int getMaxEnergyStored() {
+                                   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:226: 错误: 需要';'
+      public boolean canExtract() {
+                               ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:231: 错误: 需要';'
+      public boolean canReceive() {
+                               ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要';'
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                              ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要<标识符>
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                                              ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:236: 错误: 需要';'
+      public int extractEnergy(int maxExtract, boolean simulate) {
+                                                               ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要';'
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                              ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要<标识符>
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                                              ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:241: 错误: 需要';'
+      public int receiveEnergy(int maxReceive, boolean simulate) {
+                                                               ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 错误: 需要';'
+      protected void saveAdditional(ValueOutput out) {
+                                   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:250: 错误: 需要';'
+      protected void saveAdditional(ValueOutput out) {
+                                                   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:256: 错误: 需要';'
+      protected void loadAdditional(ValueInput in) {
+                                   ^
+  G:\ultimatesolar\src\main\java\com\example\solarpower\tileentity\ChargepadTile.java:256: 错误: 需要';'
+      protected void loadAdditional(ValueInput in) {
+                                                 ^
+  15 个错误
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 3s
+2 actionable tasks: 1 executed, 1 up-to-date

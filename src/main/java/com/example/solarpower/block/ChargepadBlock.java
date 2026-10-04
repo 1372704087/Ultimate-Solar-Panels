@@ -32,20 +32,16 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * 充电座方块（1.21.1）。每个档位一个实例，数值由 {@link SolarTier} 决定。
- * 站上去即给盔甲/背包里的 FE 物品充电（逻辑在 {@link ChargepadTile}），
- * 充电中顶面切换发光态（ACTIVE 属性两态模型，同 IU top_active），右键打开界面。
- */
+ * 鍏呯數搴ф柟鍧楋紙1.21.1锛夈€傛瘡涓。浣嶄竴涓疄渚嬶紝鏁板€肩敱 {@link SolarTier} 鍐冲畾銆? * 绔欎笂鍘诲嵆缁欑洈鐢?鑳屽寘閲岀殑 FE 鐗╁搧鍏呯數锛堥€昏緫鍦?{@link ChargepadTile}锛夛紝
+ * 鍏呯數涓《闈㈠垏鎹㈠彂鍏夋€侊紙ACTIVE 灞炴€т袱鎬佹ā鍨嬶紝鍚?IU top_active锛夛紝鍙抽敭鎵撳紑鐣岄潰銆? */
 public class ChargepadBlock extends BaseEntityBlock {
 
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     private final SolarTier tier;
 
-    public ChargepadBlock(SolarTier tier) {
-        super(Properties.of()
-                .strength(3.0F)
-                .sound(net.minecraft.world.level.block.SoundType.METAL));
+    public ChargepadBlock(SolarTier tier, Properties props) {
+        super(props);
         this.tier = tier;
         registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
     }
@@ -56,7 +52,7 @@ public class ChargepadBlock extends BaseEntityBlock {
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties -> new ChargepadBlock(this.tier));
+        return simpleCodec(properties -> new ChargepadBlock(this.tier, properties));
     }
 
     @Override
@@ -80,7 +76,7 @@ public class ChargepadBlock extends BaseEntityBlock {
                         : null;
     }
 
-    /** 右键打开界面（蓄电量 + 充电状态）。 */
+    /** 鍙抽敭鎵撳紑鐣岄潰锛堣搫鐢甸噺 + 鍏呯數鐘舵€侊級銆?*/
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
@@ -94,7 +90,7 @@ public class ChargepadBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    /** 拆机掉落自身。 */
+    /** 鎷嗘満鎺夎惤鑷韩銆?*/
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
                               @Nullable BlockEntity blockEntity, ItemStack tool) {

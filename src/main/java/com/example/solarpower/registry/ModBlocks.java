@@ -12,6 +12,8 @@ import com.example.solarpower.solar.GlassCableTier;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -42,31 +44,40 @@ public final class ModBlocks {
 
     static {
         for (SolarTier tier : SolarTier.values()) {
-            DeferredBlock<SolarPanelBlock> panel = BLOCKS.register(tier.id(), () -> new SolarPanelBlock(tier));
+            DeferredBlock<SolarPanelBlock> panel = BLOCKS.registerBlock(tier.id(),
+                    props -> new SolarPanelBlock(tier, props),
+                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             PANELS.put(tier, panel);
             PANEL_LIST.add(panel);
-            DeferredBlock<StorageBoxBlock> sb = BLOCKS.register(tier.id() + "_storage_box",
-                    () -> new StorageBoxBlock(tier));
+            DeferredBlock<StorageBoxBlock> sb = BLOCKS.registerBlock(tier.id() + "_storage_box",
+                    props -> new StorageBoxBlock(tier, props),
+                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             STORAGE_BOXES.put(tier, sb);
             STORAGE_LIST.add(sb);
-            DeferredBlock<ChargepadBlock> cb = BLOCKS.register(tier.id() + "_chargepad",
-                    () -> new ChargepadBlock(tier));
+            DeferredBlock<ChargepadBlock> cb = BLOCKS.registerBlock(tier.id() + "_chargepad",
+                    props -> new ChargepadBlock(tier, props),
+                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             CHARGEPADS.put(tier, cb);
             CHARGEPAD_LIST.add(cb);
         }
         for (GlassCableTier tier : GlassCableTier.values()) {
-            DeferredBlock<GlassCableBlock> cable = BLOCKS.register(tier.id(), () -> new GlassCableBlock(tier));
+            DeferredBlock<GlassCableBlock> cable = BLOCKS.registerBlock(tier.id(),
+                    props -> new GlassCableBlock(tier, props),
+                    () -> BlockBehaviour.Properties.of().strength(0.5F).sound(SoundType.GLASS)
+                            .noOcclusion().requiresCorrectToolForDrops());
             CABLES.put(tier, cable);
             CABLE_LIST.add(cable);
         }
-        molecularTransformer = BLOCKS.register("molecular_transformer", MolecularTransformerBlock::new);
+        molecularTransformer = BLOCKS.registerBlock("molecular_transformer",
+                MolecularTransformerBlock::new,
+                () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL).noOcclusion());
         for (EuTier tier : EuTier.values()) {
             if (tier.iuTier() > 65) {
                 continue;
             }
-            // 命名跟随太阳能面板档（首个匹配 iuTier 的面板），与资产生成器一致
-            DeferredBlock<TransformerBlock> tb = BLOCKS.register(representativePanel(tier.iuTier()).id() + "_transformer",
-                    () -> new TransformerBlock(tier));
+            DeferredBlock<TransformerBlock> tb = BLOCKS.registerBlock(representativePanel(tier.iuTier()).id() + "_transformer",
+                    props -> new TransformerBlock(tier, props),
+                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             TRANSFORMERS.put(tier, tb);
             TRANSFORMER_LIST.add(tb);
         }

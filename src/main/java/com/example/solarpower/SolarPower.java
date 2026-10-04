@@ -17,11 +17,11 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 /**
- * 终极太阳能（Ultimate Solar）——工业级档位太阳能与 EU 机械设备。
- * NeoForge 1.21.1 重写版：全量 BigInteger EU 数值体系、67 档太阳能板、
- * 68 档玻璃电缆、储电盒/变压器/充电座/分子重组仪与全套材料链。
+ * Ultimate Solar - 工业级档位太阳能与 EU 机器设备。
  */
 @Mod(SolarPower.MODID)
 public final class SolarPower {
@@ -40,20 +40,30 @@ public final class SolarPower {
         modBus.addListener(this::registerCapabilities);
     }
 
-    /** 方块实体能力：面板/电缆/储电盒/变压器暴露 Forge Energy（1 EU = 4 FE）。 */
+    /** 将旧 IEnergyStorage 桥接到新 EnergyHandler。 */
+    private static EnergyHandler bridge(IEnergyStorage storage) {
+        return new EnergyHandler() {
+            @Override public long getAmountAsLong() { return storage.getEnergyStored(); }
+            @Override public long getCapacityAsLong() { return storage.getMaxEnergyStored(); }
+            @Override public int insert(int amount, net.neoforged.neoforge.transfer.transaction.TransactionContext ctx) { return storage.receiveEnergy(amount, false); }
+            @Override public int extract(int amount, net.neoforged.neoforge.transfer.transaction.TransactionContext ctx) { return storage.extractEnergy(amount, false); }
+        };
+    }
+
+    /** 方块实体能力注册。 */
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.SOLAR_PANEL.get(), (SolarPanelTile be, net.minecraft.core.Direction side) -> be);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.GLASS_CABLE.get(), (GlassCableTile be, net.minecraft.core.Direction side) -> be);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.STORAGE_BOX.get(), (StorageBoxTile be, net.minecraft.core.Direction side) -> be);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.TRANSFORMER.get(), (TransformerTile be, net.minecraft.core.Direction side) -> be);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.CHARGEPAD.get(), (ChargepadTile be, net.minecraft.core.Direction side) -> be);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
+                ModBlockEntities.SOLAR_PANEL.get(), (SolarPanelTile be, net.minecraft.core.Direction side) -> bridge(be));
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
+                ModBlockEntities.GLASS_CABLE.get(), (GlassCableTile be, net.minecraft.core.Direction side) -> bridge(be));
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
+                ModBlockEntities.STORAGE_BOX.get(), (StorageBoxTile be, net.minecraft.core.Direction side) -> bridge(be));
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
+                ModBlockEntities.TRANSFORMER.get(), (TransformerTile be, net.minecraft.core.Direction side) -> bridge(be));
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
+                ModBlockEntities.CHARGEPAD.get(), (ChargepadTile be, net.minecraft.core.Direction side) -> bridge(be));
+        event.registerBlockEntity(Capabilities.Energy.BLOCK,
                 ModBlockEntities.MOLECULAR_TRANSFORMER.get(),
-                (MolecularTransformerTile be, net.minecraft.core.Direction side) -> be);
+                (MolecularTransformerTile be, net.minecraft.core.Direction side) -> bridge(be));
     }
 }

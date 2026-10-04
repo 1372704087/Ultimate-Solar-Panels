@@ -1,0 +1,50 @@
+﻿To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :createMinecraftArtifacts UP-TO-DATE
+
+> Task :compileJava
+gradle.bat : G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:44: 警告: [removal] net.neoforged.neof
+orge.energy 中的 IEnergyStorage 已过时, 且标记为待删除
+所在位置 行:4 字符: 1
++ & $gradle build --no-daemon -x test 2>&1 | Out-File -FilePath 'G:\ult ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (G:\ultimatesola...ge 已过时, 且标记为待删除:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    private static EnergyHandler bridge(IEnergyStorage storage) {
+                                        ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:46: 警告: [removal] IEnergyStorage 中的 getEnergyStor
+ed() 已过时, 且标记为待删除
+            @Override public long getAmountAsLong() { return storage.getEnergyStored(); }
+                                                                    ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:47: 警告: [removal] IEnergyStorage 中的 getMaxEnergyS
+tored() 已过时, 且标记为待删除
+            @Override public long getCapacityAsLong() { return storage.getMaxEnergyStored(); }
+                                                                      ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:48: 警告: [removal] IEnergyStorage 中的 receiveEnergy
+(int,boolean) 已过时, 且标记为待删除
+            @Override public int insert(int amount, net.neoforged.neoforge.transfer.transaction.TransactionContext ctx)
+ { return storage.receiveEnergy(amount, false); }
+                                                                                                                       
+                 ^
+G:\ultimatesolar\src\main\java\com\example\solarpower\SolarPower.java:49: 警告: [removal] IEnergyStorage 中的 extractEnergy
+(int,boolean) 已过时, 且标记为待删除
+            @Override public int extract(int amount, net.neoforged.neoforge.transfer.transaction.TransactionContext ctx
+) { return storage.extractEnergy(amount, false); }
+                                                                                                                       
+                  ^
+5 个警告
+
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :jarJar NO-SOURCE
+> Task :jar
+> Task :assemble
+> Task :check
+> Task :build
+
+[Incubating] Problems report is available at: file:///G:/ultimatesolar/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 5s
+4 actionable tasks: 2 executed, 2 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.2.1/userguide/configuration_cache_enabling.html

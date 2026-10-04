@@ -14,35 +14,35 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-/** 方块实体类型注册（1.21.1）：全档位各共用一个类型。 */
+/** 方块实体类型注册（1.21.11）：全档位各共用一个类型。 */
 public final class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, SolarPower.MODID);
 
     public static final Supplier<BlockEntityType<SolarPanelTile>> SOLAR_PANEL =
-            BLOCK_ENTITIES.register("solar_panel", () -> BlockEntityType.Builder.of(
-                    SolarPanelTile::new, ModBlocks.allPanels()).build(null));
+            BLOCK_ENTITIES.register("solar_panel", () -> new BlockEntityType<>(
+                    SolarPanelTile::new, ModBlocks.allPanels()));
 
     public static final Supplier<BlockEntityType<MolecularTransformerTile>> MOLECULAR_TRANSFORMER =
-            BLOCK_ENTITIES.register("molecular_transformer", () -> BlockEntityType.Builder.of(
-                    MolecularTransformerTile::new, ModBlocks.molecularTransformer()).build(null));
+            BLOCK_ENTITIES.register("molecular_transformer", () -> new BlockEntityType<>(
+                    MolecularTransformerTile::new, ModBlocks.molecularTransformer()));
 
     public static final Supplier<BlockEntityType<GlassCableTile>> GLASS_CABLE =
-            BLOCK_ENTITIES.register("glass_cable", () -> BlockEntityType.Builder.of(
-                    GlassCableTile::new, ModBlocks.allCables()).build(null));
+            BLOCK_ENTITIES.register("glass_cable", () -> new BlockEntityType<>(
+                    GlassCableTile::new, ModBlocks.allCables()));
 
     public static final Supplier<BlockEntityType<StorageBoxTile>> STORAGE_BOX =
-            BLOCK_ENTITIES.register("storage_box", () -> BlockEntityType.Builder.of(
-                    StorageBoxTile::new, ModBlocks.allStorageBoxes()).build(null));
+            BLOCK_ENTITIES.register("storage_box", () -> new BlockEntityType<>(
+                    StorageBoxTile::new, ModBlocks.allStorageBoxes()));
 
     public static final Supplier<BlockEntityType<TransformerTile>> TRANSFORMER =
-            BLOCK_ENTITIES.register("transformer", () -> BlockEntityType.Builder.of(
-                    TransformerTile::new, ModBlocks.allTransformers()).build(null));
+            BLOCK_ENTITIES.register("transformer", () -> new BlockEntityType<>(
+                    TransformerTile::new, ModBlocks.allTransformers()));
 
     public static final Supplier<BlockEntityType<ChargepadTile>> CHARGEPAD =
-            BLOCK_ENTITIES.register("chargepad", () -> BlockEntityType.Builder.of(
-                    ChargepadTile::new, ModBlocks.allChargepads()).build(null));
+            BLOCK_ENTITIES.register("chargepad", () -> new BlockEntityType<>(
+                    ChargepadTile::new, ModBlocks.allChargepads()));
 
     private ModBlockEntities() {
     }

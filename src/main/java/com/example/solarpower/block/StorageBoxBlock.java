@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -34,20 +35,15 @@ import javax.annotation.Nullable;
 import java.math.BigInteger;
 
 /**
- * 储电盒方块（1.21.1，每档一个实例——1.21 无方块 id 上限）。
- * 正面（能量芯/输出面）放置时朝向玩家；比较器按存量比例输出；
- * 拆机掉落物经 DataComponents 保留电量（放置时读回）。
- */
+ * 鍌ㄧ數鐩掓柟鍧楋紙1.21.1锛屾瘡妗ｄ竴涓疄渚嬧€斺€?.21 鏃犳柟鍧?id 涓婇檺锛夈€? * 姝ｉ潰锛堣兘閲忚姱/杈撳嚭闈級鏀剧疆鏃舵湞鍚戠帺瀹讹紱姣旇緝鍣ㄦ寜瀛橀噺姣斾緥杈撳嚭锛? * 鎷嗘満鎺夎惤鐗╃粡 DataComponents 淇濈暀鐢甸噺锛堟斁缃椂璇诲洖锛夈€? */
 public class StorageBoxBlock extends BaseEntityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final SolarTier tier;
 
-    public StorageBoxBlock(SolarTier tier) {
-        super(Properties.of()
-                .strength(3.0F)
-                .sound(net.minecraft.world.level.block.SoundType.METAL));
+    public StorageBoxBlock(SolarTier tier, Properties props) {
+        super(props);
         this.tier = tier;
     }
 
@@ -57,7 +53,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties -> new StorageBoxBlock(this.tier));
+        return simpleCodec(properties -> new StorageBoxBlock(this.tier, properties));
     }
 
     @Override
@@ -104,7 +100,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
                 .setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
-    /** 右键打开界面（蓄电量 + 容量 + 输出行）。 */
+    /** 鍙抽敭鎵撳紑鐣岄潰锛堣搫鐢甸噺 + 瀹归噺 + 杈撳嚭琛岋級銆?*/
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hit) {
@@ -118,7 +114,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    /** 放置时读回掉落物携带的电量（DataComponent）。 */
+    /** 鏀剧疆鏃惰鍥炴帀钀界墿鎼哄甫鐨勭數閲忥紙DataComponent锛夈€?*/
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state,
                             @Nullable net.minecraft.world.entity.LivingEntity placer, ItemStack stack) {
@@ -129,7 +125,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
         }
     }
 
-    /** 拆机保留电量：玩家破坏时掉落自身 + 电量 DataComponent（爆炸破坏暂不保留）。 */
+    /** 鎷嗘満淇濈暀鐢甸噺锛氱帺瀹剁牬鍧忔椂鎺夎惤鑷韩 + 鐢甸噺 DataComponent锛堢垎鐐哥牬鍧忔殏涓嶄繚鐣欙級銆?*/
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
                               @Nullable BlockEntity blockEntity, ItemStack tool) {
@@ -150,7 +146,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction side) {
         return level.getBlockEntity(pos) instanceof StorageBoxTile box ? box.comparatorLevel() : 0;
     }
 }

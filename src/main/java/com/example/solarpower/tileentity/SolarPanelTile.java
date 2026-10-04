@@ -9,11 +9,12 @@ import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import java.math.BigInteger;
 import java.util.Base64;
@@ -83,7 +84,7 @@ public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
     }
 
     public boolean isNight() {
-        return this.level != null && !this.level.isDay();
+        return this.level != null && (this.level.getDayTime() % 24000) >= 12000;
     }
 
     // ------------------------------------------------------------------
@@ -115,7 +116,7 @@ public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
         }
         // 晴/雨与昼夜的组合只有 4 种，且 base 是档位常量：结果直接缓存，
         // 避免每 tick 对上百位的大数做 O(n²) 的 multiply/divide。
-        int key = (this.level.isDay() ? 0 : 1) | ((this.level.isRaining() || this.level.isThundering()) ? 2 : 0);
+        int key = (((this.level.getDayTime() % 24000) < 12000) ? 0 : 1) | ((this.level.isRaining() || this.level.isThundering()) ? 2 : 0);
         if (this.genWeatherKey == key && this.genForTier == tier) {
             return this.genCache;
         }
@@ -196,28 +197,17 @@ public class SolarPanelTile extends BlockEntity implements IEnergyStorage {
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.putString(TAG_ENERGY_B64, this.storage.storedAsBase64());
+    protected void saveAdditional(ValueOutput out) {
+        super.saveAdditional(out);
+        out.putString(TAG_ENERGY_B64, this.storage.storedAsBase64());
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        BigInteger stored;
-        if (tag.contains(TAG_ENERGY_B64, NBT_STRING)) {
-            // 新格式：Base64 大端补码，编解码都是线性开销（巨数 toString 是平方级）
-            stored = new BigInteger(Base64.getDecoder().decode(tag.getString(TAG_ENERGY_B64)));
-        } else if (tag.contains(TAG_ENERGY, NBT_STRING)) {
-            try {
-                // 旧格式：十进制串（一次性解析，仅兼容迁移用）
-                stored = new BigInteger(tag.getString(TAG_ENERGY));
-            } catch (NumberFormatException e) {
-                stored = BigInteger.ZERO;
-            }
-        } else {
-            stored = BigInteger.valueOf(tag.getLong(TAG_ENERGY));
-        }
+    protected void loadAdditional(ValueInput in) {
+        super.loadAdditional(in);
+        BigInteger stored = in.getString(TAG_ENERGY_B64)
+                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
+                .orElse(BigInteger.ZERO);
         this.storage.setStored(stored);
     }
 

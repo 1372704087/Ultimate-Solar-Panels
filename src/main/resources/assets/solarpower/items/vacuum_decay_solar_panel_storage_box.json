@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "solarpower:item/vacuum_decay_solar_panel_storage_box"
+  }
+}

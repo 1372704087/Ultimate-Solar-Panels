@@ -1,8 +1,6 @@
 {
   "variants": {
-    "": { "model": "solarpower:molecular_transformer" },
-    "normal": { "model": "solarpower:molecular_transformer" },
-    "active=false": { "model": "solarpower:molecular_transformer" },
-    "active=true": { "model": "solarpower:molecular_transformer" }
+    "active=false": { "model": "solarpower:block/molecular_transformer" },
+    "active=true": { "model": "solarpower:block/molecular_transformer_active" }
   }
 }
