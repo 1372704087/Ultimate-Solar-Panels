@@ -21,6 +21,15 @@ NEW_LANG = os.path.join(NEW, 'src', 'main', 'resources', 'assets', 'solarpower',
 
 PANEL_IDS = []      # SolarTier 声明顺序（= 创造栏顺序）
 CABLE_IDS = []      # GlassCableTier 声明顺序
+MACHINE_FAMILIES = [
+    # (后缀, 1.12 资产模型名后缀, zh 替换, en 替换, 贴图面)
+    ('_storage_box', '_storage_box', ('太阳能发电机', '储电盒'), ('Solar Panel', 'Storage Box'),
+     ('_front', '_side', '_topbottom')),
+    ('_transformer', '_transformer', ('太阳能发电机', '变压器'), ('Solar Panel', 'Transformer'),
+     ('_front', '_side')),
+    ('_chargepad', '_chargepad', ('太阳能发电机', '充电座'), ('Solar Panel', 'Charge Pad'),
+     ('_top', '_top_active')),
+]
 
 
 def scan_tiers():
@@ -158,15 +167,87 @@ def gen_lang():
             obj['block.solarpower.' + tid] = names[code][tid]
         for cid in CABLE_IDS:
             obj['block.solarpower.' + cid] = names[code][cid]
+        for suffix, _old, (zh_from, zh_to), (en_from, en_to), _faces in MACHINE_FAMILIES:
+            for tid in PANEL_IDS:
+                key = 'block.solarpower.' + tid + suffix
+                obj[key] = names[code][tid].replace(zh_from, zh_to) if code == 'zh_cn' \
+                    else names[code][tid].replace(en_from, en_to)
+        # GUI 文案
+        obj['gui.solarpower.storage.energy'] = '蓄电量：%s / %s EU' if code == 'zh_cn' else 'Energy: %s / %s EU'
+        obj['gui.solarpower.storage.capacity'] = '容量：%s EU' if code == 'zh_cn' else 'Capacity: %s EU'
+        obj['gui.solarpower.storage.output'] = '输出：%s EU/t' if code == 'zh_cn' else 'Output: %s EU/t'
+        obj['gui.solarpower.transformer.low'] = ('低压池（%s）：%s / %s EU') if code == 'zh_cn' else ('Low pool (%s): %s / %s EU')
+        obj['gui.solarpower.transformer.high'] = ('高压池（%s）：%s / %s EU') if code == 'zh_cn' else ('High pool (%s): %s / %s EU')
+        obj['gui.solarpower.transformer.rate'] = '吞吐：%s EU/t（双向）' if code == 'zh_cn' else 'Throughput: %s EU/t (bidirectional)'
+        obj['gui.solarpower.transformer.voltage'] = '电压：%s ↔ %s' if code == 'zh_cn' else 'Voltage: %s ↔ %s'
+        obj['gui.solarpower.chargepad.energy'] = '蓄电量：%s / %s EU' if code == 'zh_cn' else 'Energy: %s / %s EU'
+        obj['gui.solarpower.chargepad.rate'] = '充电速率：%s EU/t' if code == 'zh_cn' else 'Charge rate: %s EU/t'
+        obj['gui.solarpower.chargepad.status'] = '状态：%s' if code == 'zh_cn' else 'Status: %s'
+        obj['gui.solarpower.chargepad.status.idle'] = '待机（站上来即充电）' if code == 'zh_cn' else 'Idle (stand on top to charge)'
+        obj['gui.solarpower.chargepad.status.charging'] = '充电中' if code == 'zh_cn' else 'Charging'
+        obj['container.inventory'] = '物品栏' if code == 'zh_cn' else 'Inventory'
         write_json(os.path.join(NEW_LANG, code + '.json'), obj)
+
+
+def gen_machines():
+    """三族机器：贴图复制 + per-tier 方块模型（复用 1.12 资产）+ blockstate + 物品模型。"""
+    old_bm = os.path.join(OLD_ASSETS, 'models', 'block')
+    for suffix, old_suffix, (zh_from, zh_to), (en_from, en_to), faces in MACHINE_FAMILIES:
+        for tid in PANEL_IDS:
+            bid = tid + suffix
+            # 贴图
+            for face in faces:
+                src = os.path.join(OLD_ASSETS, 'textures', 'block', tid + old_suffix + face + '.png')
+                if os.path.exists(src):
+                    shutil.copyfile(src, os.path.join(NEW_ASSETS, 'textures', 'block',
+                                                      bid + face + '.png'))
+            # 方块模型：直接复制 1.12 版（cube 父级 + 贴图引用，格式兼容 1.21.1）
+            old_model = os.path.join(old_bm, tid + old_suffix + '.json')
+            if os.path.exists(old_model):
+                shutil.copyfile(old_model, os.path.join(NEW_ASSETS, 'models', 'block', bid + '.json'))
+            # blockstate：storage/transformer 有朝向；chargepad 两态
+            if suffix in ('_storage_box', '_transformer'):
+                variants = {}
+                for fdir in ('north', 'east', 'south', 'west'):
+                    v = {'model': 'solarpower:block/' + bid}
+                    if fdir == 'east':
+                        v['y'] = 90
+                    elif fdir == 'south':
+                        v['y'] = 180
+                    elif fdir == 'west':
+                        v['y'] = 270
+                    variants['facing=' + fdir] = v
+                write_json(os.path.join(NEW_ASSETS, 'blockstates', bid + '.json'),
+                           {'variants': variants})
+            else:
+                write_json(os.path.join(NEW_ASSETS, 'blockstates', bid + '.json'), {
+                    'variants': {
+                        'active=false': {'model': 'solarpower:block/' + bid},
+                        'active=true': {'model': 'solarpower:block/' + bid + '_active'},
+                    }})
+                # 充电态模型（同模型 JSON 的 active 版：1.12 资产里是 _active 模型）
+                old_active = os.path.join(old_bm, tid + old_suffix + '_active.json')
+                if os.path.exists(old_active):
+                    shutil.copyfile(old_active, os.path.join(NEW_ASSETS, 'models', 'block',
+                                                             bid + '_active.json'))
+            # 物品模型 = 方块模型
+            write_json(os.path.join(NEW_ASSETS, 'models', 'item', bid + '.json'),
+                       {'parent': 'solarpower:block/' + bid})
 
 
 if __name__ == '__main__':
     scan_tiers()
     copy_textures()
+    # GUI 底图（与版本无关的 PNG，直接复用）
+    gui_old = os.path.join(OLD_ASSETS, 'textures', 'gui')
+    gui_new = os.path.join(NEW_ASSETS, 'textures', 'gui')
+    os.makedirs(gui_new, exist_ok=True)
+    for f in ('storage_box.png', 'transformer.png'):
+        shutil.copyfile(os.path.join(gui_old, f), os.path.join(gui_new, f))
     gen_panels()
     copy_cable_block_models()
     gen_cables()
     gen_cable_blockstates()
+    gen_machines()
     gen_lang()
     print('done: %d panels, %d cables' % (len(PANEL_IDS), len(CABLE_IDS)))

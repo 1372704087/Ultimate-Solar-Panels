@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "solarpower:block/void_rift_solar_panel_transformer"
+    },
+    "facing=east": {
+      "model": "solarpower:block/void_rift_solar_panel_transformer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "solarpower:block/void_rift_solar_panel_transformer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "solarpower:block/void_rift_solar_panel_transformer",
+      "y": 270
+    }
+  }
+}

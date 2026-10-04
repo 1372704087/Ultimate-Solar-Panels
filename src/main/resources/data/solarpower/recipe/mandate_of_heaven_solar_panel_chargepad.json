@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "PBP",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "minecraft:stone_pressure_plate"
+    },
+    "B": {
+      "item": "solarpower:mandate_of_heaven_solar_panel_storage_box"
+    }
+  },
+  "result": {
+    "id": "solarpower:mandate_of_heaven_solar_panel_chargepad",
+    "count": 1
+  }
+}

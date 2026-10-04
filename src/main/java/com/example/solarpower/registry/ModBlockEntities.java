@@ -1,8 +1,11 @@
 package com.example.solarpower.registry;
 
 import com.example.solarpower.SolarPower;
+import com.example.solarpower.tileentity.ChargepadTile;
 import com.example.solarpower.tileentity.GlassCableTile;
 import com.example.solarpower.tileentity.SolarPanelTile;
+import com.example.solarpower.tileentity.StorageBoxTile;
+import com.example.solarpower.tileentity.TransformerTile;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,6 +26,18 @@ public final class ModBlockEntities {
     public static final Supplier<BlockEntityType<GlassCableTile>> GLASS_CABLE =
             BLOCK_ENTITIES.register("glass_cable", () -> BlockEntityType.Builder.of(
                     GlassCableTile::new, ModBlocks.allCables()).build(null));
+
+    public static final Supplier<BlockEntityType<StorageBoxTile>> STORAGE_BOX =
+            BLOCK_ENTITIES.register("storage_box", () -> BlockEntityType.Builder.of(
+                    StorageBoxTile::new, ModBlocks.allStorageBoxes()).build(null));
+
+    public static final Supplier<BlockEntityType<TransformerTile>> TRANSFORMER =
+            BLOCK_ENTITIES.register("transformer", () -> BlockEntityType.Builder.of(
+                    TransformerTile::new, ModBlocks.allTransformers()).build(null));
+
+    public static final Supplier<BlockEntityType<ChargepadTile>> CHARGEPAD =
+            BLOCK_ENTITIES.register("chargepad", () -> BlockEntityType.Builder.of(
+                    ChargepadTile::new, ModBlocks.allChargepads()).build(null));
 
     private ModBlockEntities() {
     }

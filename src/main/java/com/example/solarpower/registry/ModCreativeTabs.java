@@ -25,6 +25,14 @@ public final class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         for (SolarTier tier : SolarTier.values()) {
                             output.accept(new ItemStack(ModItems.panelItem(tier)));
+                            output.accept(new ItemStack(ModItems.storageBoxItem(tier)));
+                        }
+                        for (int iu = 1; iu <= 65; iu++) {
+                            var block = ModBlocks.transformer(com.example.solarpower.energy.EuTier.byIuTier(iu));
+                            output.accept(new ItemStack(block));
+                        }
+                        for (SolarTier tier : SolarTier.values()) {
+                            output.accept(new ItemStack(ModItems.chargepadItem(tier)));
                         }
                         for (GlassCableTier tier : GlassCableTier.values()) {
                             output.accept(new ItemStack(ModItems.cableItem(tier)));

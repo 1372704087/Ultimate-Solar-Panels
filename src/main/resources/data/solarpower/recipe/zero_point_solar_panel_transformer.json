@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "CBC",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "C": {
+      "item": "solarpower:zero_point_solar_panel_glass_cable"
+    }
+  },
+  "result": {
+    "id": "solarpower:zero_point_solar_panel_transformer",
+    "count": 1
+  }
+}

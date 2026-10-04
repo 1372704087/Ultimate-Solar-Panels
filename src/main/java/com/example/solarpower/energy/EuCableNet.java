@@ -3,6 +3,8 @@ package com.example.solarpower.energy;
 import com.example.solarpower.solar.GlassCableTier;
 import com.example.solarpower.tileentity.GlassCableTile;
 import com.example.solarpower.tileentity.SolarPanelTile;
+import com.example.solarpower.tileentity.StorageBoxTile;
+import com.example.solarpower.tileentity.TransformerTile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -81,12 +83,36 @@ public final class EuCableNet {
     }
 
     /**
-     * 把源储存中的 EU 推进单张网络（一次调用 = 一个相邻面的推流）。
+     * 储电盒/变压器推流入口：IU 语义的「正面输出」——只扫 {@code facing} 方向上相邻
+     * 的电缆，每 tick 至多向那一张网推流一次（不像面板那样按相邻面数放大）。
+     * 推流时把设备自己从汇里排除，避免刚推出去的电又被自己吸回来。
      *
-     * @param maxOutput 单个相邻面每 tick 的最大输出，null 表示不限
-     * @return 实际从源扣走并送达汇的 EU（线损部分留在源内，未扣）
+     * @return 本次是否实际结算（正面相邻电缆、且该网有其它汇）
      */
+    public static int pushFromFacing(Level level, BlockPos devicePos, IEuEnergy source,
+                                     EuTier packetTier, BigInteger maxOutput, Direction facing) {
+        if (level.isClientSide) {
+            return 0;
+        }
+        BlockPos side = devicePos.relative(facing);
+        if (!(level.getBlockEntity(side) instanceof GlassCableTile)) {
+            return 0;
+        }
+        Net net = collect(level, side, packetTier);
+        if (net.isEmpty() || net.sinks().isEmpty()) {
+            return 0;
+        }
+        settle(level, net, source, maxOutput, devicePos);
+        return 1;
+    }
+
     private static BigInteger settle(Level level, Net net, IEuEnergy source, BigInteger maxOutput) {
+        return settle(level, net, source, maxOutput, null);
+    }
+
+    /** 同上；{@code excludeSink} 非空时该坐标不参与汇分配（设备推流时排除自己）。 */
+    private static BigInteger settle(Level level, Net net, IEuEnergy source, BigInteger maxOutput,
+                                     BlockPos excludeSink) {
         if (net.isEmpty() || net.sinks().isEmpty()) {
             return BigInteger.ZERO;
         }
@@ -100,14 +126,14 @@ public final class EuCableNet {
         if (limit.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        BigInteger budget = limit.min(demandOf(level, net, limit));
+        BigInteger budget = limit.min(demandOf(level, net, limit, excludeSink));
         if (budget.signum() <= 0) {
             return BigInteger.ZERO;
         }
         // 先派发、后扣源：源存量的净变化在两种写法下都等于 -sent。
         // 源存量必 ≥ budget ≥ sent，故这一步不可能抽空。
         // 语义注记：线损部分留在源蓄电内。稳态下源蓄电恒满，对外行为等价。
-        BigInteger sent = fillSinks(level, net, budget.subtract(lossOf(net, budget)));
+        BigInteger sent = fillSinks(level, net, budget.subtract(lossOf(net, budget)), excludeSink);
         if (sent.signum() > 0) {
             source.extractEu(sent, false);
         }
@@ -158,12 +184,12 @@ public final class EuCableNet {
         if (limit.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        BigInteger budget = limit.min(demandOf(level, net, limit));
+        BigInteger budget = limit.min(demandOf(level, net, limit, null));
         if (budget.signum() <= 0) {
             return BigInteger.ZERO;
         }
         BigInteger delivered = budget.subtract(lossOf(net, budget));
-        return simulate ? delivered : fillSinks(level, net, delivered);
+        return simulate ? delivered : fillSinks(level, net, delivered, null);
     }
 
     /** 网络相邻源（太阳能板）的存量之和，夹到本档每 tick 上限；供电缆对外报告"可抽取量"。 */
@@ -237,6 +263,17 @@ public final class EuCableNet {
                     }
                     continue;
                 }
+                // 储电盒：正面朝向这根电缆时按源计（IU 正面输出语义）；同时它暴露
+                // IEuEnergy，落到下面的汇候选分支（五面进电）。
+                if (be instanceof StorageBoxTile
+                        && ((StorageBoxTile) be).facing() == dir.getOpposite()
+                        && sourceSeen.add(side)) {
+                    sources.add(side);
+                }
+                // 变压器：任一面都可作为抽取源（FE 桥 drain 用）；按来包电压分流进双池
+                if (be instanceof TransformerTile && sourceSeen.add(side)) {
+                    sources.add(side);
+                }
                 if (be instanceof IEuEnergy && sinkSeen.add(side)) {
                     sinkCandidates.add(side);
                 }
@@ -252,14 +289,13 @@ public final class EuCableNet {
         return base.resolveSinks(level, packetTier);
     }
 
-    /** 网络相邻汇的空余容量之和。
-     *  <p>{@code limit} 是本次调用已经确定的上限：一旦累计空余达到它，
-     *  {@code min(limit, demand)} 就必然是 {@code limit}，无须再扫其余汇。
-     *  <p>单块汇的空余走 {@link IEuEnergy#getRoomEu()}，自带缓存的实现可避免
-     *  每 tick 反复对同一个百万位数做相减。 */
-    private static BigInteger demandOf(Level level, Net net, BigInteger limit) {
+    /** 网络相邻汇的空余容量之和；{@code excludeSink} 非空时跳过（设备推流排除自己）。 */
+    private static BigInteger demandOf(Level level, Net net, BigInteger limit, BlockPos excludeSink) {
         BigInteger demand = BigInteger.ZERO;
         for (BlockPos pos : net.sinks()) {
+            if (pos.equals(excludeSink)) {
+                continue;
+            }
             IEuEnergy energy = energyAt(level, pos);
             if (energy != null) {
                 demand = demand.add(energy.getRoomEu());
@@ -271,13 +307,17 @@ public final class EuCableNet {
         return demand;
     }
 
-    /** 网络相邻源的存量之和。 */
+    /** 网络相邻源的存量之和（面板/储电盒/变压器）。 */
     private static BigInteger storedOf(Level level, Net net) {
         BigInteger total = BigInteger.ZERO;
         for (BlockPos pos : net.sources()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof SolarPanelTile panel) {
                 total = total.add(panel.getEnergy().getStoredEu());
+            } else if (be instanceof StorageBoxTile box) {
+                total = total.add(box.getStoredEu());
+            } else if (be instanceof TransformerTile transformer) {
+                total = total.add(transformer.getStoredEu());
             }
         }
         return total;
@@ -297,28 +337,38 @@ public final class EuCableNet {
      *  "最后一个汇"分支），直接从除法里省掉；2/4/8 个汇改走移位。
      *  <p>单个汇的空余走 {@link IEuEnergy#getRoomEu()}，与 {@code receiveEu} 内部的
      *  夹取共用同一份缓存，不额外多算一次大数相减。 */
-    private static BigInteger fillSinks(Level level, Net net, BigInteger amount) {
-        int count = net.sinks().size();
+    private static BigInteger fillSinks(Level level, Net net, BigInteger amount, BlockPos excludeSink) {
+        int count = 0;
+        for (BlockPos pos : net.sinks()) {
+            if (!pos.equals(excludeSink)) {
+                count++;
+            }
+        }
         if (count == 0 || amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
         BigInteger perSink = count == 1 ? amount : shareOf(amount, count);
         BigInteger sent = BigInteger.ZERO;
-        for (int i = 0; i < count; i++) {
-            IEuEnergy energy = energyAt(level, net.sinks().get(i));
-            if (energy == null) {
+        int index = 0;
+        for (BlockPos pos : net.sinks()) {
+            if (pos.equals(excludeSink)) {
                 continue;
             }
-            BigInteger room = energy.getRoomEu();
-            BigInteger share = i == count - 1 ? amount.subtract(sent).min(room) : perSink.min(room);
-            if (share.signum() > 0) {
-                sent = sent.add(energy.receiveEu(share, net.packetTier(), false));
+            IEuEnergy energy = energyAt(level, pos);
+            if (energy != null) {
+                BigInteger room = energy.getRoomEu();
+                // 「最后一个有效汇拿余额」语义保持：index 只数未被排除的汇
+                BigInteger share = index == count - 1 ? amount.subtract(sent).min(room) : perSink.min(room);
+                if (share.signum() > 0) {
+                    sent = sent.add(energy.receiveEu(share, net.packetTier(), false));
+                }
             }
+            index++;
         }
         return sent;
     }
 
-    /** 按源平均抽取 {@code amount}，返回实际抽出的 EU。 */
+    /** 按源平均抽取 {@code amount}，返回实际抽出的 EU（面板走内部储能，储电盒/变压器直接抽）。 */
     private static BigInteger extractSources(Level level, Net net, BigInteger amount) {
         int count = net.sources().size();
         if (count == 0 || amount.signum() <= 0) {
@@ -328,9 +378,13 @@ public final class EuCableNet {
         BigInteger taken = BigInteger.ZERO;
         for (int i = 0; i < count; i++) {
             BlockEntity be = level.getBlockEntity(net.sources().get(i));
+            BigInteger share = i == count - 1 ? amount.subtract(taken) : perSource;
             if (be instanceof SolarPanelTile panel) {
-                BigInteger share = i == count - 1 ? amount.subtract(taken) : perSource;
                 taken = taken.add(panel.getEnergy().extractEu(share, false));
+            } else if (be instanceof StorageBoxTile box) {
+                taken = taken.add(box.extractEu(share, false));
+            } else if (be instanceof TransformerTile transformer) {
+                taken = taken.add(transformer.extractEu(share, false));
             }
         }
         return taken;

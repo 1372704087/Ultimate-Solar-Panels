@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "solarpower:block/antimatter_solar_panel_chargepad"
+    },
+    "active=true": {
+      "model": "solarpower:block/antimatter_solar_panel_chargepad_active"
+    }
+  }
+}
