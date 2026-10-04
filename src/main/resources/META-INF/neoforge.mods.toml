@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All Rights Reserved"
+issueTrackerURL=""
+
+[[mods]]
+modId="solarpower"
+version="1.0.0"
+displayName="Ultimate Solar"
+description='''Industrial-strength tiered solar panels and EU machinery.'''
+authors="example"
+
+[[dependencies.solarpower]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.solarpower]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,1.22)"
+    ordering="NONE"
+    side="BOTH"

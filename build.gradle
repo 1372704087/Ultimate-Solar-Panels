@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+
+version = '1.0.0'
+group = 'com.example.solarpower'
+
+repositories {
+    mavenLocal()
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+neoForge {
+    // Specify the version of NeoForge to use.
+    version = project.neo_version
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        solarpower {
+            sourceSet sourceSets.main
+        }
+    }
+}
