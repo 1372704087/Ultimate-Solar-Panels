@@ -42,7 +42,9 @@ public final class ModBlocks {
 
     static {
         for (SolarTier tier : SolarTier.values()) {
-            PANELS.put(tier, BLOCKS.register(tier.id(), () -> new SolarPanelBlock(tier)));
+            DeferredBlock<SolarPanelBlock> panel = BLOCKS.register(tier.id(), () -> new SolarPanelBlock(tier));
+            PANELS.put(tier, panel);
+            PANEL_LIST.add(panel);
             DeferredBlock<StorageBoxBlock> sb = BLOCKS.register(tier.id() + "_storage_box",
                     () -> new StorageBoxBlock(tier));
             STORAGE_BOXES.put(tier, sb);
@@ -53,7 +55,9 @@ public final class ModBlocks {
             CHARGEPAD_LIST.add(cb);
         }
         for (GlassCableTier tier : GlassCableTier.values()) {
-            CABLES.put(tier, BLOCKS.register(tier.id(), () -> new GlassCableBlock(tier)));
+            DeferredBlock<GlassCableBlock> cable = BLOCKS.register(tier.id(), () -> new GlassCableBlock(tier));
+            CABLES.put(tier, cable);
+            CABLE_LIST.add(cable);
         }
         molecularTransformer = BLOCKS.register("molecular_transformer", MolecularTransformerBlock::new);
         for (EuTier tier : EuTier.values()) {
