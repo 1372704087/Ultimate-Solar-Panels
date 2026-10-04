@@ -1,6 +1,7 @@
 package com.example.solarpower.block;
 
 import com.example.solarpower.registry.ModBlockEntities;
+import com.example.solarpower.registry.ModMenus;
 import com.example.solarpower.solar.SolarTier;
 import com.example.solarpower.tileentity.SolarPanelTile;
 
@@ -15,7 +16,10 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
@@ -47,6 +51,21 @@ public class SolarPanelBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SolarPanelTile(pos, state);
+    }
+
+    /** 右键打开界面（能量管 + 三行数据 + 指示灯）。 */
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+                                               net.minecraft.world.entity.player.Player player,
+                                               BlockHitResult hit) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof SolarPanelTile) {
+            player.openMenu(new net.minecraft.world.SimpleMenuProvider(
+                    (id, inv, p) -> new com.example.solarpower.menu.SolarPanelMenu(id, inv,
+                            level.getBlockEntity(pos) instanceof SolarPanelTile tile ? tile : null),
+                    Component.translatable("block.solarpower." + this.tier.id())),
+                    buf -> buf.writeBlockPos(pos));
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable

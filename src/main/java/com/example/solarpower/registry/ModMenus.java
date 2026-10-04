@@ -5,6 +5,7 @@ import com.example.solarpower.menu.StorageBoxMenu;
 import com.example.solarpower.menu.TransformerMenu;
 import com.example.solarpower.menu.ChargepadMenu;
 import com.example.solarpower.menu.MolecularTransformerMenu;
+import com.example.solarpower.menu.SolarPanelMenu;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
@@ -30,6 +31,10 @@ public final class ModMenus {
     public static final Supplier<MenuType<MolecularTransformerMenu>> MOLECULAR_TRANSFORMER =
             MENUS.register("molecular_transformer", () -> IMenuTypeExtension.create(
                     (id, inventory, buf) -> new MolecularTransformerMenu(id, inventory, buf.readBlockPos())));
+
+    public static final Supplier<MenuType<SolarPanelMenu>> SOLAR_PANEL =
+            MENUS.register("solar_panel", () -> IMenuTypeExtension.create(
+                    (id, inventory, buf) -> new SolarPanelMenu(id, inventory, buf.readBlockPos())));
 
     public static final Supplier<MenuType<ChargepadMenu>> CHARGEPAD =
             MENUS.register("chargepad", () -> IMenuTypeExtension.create(
