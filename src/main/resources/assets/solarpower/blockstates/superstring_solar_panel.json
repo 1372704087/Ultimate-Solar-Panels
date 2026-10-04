@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/superstring_solar_panel"
+    }
+  }
+}

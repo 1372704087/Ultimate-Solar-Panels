@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/vacuum_decay_solar_panel"
+    }
+  }
+}

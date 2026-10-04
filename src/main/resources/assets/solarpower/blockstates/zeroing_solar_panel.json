@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/zeroing_solar_panel"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/brane_solar_panel"
+    }
+  }
+}

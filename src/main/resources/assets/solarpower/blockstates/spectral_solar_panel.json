@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/spectral_solar_panel"
+    }
+  }
+}

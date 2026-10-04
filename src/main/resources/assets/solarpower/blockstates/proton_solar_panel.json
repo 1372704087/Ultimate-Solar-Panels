@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/proton_solar_panel"
+    }
+  }
+}

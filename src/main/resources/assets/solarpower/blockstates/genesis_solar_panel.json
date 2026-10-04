@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/genesis_solar_panel"
+    }
+  }
+}

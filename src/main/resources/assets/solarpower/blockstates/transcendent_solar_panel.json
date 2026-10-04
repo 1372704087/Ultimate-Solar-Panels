@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/transcendent_solar_panel"
+    }
+  }
+}

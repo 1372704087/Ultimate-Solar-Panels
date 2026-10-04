@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/hyperdimensional_solar_panel"
+    }
+  }
+}

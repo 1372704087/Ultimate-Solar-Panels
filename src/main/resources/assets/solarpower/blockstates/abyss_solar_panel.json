@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/abyss_solar_panel"
+    }
+  }
+}

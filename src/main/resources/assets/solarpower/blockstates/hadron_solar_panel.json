@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/hadron_solar_panel"
+    }
+  }
+}

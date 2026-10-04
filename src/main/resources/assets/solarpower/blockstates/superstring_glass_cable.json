@@ -1,0 +1,58 @@
+{
+  "multipart": [
+    {
+      "when": {},
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_core"
+      }
+    },
+    {
+      "when": {
+        "north": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_north"
+      }
+    },
+    {
+      "when": {
+        "south": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_south"
+      }
+    },
+    {
+      "when": {
+        "west": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_west"
+      }
+    },
+    {
+      "when": {
+        "east": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_east"
+      }
+    },
+    {
+      "when": {
+        "up": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_up"
+      }
+    },
+    {
+      "when": {
+        "down": true
+      },
+      "apply": {
+        "model": "solarpower:block/superstring_glass_cable_arm_down"
+      }
+    }
+  ]
+}

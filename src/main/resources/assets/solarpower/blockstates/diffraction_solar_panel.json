@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/diffraction_solar_panel"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/quantum_solar_panel"
+    }
+  }
+}

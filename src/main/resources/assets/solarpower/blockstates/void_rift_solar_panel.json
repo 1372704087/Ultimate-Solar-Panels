@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/void_rift_solar_panel"
+    }
+  }
+}

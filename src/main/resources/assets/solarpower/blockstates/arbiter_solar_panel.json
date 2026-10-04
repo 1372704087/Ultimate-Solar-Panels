@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/arbiter_solar_panel"
+    }
+  }
+}

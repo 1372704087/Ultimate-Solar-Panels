@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/finality_solar_panel"
+    }
+  }
+}

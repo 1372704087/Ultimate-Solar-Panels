@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/omniversal_solar_panel"
+    }
+  }
+}

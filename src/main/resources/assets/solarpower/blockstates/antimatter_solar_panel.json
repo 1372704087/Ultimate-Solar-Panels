@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/antimatter_solar_panel"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "solarpower:block/star_sea_solar_panel"
+    }
+  }
+}
