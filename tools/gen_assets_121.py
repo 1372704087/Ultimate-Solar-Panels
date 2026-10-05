@@ -142,7 +142,8 @@ def gen_cable_blockstates():
     arms = [('north', 'north'), ('south', 'south'), ('west', 'west'),
             ('east', 'east'), ('up', 'up'), ('down', 'down')]
     for cid in CABLE_IDS:
-        parts = [{'when': {}, 'apply': {'model': 'solarpower:block/%s_core' % cid}}]
+        # 1.21.11 拒绝空 when{}（"Map must have contents"），核心段必须整个省略 when
+        parts = [{'apply': {'model': 'solarpower:block/%s_core' % cid}}]
         for prop, arm in arms:
             parts.append({
                 'when': {prop: True},
@@ -296,6 +297,37 @@ def gen_machines():
                        {'parent': 'solarpower:block/' + bid})
 
 
+def gen_machine_gaps():
+    """补 1.12 资产里缺失的机器模型（旧版就是紫黑块的三处）：
+    - advanced / heavens_end 变压器：两档从未画过变压器贴图，用本档储电盒贴图补
+      （IU 机器家族本就同源，变压器侧面≡mfsu 面）；
+    - 分子重组机：1.12 起就没有方块模型；配方核心是量子核心，直接复用量子档
+      储电盒贴图作机器面（active 态暂无独立画面，同模）。"""
+    bm = os.path.join(NEW_ASSETS, 'models', 'block')
+    tb = os.path.join(NEW_ASSETS, 'textures', 'block')
+
+    def cube(front, side, topbottom=None):
+        return {'parent': 'minecraft:block/cube', 'textures': {
+            'north': front, 'south': side, 'east': side, 'west': side,
+            'up': topbottom or side, 'down': topbottom or side, 'particle': side}}
+
+    for tid in ('advanced_solar_panel', 'heavens_end_solar_panel'):
+        write_json(os.path.join(bm, tid + '_transformer.json'),
+                   cube('solarpower:block/%s_storage_box_front' % tid,
+                        'solarpower:block/%s_storage_box_side' % tid))
+
+    src = 'quantum_solar_panel_storage_box'
+    for face in ('front', 'side', 'topbottom'):
+        shutil.copyfile(os.path.join(tb, src + '_' + face + '.png'),
+                        os.path.join(tb, 'molecular_transformer_' + face + '.png'))
+    mt = cube('solarpower:block/molecular_transformer_front',
+              'solarpower:block/molecular_transformer_side',
+              'solarpower:block/molecular_transformer_topbottom')
+    write_json(os.path.join(bm, 'molecular_transformer.json'), mt)
+    write_json(os.path.join(bm, 'molecular_transformer_active.json'), mt)
+    print('machine gaps filled: 2 transformers + molecular_transformer')
+
+
 if __name__ == '__main__':
     scan_tiers()
     copy_textures()
@@ -310,6 +342,7 @@ if __name__ == '__main__':
     gen_cables()
     gen_cable_blockstates()
     gen_machines()
+    gen_machine_gaps()
     copy_remaining_assets()
     gen_lang()
     print('done: %d panels, %d cables' % (len(PANEL_IDS), len(CABLE_IDS)))

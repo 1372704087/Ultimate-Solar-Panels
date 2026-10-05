@@ -1,7 +1,6 @@
 {
   "multipart": [
     {
-      "when": {},
       "apply": {
         "model": "solarpower:block/star_core_glass_cable_core"
       }

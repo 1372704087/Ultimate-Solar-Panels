@@ -1,7 +1,6 @@
 {
   "multipart": [
     {
-      "when": {},
       "apply": {
         "model": "solarpower:block/final_law_glass_cable_core"
       }

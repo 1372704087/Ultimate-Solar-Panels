@@ -1,7 +1,6 @@
 {
   "multipart": [
     {
-      "when": {},
       "apply": {
         "model": "solarpower:block/genesis_glass_cable_core"
       }
