@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:sands_of_time_core"
+    },
+    "P": {
+      "item": "solarpower:sands_of_time_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:order_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:sands_of_time_solar_panel",
+    "count": 1
+  }
+}

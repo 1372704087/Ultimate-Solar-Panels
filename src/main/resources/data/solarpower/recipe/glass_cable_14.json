@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "BPB",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_block"
+    },
+    "B": {
+      "item": "solarpower:genesis_glass_cable"
+    },
+    "P": {
+      "item": "solarpower:vacuum_decay_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:glass_cable_14",
+    "count": 1
+  }
+}

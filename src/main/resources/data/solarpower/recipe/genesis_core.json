@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:genesis_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:genesis_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:star_core_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:genesis_core",
+    "count": 1
+  }
+}

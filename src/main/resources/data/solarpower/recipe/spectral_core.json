@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:spectral_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:spectral_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:quantum_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:spectral_core",
+    "count": 1
+  }
+}

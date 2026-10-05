@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "ISI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "solarpower:iridium_ingot"
+    },
+    "S": {
+      "item": "solarpower:sunnarium"
+    }
+  },
+  "result": {
+    "id": "solarpower:sunnarium_alloy",
+    "count": 1
+  }
+}

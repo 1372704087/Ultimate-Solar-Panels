@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:negentropy_core"
+    },
+    "P": {
+      "item": "solarpower:negentropy_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:godhead_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:negentropy_solar_panel",
+    "count": 1
+  }
+}

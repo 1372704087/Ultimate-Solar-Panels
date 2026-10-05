@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ACA",
+    "CIC",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:coal_block"
+    },
+    "I": {
+      "item": "solarpower:iridium_iron_plate"
+    }
+  },
+  "result": {
+    "id": "solarpower:reinforced_iridium_iron_plate",
+    "count": 1
+  }
+}

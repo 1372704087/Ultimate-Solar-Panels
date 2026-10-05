@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:hyperdimensional_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:hyperdimensional_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:omniversal_glass_pane",
+    "count": 1
+  }
+}

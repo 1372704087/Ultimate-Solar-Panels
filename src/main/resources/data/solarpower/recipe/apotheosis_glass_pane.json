@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:demiurge_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:demiurge_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:apotheosis_glass_pane",
+    "count": 1
+  }
+}

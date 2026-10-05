@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MTM",
+    "CcC",
+    "MTM"
+  ],
+  "key": {
+    "M": {
+      "item": "minecraft:iron_block"
+    },
+    "T": {
+      "item": "minecraft:redstone_block"
+    },
+    "C": {
+      "item": "minecraft:gold_ingot"
+    },
+    "c": {
+      "item": "solarpower:mt_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:molecular_transformer",
+    "count": 1
+  }
+}

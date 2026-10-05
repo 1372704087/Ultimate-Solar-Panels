@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:arbiter_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:arbiter_sunnarium",
+    "count": 1
+  }
+}

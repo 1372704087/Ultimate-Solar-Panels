@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:sands_of_time_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:sands_of_time_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:order_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:sands_of_time_core",
+    "count": 1
+  }
+}

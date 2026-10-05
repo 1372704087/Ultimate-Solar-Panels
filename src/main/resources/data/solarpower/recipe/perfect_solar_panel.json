@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:perfect_core"
+    },
+    "P": {
+      "item": "solarpower:perfect_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:hybrid_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:perfect_solar_panel",
+    "count": 1
+  }
+}

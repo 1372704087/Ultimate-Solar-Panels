@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:firmament_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:firmament_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:pantheon_glass_pane",
+    "count": 1
+  }
+}

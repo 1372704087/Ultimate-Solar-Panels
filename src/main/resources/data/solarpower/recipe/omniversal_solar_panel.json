@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:omniversal_core"
+    },
+    "P": {
+      "item": "solarpower:omniversal_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:hyperdimensional_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:omniversal_solar_panel",
+    "count": 1
+  }
+}

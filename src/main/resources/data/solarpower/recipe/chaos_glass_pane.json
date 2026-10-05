@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:annihilation_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:annihilation_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:chaos_glass_pane",
+    "count": 1
+  }
+}

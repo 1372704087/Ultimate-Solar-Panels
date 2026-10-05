@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:endgame_core"
+    },
+    "P": {
+      "item": "solarpower:endgame_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:negentropy_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:endgame_solar_panel",
+    "count": 1
+  }
+}

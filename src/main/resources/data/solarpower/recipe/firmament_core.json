@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:firmament_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:firmament_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:divine_light_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:firmament_core",
+    "count": 1
+  }
+}

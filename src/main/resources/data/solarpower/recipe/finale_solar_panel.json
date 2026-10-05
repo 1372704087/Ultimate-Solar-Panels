@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:finale_core"
+    },
+    "P": {
+      "item": "solarpower:finale_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:supreme_principle_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:finale_solar_panel",
+    "count": 1
+  }
+}

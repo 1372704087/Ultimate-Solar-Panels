@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:quark_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:quark_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:fusion_glass_pane",
+    "count": 1
+  }
+}

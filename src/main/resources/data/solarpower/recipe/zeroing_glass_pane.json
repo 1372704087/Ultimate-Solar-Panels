@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:heat_death_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:heat_death_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:zeroing_glass_pane",
+    "count": 1
+  }
+}

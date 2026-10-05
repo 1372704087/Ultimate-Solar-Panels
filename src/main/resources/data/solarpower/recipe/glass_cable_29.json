@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "BPB",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_block"
+    },
+    "B": {
+      "item": "solarpower:glass_cable_28"
+    },
+    "P": {
+      "item": "solarpower:mandate_of_heaven_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:glass_cable_29",
+    "count": 1
+  }
+}

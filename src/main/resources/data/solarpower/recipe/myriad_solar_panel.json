@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:myriad_core"
+    },
+    "P": {
+      "item": "solarpower:myriad_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:transcendent_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:myriad_solar_panel",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:eternity_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:eternity_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:paradox_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:eternity_core",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:dark_energy_core"
+    },
+    "P": {
+      "item": "solarpower:dark_energy_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:zero_point_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:dark_energy_solar_panel",
+    "count": 1
+  }
+}

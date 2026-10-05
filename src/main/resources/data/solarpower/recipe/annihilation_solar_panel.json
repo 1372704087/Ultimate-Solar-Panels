@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:annihilation_core"
+    },
+    "P": {
+      "item": "solarpower:annihilation_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:abyss_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:annihilation_solar_panel",
+    "count": 1
+  }
+}

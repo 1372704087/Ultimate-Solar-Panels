@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:convergence_core"
+    },
+    "P": {
+      "item": "solarpower:convergence_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:final_law_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:convergence_solar_panel",
+    "count": 1
+  }
+}

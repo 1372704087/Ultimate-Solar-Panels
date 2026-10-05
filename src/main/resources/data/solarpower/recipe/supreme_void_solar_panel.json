@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:supreme_void_core"
+    },
+    "P": {
+      "item": "solarpower:supreme_void_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:the_absolute_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:supreme_void_solar_panel",
+    "count": 1
+  }
+}

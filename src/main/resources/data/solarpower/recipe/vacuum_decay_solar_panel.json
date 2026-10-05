@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:vacuum_decay_core"
+    },
+    "P": {
+      "item": "solarpower:vacuum_decay_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:genesis_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:vacuum_decay_solar_panel",
+    "count": 1
+  }
+}

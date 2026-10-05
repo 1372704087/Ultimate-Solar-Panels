@@ -37,6 +37,10 @@ public final class ModCreativeTabs {
                         for (GlassCableTier tier : GlassCableTier.values()) {
                             output.accept(new ItemStack(ModItems.cableItem(tier)));
                         }
+                        // 合成材料区段（与 1.12.2 一致：链上材料走合成获取，不进栏）
+                        for (net.minecraft.world.item.Item item : ModItems.craftingItems()) {
+                            output.accept(new ItemStack(item));
+                        }
                         output.accept(new ItemStack(ModItems.molecularTransformerItem()));
                     })
                     .build());

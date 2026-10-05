@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:finale_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:finale_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:supreme_principle_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:finale_core",
+    "count": 1
+  }
+}

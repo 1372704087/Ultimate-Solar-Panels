@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:hadron_core"
+    },
+    "P": {
+      "item": "solarpower:hadron_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:baryon_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:hadron_solar_panel",
+    "count": 1
+  }
+}

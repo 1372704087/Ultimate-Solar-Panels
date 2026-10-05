@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PRP",
+    "P P",
+    "PRP"
+  ],
+  "key": {
+    "P": {
+      "item": "solarpower:irradiant_glass_pane"
+    },
+    "R": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "id": "solarpower:mt_core",
+    "count": 1
+  }
+}

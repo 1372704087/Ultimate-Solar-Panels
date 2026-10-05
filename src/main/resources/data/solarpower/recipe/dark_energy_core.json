@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:dark_energy_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:dark_energy_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:zero_point_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:dark_energy_core",
+    "count": 1
+  }
+}

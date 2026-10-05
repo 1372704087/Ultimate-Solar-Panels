@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:brane_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:brane_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:heat_death_glass_pane",
+    "count": 1
+  }
+}

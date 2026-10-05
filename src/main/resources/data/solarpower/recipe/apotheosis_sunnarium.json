@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:apotheosis_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:apotheosis_sunnarium",
+    "count": 1
+  }
+}

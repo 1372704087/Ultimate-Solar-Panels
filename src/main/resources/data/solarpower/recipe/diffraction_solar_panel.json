@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:diffraction_core"
+    },
+    "P": {
+      "item": "solarpower:diffraction_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:singular_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:diffraction_solar_panel",
+    "count": 1
+  }
+}

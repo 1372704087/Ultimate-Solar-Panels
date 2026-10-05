@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ABC",
+    "ABC",
+    "ABC"
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:redcomponent"
+    },
+    "B": {
+      "item": "solarpower:greencomponent"
+    },
+    "C": {
+      "item": "solarpower:bluecomponent"
+    }
+  },
+  "result": {
+    "id": "solarpower:solarsplitter",
+    "count": 1
+  }
+}

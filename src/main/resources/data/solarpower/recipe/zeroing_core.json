@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:zeroing_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:zeroing_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:heat_death_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:zeroing_core",
+    "count": 1
+  }
+}

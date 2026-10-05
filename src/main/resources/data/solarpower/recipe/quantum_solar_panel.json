@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:quantum_core"
+    },
+    "P": {
+      "item": "solarpower:quantum_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:perfect_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:quantum_solar_panel",
+    "count": 1
+  }
+}

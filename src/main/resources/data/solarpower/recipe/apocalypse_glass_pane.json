@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:mandate_of_heaven_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:mandate_of_heaven_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:apocalypse_glass_pane",
+    "count": 1
+  }
+}

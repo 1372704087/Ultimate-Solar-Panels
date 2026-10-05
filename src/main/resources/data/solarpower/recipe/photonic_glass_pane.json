@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:diffraction_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:diffraction_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:photonic_glass_pane",
+    "count": 1
+  }
+}

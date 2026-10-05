@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:annihilation_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:annihilation_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:abyss_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:annihilation_core",
+    "count": 1
+  }
+}

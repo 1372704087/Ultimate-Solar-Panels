@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SAS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:enriched_sunnarium"
+    },
+    "A": {
+      "item": "solarpower:sunnarium_alloy"
+    }
+  },
+  "result": {
+    "id": "solarpower:enriched_sunnarium_alloy",
+    "count": 1
+  }
+}

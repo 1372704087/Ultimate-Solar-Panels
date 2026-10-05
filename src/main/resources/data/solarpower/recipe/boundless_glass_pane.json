@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:apotheosis_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:apotheosis_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:boundless_glass_pane",
+    "count": 1
+  }
+}

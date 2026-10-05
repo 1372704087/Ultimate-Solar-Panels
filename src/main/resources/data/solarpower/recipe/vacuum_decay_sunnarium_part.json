@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "F",
+    "P"
+  ],
+  "key": {
+    "F": {
+      "item": "solarpower:enriched_sunnarium"
+    },
+    "P": {
+      "item": "solarpower:genesis_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:vacuum_decay_sunnarium_part",
+    "count": 1
+  }
+}

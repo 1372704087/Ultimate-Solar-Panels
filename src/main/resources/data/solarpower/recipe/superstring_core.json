@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:superstring_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:superstring_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:vacuum_decay_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:superstring_core",
+    "count": 1
+  }
+}

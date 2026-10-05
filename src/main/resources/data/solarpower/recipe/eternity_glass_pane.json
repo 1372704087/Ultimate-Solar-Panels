@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:paradox_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:paradox_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:eternity_glass_pane",
+    "count": 1
+  }
+}

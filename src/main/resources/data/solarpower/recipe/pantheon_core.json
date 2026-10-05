@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:pantheon_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:pantheon_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:firmament_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:pantheon_core",
+    "count": 1
+  }
+}

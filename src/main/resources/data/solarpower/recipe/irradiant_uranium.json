@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "GUG",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "U": {
+      "item": "solarpower:uranium_ingot"
+    }
+  },
+  "result": {
+    "id": "solarpower:irradiant_uranium",
+    "count": 1
+  }
+}

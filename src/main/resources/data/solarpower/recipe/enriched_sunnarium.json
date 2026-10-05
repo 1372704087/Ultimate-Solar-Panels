@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "UUU",
+    "USU",
+    "UUU"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:irradiant_uranium"
+    },
+    "S": {
+      "item": "solarpower:sunnarium"
+    }
+  },
+  "result": {
+    "id": "solarpower:enriched_sunnarium",
+    "count": 1
+  }
+}

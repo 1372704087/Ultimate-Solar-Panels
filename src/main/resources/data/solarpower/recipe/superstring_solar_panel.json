@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:superstring_core"
+    },
+    "P": {
+      "item": "solarpower:superstring_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:vacuum_decay_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:superstring_solar_panel",
+    "count": 1
+  }
+}

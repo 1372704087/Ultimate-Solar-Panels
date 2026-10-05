@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:antimatter_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:antimatter_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:fusion_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:antimatter_core",
+    "count": 1
+  }
+}

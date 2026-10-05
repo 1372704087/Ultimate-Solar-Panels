@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:myriad_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:myriad_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:transcendent_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:myriad_core",
+    "count": 1
+  }
+}

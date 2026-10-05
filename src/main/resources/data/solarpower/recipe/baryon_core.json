@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:baryon_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:baryon_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:neutron_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:baryon_core",
+    "count": 1
+  }
+}

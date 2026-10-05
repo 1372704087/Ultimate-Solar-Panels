@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CDC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:advanced_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:advanced_sunnarium"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "id": "solarpower:advanced_core",
+    "count": 1
+  }
+}

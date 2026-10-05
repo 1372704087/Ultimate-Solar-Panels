@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "F",
+    "P"
+  ],
+  "key": {
+    "F": {
+      "item": "solarpower:enriched_sunnarium"
+    },
+    "P": {
+      "item": "solarpower:apocalypse_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:heavens_end_sunnarium_part",
+    "count": 1
+  }
+}

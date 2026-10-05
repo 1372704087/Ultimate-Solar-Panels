@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:brane_core"
+    },
+    "P": {
+      "item": "solarpower:brane_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:superstring_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:brane_solar_panel",
+    "count": 1
+  }
+}

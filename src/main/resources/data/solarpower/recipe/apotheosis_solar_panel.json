@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:apotheosis_core"
+    },
+    "P": {
+      "item": "solarpower:apotheosis_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:demiurge_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:apotheosis_solar_panel",
+    "count": 1
+  }
+}

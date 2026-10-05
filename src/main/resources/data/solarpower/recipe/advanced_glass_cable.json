@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "BPB",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_block"
+    },
+    "B": {
+      "item": "solarpower:glass_cable"
+    },
+    "P": {
+      "item": "solarpower:advanced_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:advanced_glass_cable",
+    "count": 1
+  }
+}

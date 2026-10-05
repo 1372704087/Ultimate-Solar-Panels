@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ANA",
+    "NEN",
+    "ANA"
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:enriched_sunnarium_alloy"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "id": "solarpower:quantum_core",
+    "count": 1
+  }
+}

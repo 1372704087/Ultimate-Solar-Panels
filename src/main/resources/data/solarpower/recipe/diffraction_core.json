@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:diffraction_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:diffraction_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:singular_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:diffraction_core",
+    "count": 1
+  }
+}

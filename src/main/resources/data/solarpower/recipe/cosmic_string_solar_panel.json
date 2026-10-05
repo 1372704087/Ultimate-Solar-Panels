@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:cosmic_string_core"
+    },
+    "P": {
+      "item": "solarpower:cosmic_string_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:dark_energy_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:cosmic_string_solar_panel",
+    "count": 1
+  }
+}

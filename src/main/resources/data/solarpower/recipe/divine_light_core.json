@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:divine_light_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:divine_light_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:finality_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:divine_light_core",
+    "count": 1
+  }
+}

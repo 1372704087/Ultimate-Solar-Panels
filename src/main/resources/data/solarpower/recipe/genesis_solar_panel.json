@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:genesis_core"
+    },
+    "P": {
+      "item": "solarpower:genesis_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:star_core_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:genesis_solar_panel",
+    "count": 1
+  }
+}

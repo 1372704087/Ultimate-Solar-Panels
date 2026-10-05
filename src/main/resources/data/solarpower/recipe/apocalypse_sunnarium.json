@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:apocalypse_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:apocalypse_sunnarium",
+    "count": 1
+  }
+}

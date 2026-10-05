@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:awakening_core"
+    },
+    "P": {
+      "item": "solarpower:awakening_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:supreme_void_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:awakening_solar_panel",
+    "count": 1
+  }
+}

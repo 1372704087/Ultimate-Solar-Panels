@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:transcendent_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:transcendent_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:eternity_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:transcendent_core",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:supreme_one_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:supreme_one_sunnarium",
+    "count": 1
+  }
+}

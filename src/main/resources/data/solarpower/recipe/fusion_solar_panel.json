@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:fusion_core"
+    },
+    "P": {
+      "item": "solarpower:fusion_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:quark_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:fusion_solar_panel",
+    "count": 1
+  }
+}

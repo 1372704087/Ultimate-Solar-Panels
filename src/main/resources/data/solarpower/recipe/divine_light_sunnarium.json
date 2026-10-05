@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:divine_light_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:divine_light_sunnarium",
+    "count": 1
+  }
+}

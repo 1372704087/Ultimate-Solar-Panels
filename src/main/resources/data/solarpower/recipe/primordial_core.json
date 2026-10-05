@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:primordial_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:primordial_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:arbiter_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:primordial_core",
+    "count": 1
+  }
+}

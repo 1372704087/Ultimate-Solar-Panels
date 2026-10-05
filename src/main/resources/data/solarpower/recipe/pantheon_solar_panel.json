@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:pantheon_core"
+    },
+    "P": {
+      "item": "solarpower:pantheon_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:firmament_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:pantheon_solar_panel",
+    "count": 1
+  }
+}

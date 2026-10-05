@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:mandate_of_heaven_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:mandate_of_heaven_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:pantheon_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:mandate_of_heaven_core",
+    "count": 1
+  }
+}

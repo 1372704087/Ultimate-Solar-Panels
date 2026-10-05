@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:negentropy_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:negentropy_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:godhead_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:negentropy_core",
+    "count": 1
+  }
+}

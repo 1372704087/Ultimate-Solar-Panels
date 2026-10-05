@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "IPI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "solarpower:iridium_ingot"
+    }
+  },
+  "result": {
+    "id": "solarpower:iridium_iron_plate",
+    "count": 1
+  }
+}

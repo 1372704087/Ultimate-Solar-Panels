@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "BPB",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_block"
+    },
+    "B": {
+      "item": "solarpower:hadron_glass_cable"
+    },
+    "P": {
+      "item": "solarpower:graviton_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:graviton_glass_cable",
+    "count": 1
+  }
+}

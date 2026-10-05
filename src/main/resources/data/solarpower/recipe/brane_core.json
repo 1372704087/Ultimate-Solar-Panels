@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:brane_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:brane_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:superstring_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:brane_core",
+    "count": 1
+  }
+}

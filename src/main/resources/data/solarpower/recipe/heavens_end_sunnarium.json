@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "solarpower:heavens_end_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:heavens_end_sunnarium",
+    "count": 1
+  }
+}

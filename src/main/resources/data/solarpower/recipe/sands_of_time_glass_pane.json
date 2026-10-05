@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:order_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:order_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:sands_of_time_glass_pane",
+    "count": 1
+  }
+}

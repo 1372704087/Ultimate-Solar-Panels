@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "solarpower:irradiant_glass_pane"
+    }
+  ],
+  "result": {
+    "id": "solarpower:greencomponent",
+    "count": 1
+  }
+}

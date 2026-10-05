@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:hybrid_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:hybrid_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:advanced_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:hybrid_core",
+    "count": 1
+  }
+}

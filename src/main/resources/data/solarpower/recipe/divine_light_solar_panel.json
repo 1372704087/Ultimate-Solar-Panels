@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:divine_light_core"
+    },
+    "P": {
+      "item": "solarpower:divine_light_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:finality_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:divine_light_solar_panel",
+    "count": 1
+  }
+}

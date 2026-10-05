@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:boundless_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:boundless_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:apotheosis_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:boundless_core",
+    "count": 1
+  }
+}

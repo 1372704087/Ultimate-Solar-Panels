@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:finale_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:finale_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:finality_glass_pane",
+    "count": 1
+  }
+}

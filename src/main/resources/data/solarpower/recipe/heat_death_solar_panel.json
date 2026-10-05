@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:heat_death_core"
+    },
+    "P": {
+      "item": "solarpower:heat_death_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:brane_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:heat_death_solar_panel",
+    "count": 1
+  }
+}

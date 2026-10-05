@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:spectral_core"
+    },
+    "P": {
+      "item": "solarpower:spectral_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:quantum_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:spectral_solar_panel",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "U",
+    "P"
+  ],
+  "key": {
+    "U": {
+      "item": "solarpower:vacuum_decay_sunnarium_alloy"
+    },
+    "P": {
+      "item": "solarpower:vacuum_decay_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:superstring_glass_pane",
+    "count": 1
+  }
+}

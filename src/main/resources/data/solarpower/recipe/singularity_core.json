@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:singularity_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:singularity_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:void_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:singularity_core",
+    "count": 1
+  }
+}

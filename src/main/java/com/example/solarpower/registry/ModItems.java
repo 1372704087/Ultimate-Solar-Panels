@@ -142,6 +142,15 @@ public final class ModItems {
         return item.get();
     }
 
+    /** 全部基础合成材料，按注册顺序（创造栏「合成材料」区段用）。 */
+    public static java.util.List<Item> craftingItems() {
+        java.util.List<Item> list = new java.util.ArrayList<>();
+        for (DeferredItem<Item> item : CRAFTING_ITEMS.values()) {
+            list.add(item.get());
+        }
+        return list;
+    }
+
     private ModItems() {
     }
 }

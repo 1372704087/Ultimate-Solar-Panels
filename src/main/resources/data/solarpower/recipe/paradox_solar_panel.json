@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:paradox_core"
+    },
+    "P": {
+      "item": "solarpower:paradox_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:zeroing_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:paradox_solar_panel",
+    "count": 1
+  }
+}

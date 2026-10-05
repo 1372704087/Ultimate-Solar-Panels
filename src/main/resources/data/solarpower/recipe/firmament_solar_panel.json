@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:firmament_core"
+    },
+    "P": {
+      "item": "solarpower:firmament_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:divine_light_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:firmament_solar_panel",
+    "count": 1
+  }
+}

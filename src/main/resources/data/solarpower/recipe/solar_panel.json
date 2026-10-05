@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "GPG",
+    "IGI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_block"
+    },
+    "P": {
+      "item": "solarpower:basic_glass_pane"
+    }
+  },
+  "result": {
+    "id": "solarpower:solar_panel",
+    "count": 1
+  }
+}

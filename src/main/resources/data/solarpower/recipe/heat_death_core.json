@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:heat_death_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:heat_death_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:brane_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:heat_death_core",
+    "count": 1
+  }
+}

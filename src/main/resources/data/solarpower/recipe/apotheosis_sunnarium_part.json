@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "F",
+    "P"
+  ],
+  "key": {
+    "F": {
+      "item": "solarpower:enriched_sunnarium"
+    },
+    "P": {
+      "item": "solarpower:demiurge_sunnarium_part"
+    }
+  },
+  "result": {
+    "id": "solarpower:apotheosis_sunnarium_part",
+    "count": 1
+  }
+}

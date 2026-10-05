@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "CKC",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "solarpower:heavens_end_sunnarium_alloy"
+    },
+    "C": {
+      "item": "solarpower:heavens_end_sunnarium"
+    },
+    "K": {
+      "item": "solarpower:apocalypse_core"
+    }
+  },
+  "result": {
+    "id": "solarpower:heavens_end_core",
+    "count": 1
+  }
+}

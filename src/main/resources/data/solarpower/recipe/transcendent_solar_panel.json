@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "KPK",
+    "KCK",
+    "KPK"
+  ],
+  "key": {
+    "K": {
+      "item": "solarpower:transcendent_core"
+    },
+    "P": {
+      "item": "solarpower:transcendent_glass_pane"
+    },
+    "C": {
+      "item": "solarpower:eternity_solar_panel"
+    }
+  },
+  "result": {
+    "id": "solarpower:transcendent_solar_panel",
+    "count": 1
+  }
+}
