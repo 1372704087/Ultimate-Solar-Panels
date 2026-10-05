@@ -25,6 +25,7 @@ public class TransformerMenu extends AbstractContainerMenu {
     public static final int ID_LOW_EXP = 1;
     public static final int ID_HIGH_MANTISSA = 2;
     public static final int ID_HIGH_EXP = 3;
+    public static final int ID_MODE = 4;
 
     private final TransformerTile tile;
     private final ContainerData data;
@@ -32,6 +33,7 @@ public class TransformerMenu extends AbstractContainerMenu {
     /** 客户端镜像。 */
     public BigDecimal lowStored = BigDecimal.ZERO;
     public BigDecimal highStored = BigDecimal.ZERO;
+    public int mode;
     private int lowMantissa;
     private int lowExp;
     private int highMantissa;
@@ -57,7 +59,8 @@ public class TransformerMenu extends AbstractContainerMenu {
                     case 0 -> low[0];
                     case 1 -> low[1];
                     case 2 -> high[0];
-                    default -> high[1];
+                    case 3 -> high[1];
+                    default -> tile != null ? tile.getMode() : 0;
                 };
             }
 
@@ -67,7 +70,7 @@ public class TransformerMenu extends AbstractContainerMenu {
 
             @Override
             public int getCount() {
-                return 4;
+                return 5;
             }
         };
         this.addDataSlots(this.data);
@@ -86,9 +89,20 @@ public class TransformerMenu extends AbstractContainerMenu {
             case ID_LOW_EXP -> this.lowExp = value;
             case ID_HIGH_MANTISSA -> this.highMantissa = value;
             case ID_HIGH_EXP -> this.highExp = value;
+            case ID_MODE -> this.mode = value;
         }
         this.lowStored = rebuild(this.lowMantissa, this.lowExp);
         this.highStored = rebuild(this.highMantissa, this.highExp);
+    }
+
+    /** 界面按钮 0：循环切换放电方向（双向 → 升压 → 降压）。 */
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id == 0 && this.tile != null) {
+            this.tile.setMode((this.tile.getMode() + 1) % 4);
+            return true;
+        }
+        return false;
     }
 
     private static BigDecimal rebuild(int mantissa, int exponent) {

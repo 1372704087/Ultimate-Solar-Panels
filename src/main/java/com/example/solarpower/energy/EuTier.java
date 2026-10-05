@@ -3,15 +3,16 @@ package com.example.solarpower.energy;
 import java.math.BigInteger;
 
 /**
- * 仿 IC2 / IU 的电压等级（tier）。共 66 级，与太阳能板档位一一对应。
- * <p>每一级电压是上一级的 4 倍，第 n 级上限电压 = 2^(2n+3)（LV = 2^5 = 32，
- * QUETTA = 2^45 ≈ 35.18T）。1~21 级沿用 IC2/IU 的经典命名，22~66 级超出 IU
- * 原有范围，直接以级数命名（L22~L66）。
+ * 仿 IC2 / IU 的电压等级（tier）。共 67 级（L0~L66），与太阳能板档位一一对应
+ * （基础面板 = L0，高级 = LV/L1，混合 = MV/L2……天终 = L66）。
+ * <p>每一级电压是上一级的 4 倍，第 n 级上限电压 = 2^(2n+3)（L0 = 8，
+ * LV/L1 = 32，MV/L2 = 128，QUETTA/L21 ≈ 35.18T）。1~21 级沿用 IC2/IU 的经典命名，
+ * 22~66 级超出 IU 原有范围，直接以级数命名（L22~L66）。
  * <p>上限电压用 {@link BigInteger} 承载（L32 起超出 long），取消数值封顶；
  * 机器只接收不高于自身等级的电压，超压拒收（IC2 里会爆炸，这里简化为拒收以免炸家）。
  */
 public enum EuTier {
-    LV(1), MV(2), HV(3), EV(4), IV(5), LUV(6), ZPM(7), UV(8), UHV(9), UEV(10),
+    L0(0), LV(1), MV(2), HV(3), EV(4), IV(5), LUV(6), ZPM(7), UV(8), UHV(9), UEV(10),
     UIV(11), UMV(12), UXV(13), QUARK(14), TERA(15), PETA(16), EXA(17), ZETTA(18),
     YOTTA(19), RONNA(20), QUETTA(21),
     L22(22), L23(23), L24(24), L25(25), L26(26), L27(27), L28(28), L29(29), L30(30),
@@ -56,9 +57,9 @@ public enum EuTier {
         return this.iuTier;
     }
 
-    /** 取 IU 编号对应的电压等级，超出范围时夹到两端。 */
+    /** 取 IU 编号对应的电压等级，低于 L0 夹到 L0，超出最高级则夹到最高级。 */
     public static EuTier byIuTier(int iuTier) {
-        int index = Math.max(1, Math.min(values().length, iuTier)) - 1;
+        int index = Math.max(0, Math.min(values().length - 1, iuTier));
         return values()[index];
     }
 

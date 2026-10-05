@@ -35,7 +35,7 @@ import java.math.BigInteger;
  */
 public enum SolarTier {
 
-    BASIC("solar_panel", 1, 5, 1L, 3L, 2L, 1L, 16L, 1L, 0x9FB0C0),
+    BASIC("solar_panel", 0, 5, 1L, 3L, 2L, 1L, 16L, 1L, 0x9FB0C0),
     ADVANCED("advanced_solar_panel", 1, 7, 1L, 3L, 2L, 1L, 16L, 1L, 0xE0B45C),
     HYBRID("hybrid_solar_panel", 2, 9, 1L, 3L, 2L, 1L, 16L, 1L, 0x4FD1C5),
     PERFECT("perfect_solar_panel", 3, 11, 1L, 3L, 2L, 1L, 16L, 1L, 0x7ED957),

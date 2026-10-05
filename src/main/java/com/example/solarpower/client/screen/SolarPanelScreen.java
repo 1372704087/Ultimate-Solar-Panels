@@ -1,14 +1,14 @@
 package com.example.solarpower.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.example.solarpower.energy.EuFormat;
 import com.example.solarpower.menu.SolarPanelMenu;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -21,8 +21,8 @@ import javax.annotation.Nullable;
 /** 太阳能板界面（1:1 复刻旧版布局：能量管 + 指示灯 + 三行数据）。 */
 public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
 
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/solar_panel.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/solar_panel.png");
 
     private static final int PANEL_WIDTH = 200;
     private static final int PANEL_HEIGHT = 166;
@@ -69,7 +69,7 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
         super.render(graphics, mouseX, mouseY, partialTick);
         List<Component> hover = rowHoverText(mouseX - this.leftPos, mouseY - this.topPos);
         if (hover != null) {
-            graphics.setComponentTooltipForNextFrame(this.font, hover, mouseX, mouseY);
+            graphics.renderComponentTooltip(this.font, hover, mouseX, mouseY);
         }
     }
 
@@ -100,7 +100,10 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, PANEL_WIDTH, PANEL_HEIGHT, 256, 256);
+        // 1.21.1 的 blit 不自带 alpha 混合，半透明底图必须手动开混合
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0f, 0f, PANEL_WIDTH, PANEL_HEIGHT, 256, 256);
 
         SolarTier tier = tier();
         // 容量用「紧凑镜像」（顶档容量百万位级，直接除会物化整个数）
@@ -117,7 +120,7 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
         }
         filled = Math.max(0, Math.min(TUBE_HEIGHT, filled));
         if (filled > 0) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+            graphics.blit(TEXTURE,
                     this.leftPos + TUBE_X, this.topPos + TUBE_Y + TUBE_HEIGHT - filled,
                     FILL_U, FILL_V + TUBE_HEIGHT - filled, 18, filled, 256, 256);
         }
@@ -125,9 +128,10 @@ public class SolarPanelScreen extends AbstractContainerScreen<SolarPanelMenu> {
         int ledV = this.menu.generating.signum() > 0
                 ? (this.menu.night ? LED_NIGHT_V : LED_LIT_V)
                 : LED_DIM_V;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE,
+        graphics.blit(TEXTURE,
                 this.leftPos + LED_X, this.topPos + LED_Y,
                 LED_U, ledV, LED_SIZE, LED_SIZE, 256, 256);
+        RenderSystem.disableBlend();
     }
 
     @Override

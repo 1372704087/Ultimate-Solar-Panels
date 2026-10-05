@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "solarpower:block/supreme_void_glass_cable",
     "tex": "solarpower:block/supreme_void_glass_cable"

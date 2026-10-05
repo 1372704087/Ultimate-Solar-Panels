@@ -23,25 +23,58 @@ public final class ModCreativeTabs {
                     .title(Component.translatable("itemGroup.solarpower"))
                     .icon(() -> new ItemStack(ModItems.panelItem(SolarTier.BASIC)))
                     .displayItems((parameters, output) -> {
+                        // 1. 太阳能板（67档）
                         for (SolarTier tier : SolarTier.values()) {
                             output.accept(new ItemStack(ModItems.panelItem(tier)));
+                        }
+                        // 2. 储电盒（67档）
+                        for (SolarTier tier : SolarTier.values()) {
                             output.accept(new ItemStack(ModItems.storageBoxItem(tier)));
                         }
-                        for (int iu = 1; iu <= 65; iu++) {
-                            var block = ModBlocks.transformer(com.example.solarpower.energy.EuTier.byIuTier(iu));
-                            output.accept(new ItemStack(block));
+                        // 3. 变压器（67档）
+                        for (SolarTier tier : SolarTier.values()) {
+                            output.accept(new ItemStack(ModBlocks.transformer(tier)));
                         }
+                        // 4. 充电座（67档）
                         for (SolarTier tier : SolarTier.values()) {
                             output.accept(new ItemStack(ModItems.chargepadItem(tier)));
                         }
+                        // 5. 电缆（68档）
                         for (GlassCableTier tier : GlassCableTier.values()) {
                             output.accept(new ItemStack(ModItems.cableItem(tier)));
                         }
-                        // 合成材料区段（与 1.12.2 一致：链上材料走合成获取，不进栏）
+                        // 6. 分子重组仪
+                        output.accept(new ItemStack(ModItems.molecularTransformerItem()));
+                        // 7. 基础合成材料（排除量子核心，它在核心区）
                         for (net.minecraft.world.item.Item item : ModItems.craftingItems()) {
+                            var key = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
+                            if ("quantum_core".equals(key.getPath())) continue;
                             output.accept(new ItemStack(item));
                         }
-                        output.accept(new ItemStack(ModItems.molecularTransformerItem()));
+                        // 8. 玻璃板（67档）
+                        for (SolarTier tier : SolarTier.values()) {
+                            output.accept(new ItemStack(ModItems.paneItem(tier)));
+                        }
+                        // 9. 阳光化合物小块（66档）
+                        for (SolarTier tier : SolarTier.values()) {
+                            if (tier == SolarTier.BASIC) continue;
+                            output.accept(new ItemStack(ModItems.sunnariumPartItem(tier)));
+                        }
+                        // 10. 阳光化合物（66档）
+                        for (SolarTier tier : SolarTier.values()) {
+                            if (tier == SolarTier.BASIC) continue;
+                            output.accept(new ItemStack(ModItems.sunnariumItem(tier)));
+                        }
+                        // 11. 阳光合金（66档）
+                        for (SolarTier tier : SolarTier.values()) {
+                            if (tier == SolarTier.BASIC) continue;
+                            output.accept(new ItemStack(ModItems.sunnariumAlloyItem(tier)));
+                        }
+                        // 12. 核心（65档，含量子核心）
+                        for (SolarTier tier : SolarTier.values()) {
+                            if (tier == SolarTier.BASIC) continue;
+                            output.accept(new ItemStack(ModItems.coreItem(tier)));
+                        }
                     })
                     .build());
 

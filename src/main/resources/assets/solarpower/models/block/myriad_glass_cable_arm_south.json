@@ -1,4 +1,5 @@
 {
+  "render_type": "minecraft:translucent",
   "textures": {
     "particle": "solarpower:block/myriad_glass_cable",
     "tex": "solarpower:block/myriad_glass_cable"

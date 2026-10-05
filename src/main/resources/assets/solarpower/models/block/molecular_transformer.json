@@ -1,12 +1,24 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "minecraft:block/block",
   "textures": {
-    "north": "solarpower:block/molecular_transformer_front",
-    "south": "solarpower:block/molecular_transformer_side",
-    "east": "solarpower:block/molecular_transformer_side",
-    "west": "solarpower:block/molecular_transformer_side",
-    "up": "solarpower:block/molecular_transformer_topbottom",
-    "down": "solarpower:block/molecular_transformer_topbottom",
-    "particle": "solarpower:block/molecular_transformer_side"
-  }
+    "particle": "solarpower:block/molecular_transformer_side",
+    "side": "solarpower:block/molecular_transformer_side",
+    "top": "solarpower:block/molecular_transformer_top",
+    "bottom": "solarpower:block/molecular_transformer_bottom"
+  },
+  "elements": [
+    {
+      "name": "body",
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#side"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#side"},
+        "east": {"uv": [0, 0, 16, 16], "texture": "#side"},
+        "west": {"uv": [0, 0, 16, 16], "texture": "#side"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+      }
+    }
+  ]
 }

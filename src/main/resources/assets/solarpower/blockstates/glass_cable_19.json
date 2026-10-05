@@ -1,57 +1,57 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_core"
-      }
-    },
-    {
-      "when": {
-        "north": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_north"
-      }
-    },
-    {
-      "when": {
-        "south": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_south"
-      }
-    },
-    {
-      "when": {
-        "west": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_west"
-      }
-    },
-    {
-      "when": {
-        "east": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_east"
-      }
-    },
-    {
-      "when": {
-        "up": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_up"
-      }
-    },
-    {
-      "when": {
-        "down": true
-      },
-      "apply": {
-        "model": "solarpower:block/glass_cable_19_arm_down"
-      }
-    }
-  ]
+    "multipart":  [
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_core"
+                                    }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_north"
+                                    },
+                          "when":  {
+                                       "north":  true
+                                   }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_south"
+                                    },
+                          "when":  {
+                                       "south":  true
+                                   }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_west"
+                                    },
+                          "when":  {
+                                       "west":  true
+                                   }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_east"
+                                    },
+                          "when":  {
+                                       "east":  true
+                                   }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_up"
+                                    },
+                          "when":  {
+                                       "up":  true
+                                   }
+                      },
+                      {
+                          "apply":  {
+                                        "model":  "solarpower:block/glass_cable_19_arm_down"
+                                    },
+                          "when":  {
+                                       "down":  true
+                                   }
+                      }
+                  ]
 }

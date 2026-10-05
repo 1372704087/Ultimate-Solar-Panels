@@ -22,7 +22,7 @@ public final class ModItems {
     private static final Map<SolarTier, DeferredItem<BlockItem>> PANEL_ITEMS = new EnumMap<>(SolarTier.class);
     private static final Map<GlassCableTier, DeferredItem<BlockItem>> CABLE_ITEMS = new EnumMap<>(GlassCableTier.class);
     private static final Map<SolarTier, DeferredItem<BlockItem>> STORAGE_BOX_ITEMS = new EnumMap<>(SolarTier.class);
-    private static final Map<EuTier, DeferredItem<BlockItem>> TRANSFORMER_ITEMS = new EnumMap<>(EuTier.class);
+    private static final Map<SolarTier, DeferredItem<BlockItem>> TRANSFORMER_ITEMS = new EnumMap<>(SolarTier.class);
     private static final Map<SolarTier, DeferredItem<BlockItem>> CHARGEPAD_ITEMS = new EnumMap<>(SolarTier.class);
     private static DeferredItem<BlockItem> MT_ITEM;
     private static final Map<SolarTier, DeferredItem<Item>> PANE_ITEMS = new EnumMap<>(SolarTier.class);
@@ -55,37 +55,35 @@ public final class ModItems {
         // 分子重组仪的方块物品
         MT_ITEM = ITEMS.registerItem("molecular_transformer",
                 props -> new BlockItem(ModBlocks.molecularTransformer(), props),
-                Item.Properties::new);
+                new Item.Properties());
         // 变压器的方块物品
-        for (EuTier tier : EuTier.values()) {
-            if (tier.iuTier() > 65) {
-                continue;
-            }
-            TRANSFORMER_ITEMS.put(tier, ITEMS.registerSimpleBlockItem(ModBlocks.TRANSFORMER_LIST.get(tier.iuTier() - 1)));
+        int idx = 0;
+        for (SolarTier tier : SolarTier.values()) {
+            TRANSFORMER_ITEMS.put(tier, ITEMS.registerSimpleBlockItem(ModBlocks.TRANSFORMER_LIST.get(idx++)));
         }
         // 合成链物品
         for (String id : CRAFTING_IDS) {
-            CRAFTING_ITEMS.put(id, ITEMS.registerItem(id, Item::new, Item.Properties::new));
+            CRAFTING_ITEMS.put(id, ITEMS.registerItem(id, Item::new, new Item.Properties()));
         }
         // 「XX玻璃板」67 档
         for (SolarTier tier : SolarTier.values()) {
-            PANE_ITEMS.put(tier, ITEMS.registerItem(tier.paneId(), Item::new, Item.Properties::new));
+            PANE_ITEMS.put(tier, ITEMS.registerItem(tier.paneId(), Item::new, new Item.Properties()));
         }
         // 「XX核心」65 档（基础档无本体；量子核心走 ASP 官方 quantum_core）
         for (SolarTier tier : SolarTier.values()) {
             if (tier == SolarTier.BASIC || tier == SolarTier.QUANTUM) {
                 continue;
             }
-            CORE_ITEMS.put(tier, ITEMS.registerItem(tier.coreId(), Item::new, Item.Properties::new));
+            CORE_ITEMS.put(tier, ITEMS.registerItem(tier.coreId(), Item::new, new Item.Properties()));
         }
         // 阳光化合物/小块/合金 66 档（基础档沿用 ASP 本体，跳过）
         for (SolarTier tier : SolarTier.values()) {
             if (tier == SolarTier.BASIC) {
                 continue;
             }
-            SUNNARIUM_PART_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumPartId(), Item::new, Item.Properties::new));
-            SUNNARIUM_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumId(), Item::new, Item.Properties::new));
-            SUNNARIUM_ALLOY_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumAlloyId(), Item::new, Item.Properties::new));
+            SUNNARIUM_PART_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumPartId(), Item::new, new Item.Properties()));
+            SUNNARIUM_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumId(), Item::new, new Item.Properties()));
+            SUNNARIUM_ALLOY_ITEMS.put(tier, ITEMS.registerItem(tier.sunnariumAlloyId(), Item::new, new Item.Properties()));
         }
     }
 
@@ -101,7 +99,7 @@ public final class ModItems {
         return STORAGE_BOX_ITEMS.get(tier).get();
     }
 
-    public static Item transformerItem(EuTier tier) {
+    public static Item transformerItem(SolarTier tier) {
         return TRANSFORMER_ITEMS.get(tier).get();
     }
 

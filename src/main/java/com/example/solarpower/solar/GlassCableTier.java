@@ -122,6 +122,11 @@ public enum GlassCableTier {
         return this.capacityPerTick;
     }
 
+    /** 对应面板档。 */
+    public SolarTier source() {
+        return this.partTier();
+    }
+
     /** 方块/物品的翻译键（1.12.2 使用 tile. 前缀）。 */
     public String translationKey() {
         return "tile.solarpower." + this.id;

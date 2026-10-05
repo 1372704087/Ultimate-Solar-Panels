@@ -4,17 +4,17 @@ import com.example.solarpower.energy.EuCableNet;
 import com.example.solarpower.energy.EuTier;
 import com.example.solarpower.energy.FeConvert;
 import com.example.solarpower.energy.IEuEnergy;
+import com.example.solarpower.energy.OverVoltage;
 import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.math.BigInteger;
@@ -37,6 +37,7 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
 
     private BigInteger stored = BigInteger.ZERO;
     private SolarTier resolvedTier;
+    private final OverVoltage overVoltage = new OverVoltage();
 
     private SolarTier capacityForTier;
     private BigInteger capacityCache;
@@ -114,6 +115,10 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
         if (this.level.isClientSide()) {
             return;
         }
+        if (this.overVoltage.tick(this.level, this.worldPosition)) {
+            explode();
+            return;
+        }
         BigInteger capacity = capacityEu();
         if (this.stored.compareTo(capacity) > 0) {
             this.stored = capacity;
@@ -156,7 +161,11 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
 
     @Override
     public BigInteger receiveEu(BigInteger amount, EuTier tier, boolean simulate) {
-        if (amount == null || amount.signum() <= 0 || !getTier().accepts(tier)) {
+        if (amount == null || amount.signum() <= 0) {
+            return BigInteger.ZERO;
+        }
+        if (!getTier().accepts(tier)) {
+            this.overVoltage.flag();   // 超压暴露：冒烟累积
             return BigInteger.ZERO;
         }
         BigInteger accepted = amount.min(getRoomEu());
@@ -220,21 +229,30 @@ public class StorageBoxTile extends BlockEntity implements IEuEnergy, IEnergySto
         return FeConvert.toFe(receiveEu(FeConvert.toEu(maxReceive), getTier(), simulate));
     }
 
+    /** 超压爆炸：机器消失（不掉自身），原版爆炸附带范围伤害与破坏方块。 */
+    private void explode() {
+        if (this.level == null) {
+            return;
+        }
+        this.level.destroyBlock(this.worldPosition, false);
+        this.level.explode(null, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5,
+                this.worldPosition.getZ() + 0.5, 2.0F, Level.ExplosionInteraction.BLOCK);
+    }
+
     // ------------------------------------------------------------------
     // 存档
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
-        out.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putString(TAG_ENERGY_B64, Base64.getEncoder().encodeToString(this.stored.toByteArray()));
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
-        this.stored = in.getString(TAG_ENERGY_B64)
-                .map(s -> new BigInteger(Base64.getDecoder().decode(s)))
-                .orElse(BigInteger.ZERO);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        String s = tag.getString(TAG_ENERGY_B64);
+        this.stored = s.isEmpty() ? BigInteger.ZERO : new BigInteger(Base64.getDecoder().decode(s));
     }
 }

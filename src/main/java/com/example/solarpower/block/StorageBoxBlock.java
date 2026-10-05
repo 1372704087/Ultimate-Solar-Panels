@@ -146,7 +146,7 @@ public class StorageBoxBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction side) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof StorageBoxTile box ? box.comparatorLevel() : 0;
     }
 }

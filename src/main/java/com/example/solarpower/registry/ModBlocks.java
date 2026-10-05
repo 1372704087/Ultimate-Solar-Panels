@@ -33,7 +33,7 @@ public final class ModBlocks {
     private static final Map<SolarTier, DeferredBlock<SolarPanelBlock>> PANELS = new EnumMap<>(SolarTier.class);
     private static final Map<GlassCableTier, DeferredBlock<GlassCableBlock>> CABLES = new EnumMap<>(GlassCableTier.class);
     private static final Map<SolarTier, DeferredBlock<StorageBoxBlock>> STORAGE_BOXES = new EnumMap<>(SolarTier.class);
-    private static final Map<EuTier, DeferredBlock<TransformerBlock>> TRANSFORMERS = new EnumMap<>(EuTier.class);
+    private static final Map<SolarTier, DeferredBlock<TransformerBlock>> TRANSFORMERS = new EnumMap<>(SolarTier.class);
     public static final List<DeferredBlock<TransformerBlock>> TRANSFORMER_LIST = new ArrayList<>();
     private static final Map<SolarTier, DeferredBlock<ChargepadBlock>> CHARGEPADS = new EnumMap<>(SolarTier.class);
     private static DeferredBlock<MolecularTransformerBlock> molecularTransformer;
@@ -46,38 +46,37 @@ public final class ModBlocks {
         for (SolarTier tier : SolarTier.values()) {
             DeferredBlock<SolarPanelBlock> panel = BLOCKS.registerBlock(tier.id(),
                     props -> new SolarPanelBlock(tier, props),
-                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
+                    BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             PANELS.put(tier, panel);
             PANEL_LIST.add(panel);
             DeferredBlock<StorageBoxBlock> sb = BLOCKS.registerBlock(tier.id() + "_storage_box",
                     props -> new StorageBoxBlock(tier, props),
-                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
+                    BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             STORAGE_BOXES.put(tier, sb);
             STORAGE_LIST.add(sb);
             DeferredBlock<ChargepadBlock> cb = BLOCKS.registerBlock(tier.id() + "_chargepad",
                     props -> new ChargepadBlock(tier, props),
-                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
+                    BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             CHARGEPADS.put(tier, cb);
             CHARGEPAD_LIST.add(cb);
         }
         for (GlassCableTier tier : GlassCableTier.values()) {
             DeferredBlock<GlassCableBlock> cable = BLOCKS.registerBlock(tier.id(),
                     props -> new GlassCableBlock(tier, props),
-                    () -> BlockBehaviour.Properties.of().strength(0.5F).sound(SoundType.GLASS)
+                    BlockBehaviour.Properties.of().strength(0.5F).sound(SoundType.GLASS)
                             .noOcclusion().requiresCorrectToolForDrops());
             CABLES.put(tier, cable);
             CABLE_LIST.add(cable);
         }
         molecularTransformer = BLOCKS.registerBlock("molecular_transformer",
                 MolecularTransformerBlock::new,
-                () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL).noOcclusion());
-        for (EuTier tier : EuTier.values()) {
-            if (tier.iuTier() > 65) {
-                continue;
-            }
-            DeferredBlock<TransformerBlock> tb = BLOCKS.registerBlock(representativePanel(tier.iuTier()).id() + "_transformer",
-                    props -> new TransformerBlock(tier, props),
-                    () -> BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
+                BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL).noOcclusion());
+        for (SolarTier tier : SolarTier.values()) {
+            EuTier eu = EuTier.byIuTier(tier.iuTier());
+            DeferredBlock<TransformerBlock> tb = BLOCKS.registerBlock(
+                    tier.id() + "_transformer",
+                    props -> new TransformerBlock(eu, tier, props),
+                    BlockBehaviour.Properties.of().strength(3.0F).sound(SoundType.METAL));
             TRANSFORMERS.put(tier, tb);
             TRANSFORMER_LIST.add(tb);
         }
@@ -95,7 +94,7 @@ public final class ModBlocks {
         return STORAGE_BOXES.get(tier).get();
     }
 
-    public static TransformerBlock transformer(EuTier tier) {
+    public static TransformerBlock transformer(SolarTier tier) {
         return TRANSFORMERS.get(tier).get();
     }
 
@@ -105,16 +104,6 @@ public final class ModBlocks {
 
     public static MolecularTransformerBlock molecularTransformer() {
         return molecularTransformer.get();
-    }
-
-    /** 该电压档的代表面板档（首个匹配 iuTier 的 SolarTier；变压器命名/贴图跟随它）。 */
-    public static SolarTier representativePanel(int iuTier) {
-        for (SolarTier tier : SolarTier.values()) {
-            if (tier.iuTier() == iuTier) {
-                return tier;
-            }
-        }
-        throw new IllegalStateException("no solar tier for iuTier " + iuTier);
     }
 
     public static StorageBoxBlock[] allStorageBoxes() {

@@ -2,10 +2,12 @@ package com.example.solarpower.tileentity;
 
 import com.example.solarpower.energy.EuCableNet;
 import com.example.solarpower.energy.FeConvert;
+import com.example.solarpower.energy.OverVoltage;
 import com.example.solarpower.solar.GlassCableTier;
 import com.example.solarpower.registry.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,8 +23,54 @@ import javax.annotation.Nullable;
  */
 public class GlassCableTile extends BlockEntity implements IEnergyStorage {
 
+    /** 超压温度上限：连续暴露 100 tick（约 5 秒）后熔断。 */
+    public static final int HEAT_MAX = 100;
+
     @Nullable
     private GlassCableTier resolvedTier;
+
+    /** 超压暴露累积的温度（0~{@link #HEAT_MAX}），随暴露中断冷却。 */
+    private int heat;
+    private long lastHeatTick = Long.MIN_VALUE;
+
+    /** 冷却减速：冷却速率 = 升温的 1/4，烧红的电缆约 20 秒才凉透。 */
+    private static final int COOL_SLOWDOWN = 4;
+
+    /** 超压暴露加热：以当前有效温度为基准 +1；达到 {@link #HEAT_MAX} 返回 true。 */
+    public boolean heatUp(long tick) {
+        this.heat = effectiveHeat(tick);
+        this.lastHeatTick = tick;
+        this.heat = Math.min(HEAT_MAX, this.heat + 1);
+        return this.heat >= HEAT_MAX;
+    }
+
+    /** 当前温度（0~{@link #HEAT_MAX}），冒烟配色用。 */
+    public int heat() {
+        return this.heat;
+    }
+
+    /** 有效温度 = 温度 −（距上次暴露的 tick 数 ÷ 冷却减速），随时间自动回落。 */
+    private int effectiveHeat(long now) {
+        if (this.lastHeatTick == Long.MIN_VALUE) {
+            return 0;
+        }
+        long elapsed = now - this.lastHeatTick;
+        return Math.max(0, this.heat - (int) (elapsed / COOL_SLOWDOWN));
+    }
+
+    /** 服务端 tick：冷却期（有效温度 &gt; 0）持续冒烟，随温度下降渐稀渐黑、凉透消失。 */
+    public void serverTick() {
+        if (!(this.level instanceof ServerLevel server) || this.heat <= 0) {
+            return;
+        }
+        long now = this.level.getGameTime();
+        int effective = effectiveHeat(now);
+        if (effective > 0 && now % 2 == 0) {
+            OverVoltage.spawnOverheatSmoke(server,
+                    this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5,
+                    this.worldPosition.getZ() + 0.5, effective / (float) HEAT_MAX);
+        }
+    }
 
     public GlassCableTile(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GLASS_CABLE.get(), pos, state);

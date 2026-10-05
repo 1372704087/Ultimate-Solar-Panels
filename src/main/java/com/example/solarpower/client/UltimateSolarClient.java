@@ -2,6 +2,7 @@ package com.example.solarpower.client;
 
 import com.example.solarpower.SolarPower;
 import com.example.solarpower.client.screen.ChargepadScreen;
+import com.example.solarpower.client.screen.MolecularTransformerScreen;
 import com.example.solarpower.client.screen.SolarPanelScreen;
 import com.example.solarpower.client.screen.StorageBoxScreen;
 import com.example.solarpower.client.screen.TransformerScreen;
@@ -22,6 +23,7 @@ public final class UltimateSolarClient {
         event.register(ModMenus.STORAGE_BOX.get(), StorageBoxScreen::new);
         event.register(ModMenus.TRANSFORMER.get(), TransformerScreen::new);
         event.register(ModMenus.CHARGEPAD.get(), ChargepadScreen::new);
+        event.register(ModMenus.MOLECULAR_TRANSFORMER.get(), MolecularTransformerScreen::new);
     }
 
     private UltimateSolarClient() {

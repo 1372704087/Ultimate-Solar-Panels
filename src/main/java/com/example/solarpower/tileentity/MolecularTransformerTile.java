@@ -3,17 +3,19 @@ package com.example.solarpower.tileentity;
 import com.example.solarpower.energy.EuTier;
 import com.example.solarpower.energy.FeConvert;
 import com.example.solarpower.energy.IEuEnergy;
+import com.example.solarpower.energy.OverVoltage;
 import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.solar.MtRecipes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -67,6 +69,7 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
     private boolean working;
 
     private final MtEnergy storage = new MtEnergy();
+    private final OverVoltage overVoltage = new OverVoltage();
 
     public MolecularTransformerTile(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MOLECULAR_TRANSFORMER.get(), pos, state);
@@ -143,6 +146,10 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
 
     public void tick() {
         if (this.level.isClientSide()) {
+            return;
+        }
+        if (this.overVoltage.tick(this.level, this.worldPosition)) {
+            explode();
             return;
         }
         boolean active = false;
@@ -223,6 +230,19 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
         }
     }
 
+    /** 超压爆炸：机器消失（不掉自身），先弹出槽内物品，原版爆炸附带范围伤害与破坏方块。 */
+    private void explode() {
+        if (this.level == null) {
+            return;
+        }
+        for (ItemStack stack : dropContents()) {
+            Block.popResource(this.level, this.worldPosition, stack);
+        }
+        this.level.destroyBlock(this.worldPosition, false);
+        this.level.explode(null, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5,
+                this.worldPosition.getZ() + 0.5, 2.0F, Level.ExplosionInteraction.BLOCK);
+    }
+
     // ------------------------------------------------------------------
     // Forge Energy：只进不出（本机是纯用电器），1 EU = 4 FE
     // ------------------------------------------------------------------
@@ -263,31 +283,34 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
     // ------------------------------------------------------------------
 
     @Override
-    protected void saveAdditional(ValueOutput out) {
-        super.saveAdditional(out);
-        out.putString(TAG_ENERGY, this.storage.getStoredEu().toString());
-        out.store("input_slot", ItemStack.OPTIONAL_CODEC, this.input.getStackInSlot(0));
-        out.store("output_slot", ItemStack.OPTIONAL_CODEC, this.output.getStackInSlot(0));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putString(TAG_ENERGY, this.storage.getStoredEu().toString());
+        tag.put("input_slot", this.input.getStackInSlot(0).saveOptional(registries));
+        tag.put("output_slot", this.output.getStackInSlot(0).saveOptional(registries));
         if (!this.jobOutput.isEmpty()) {
-            out.store(TAG_JOB, ItemStack.OPTIONAL_CODEC, this.jobOutput);
+            tag.put(TAG_JOB, this.jobOutput.saveOptional(registries));
         }
-        out.putInt(TAG_TOTAL, this.totalEu);
-        out.putInt(TAG_USED, this.energyUsed);
+        tag.putInt(TAG_TOTAL, this.totalEu);
+        tag.putInt(TAG_USED, this.energyUsed);
     }
 
     @Override
-    protected void loadAdditional(ValueInput in) {
-        super.loadAdditional(in);
-        this.storage.setStored(in.getString(TAG_ENERGY)
-                .map(s -> {
-                    try { return new BigInteger(s); } catch (NumberFormatException e) { return BigInteger.ZERO; }
-                })
-                .orElse(BigInteger.ZERO));
-        this.input.setStackInSlot(0, in.read("input_slot", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
-        this.output.setStackInSlot(0, in.read("output_slot", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY));
-        this.jobOutput = in.read(TAG_JOB, ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
-        this.totalEu = in.getInt(TAG_TOTAL).orElse(0);
-        this.energyUsed = in.getInt(TAG_USED).orElse(0);
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        String s = tag.getString(TAG_ENERGY);
+        if (!s.isEmpty()) {
+            try {
+                this.storage.setStored(new BigInteger(s));
+            } catch (NumberFormatException e) {
+                this.storage.setStored(BigInteger.ZERO);
+            }
+        }
+        this.input.setStackInSlot(0, ItemStack.parseOptional(registries, tag.getCompound("input_slot")));
+        this.output.setStackInSlot(0, ItemStack.parseOptional(registries, tag.getCompound("output_slot")));
+        this.jobOutput = ItemStack.parseOptional(registries, tag.getCompound(TAG_JOB));
+        this.totalEu = tag.getInt(TAG_TOTAL);
+        this.energyUsed = tag.getInt(TAG_USED);
     }
 
     // ------------------------------------------------------------------
@@ -315,7 +338,11 @@ public class MolecularTransformerTile extends BlockEntity implements IEuEnergy, 
 
         @Override
         public BigInteger receiveEu(BigInteger amount, EuTier tier, boolean simulate) {
-            if (amount == null || amount.signum() <= 0 || !getTier().accepts(tier)) {
+            if (amount == null || amount.signum() <= 0) {
+                return BigInteger.ZERO;
+            }
+            if (!getTier().accepts(tier)) {
+                overVoltage.flag();   // 超压暴露：冒烟累积
                 return BigInteger.ZERO;
             }
             BigInteger accepted = amount.min(getCapacityEu().subtract(this.stored));

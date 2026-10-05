@@ -8,8 +8,12 @@ import com.example.solarpower.tileentity.TransformerTile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.math.BigInteger;
 import java.util.ArrayDeque;
@@ -28,11 +32,19 @@ import java.util.Set;
  *     <li>整个网络每 tick 传输上限 = 电缆等级的 capacityPerTick；</li>
  *     <li>线损按网络内电缆根数 × 每根线损一次性扣除（不做逐包路径计算）；</li>
  *     <li>电压包等级 = 源（面板）的电压等级，超压的汇会自行拒收。</li>
+ *     <li>网络的容量与线损取网内<b>最弱</b>一根电缆（混接按短板计）。</li>
+ *     <li><b>超压五档</b>（按级差 = 来包电压档 − 电缆耐压档）：
+ *     差 1 级整条网冒烟并累积温度，温度满（约 5 秒）熔断网内<b>最热</b>的电缆
+ *     （烧断后立刻再接，新线冷、不会先烧，会接着烧下一根热的）；
+ *     差 2 级从接入点起最多烧毁 32 节（无掉落）；
+ *     差 3 级从接入点起最多汽化 64 节（无掉落），最近三节发生半径 2/1/0.5 的爆炸；
+ *     差 ≥4 级接入点前 64 节汽化并连环爆炸（32 个爆点：半径 3×5、2×8、1×12、0.5×7）。
+ *     FE 桥走 L0 包（最低档），永远不会触发。</li>
  * </ul>
  * <p>所有 EU 运算用 {@link BigInteger}，不设数值上限。
  * <p>除面板自行推流（{@link #push}）外，另有 {@link #drain} 与 {@link #fill} 两个桥接入口：
  * 玻璃电缆把它们暴露成 Forge Energy，外部 FE 线缆（Mekanism、其它 FE 机器）就能接到本模组电网上
- * 取电或送电。桥接时的电压包按最低等级（{@link EuTier#LV}）标记，避免汇被误判为超压。
+ * 取电或送电。桥接时的电压包按最低等级（{@link EuTier#L0}）标记，避免汇被误判为超压。
  */
 public final class EuCableNet {
 
@@ -69,7 +81,10 @@ public final class EuCableNet {
         int settled = 0;
         for (Direction dir : Direction.values()) {
             BlockPos side = panelPos.relative(dir);
-            if (!(level.getBlockEntity(side) instanceof GlassCableTile)) {
+            if (!(level.getBlockEntity(side) instanceof GlassCableTile cableTile)) {
+                continue;
+            }
+            if (handleOverVoltage(level, side, cableTile, packetTier)) {
                 continue;
             }
             Net net = collect(level, side, packetTier);
@@ -95,7 +110,10 @@ public final class EuCableNet {
             return 0;
         }
         BlockPos side = devicePos.relative(facing);
-        if (!(level.getBlockEntity(side) instanceof GlassCableTile)) {
+        if (!(level.getBlockEntity(side) instanceof GlassCableTile cableTile)) {
+            return 0;
+        }
+        if (handleOverVoltage(level, side, cableTile, packetTier)) {
             return 0;
         }
         Net net = collect(level, side, packetTier);
@@ -119,7 +137,7 @@ public final class EuCableNet {
         // 先用「网络上限、源存量、面板最大输出」这三个只需廉价比较的值定出上限，
         // min 可交换，取最小值的顺序不影响结果；但源为空/上限为 0 时可就此返回，
         // 省掉整张网的空余量扫描（该项要对每个汇做一次大数相减）。
-        BigInteger limit = net.tier().capacityPerTick().min(source.getStoredEu());
+        BigInteger limit = net.capacityPerTick().min(source.getStoredEu());
         if (maxOutput != null) {
             limit = limit.min(maxOutput);
         }
@@ -130,14 +148,18 @@ public final class EuCableNet {
         if (budget.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        // 先派发、后扣源：源存量的净变化在两种写法下都等于 -sent。
-        // 源存量必 ≥ budget ≥ sent，故这一步不可能抽空。
+        // 先向源抽取实付量（跨档转换损耗可能少于请求），再按实付分配给汇——
+        // 保证任何源的损耗实现都不会凭空产生能量。
         // 语义注记：线损部分留在源蓄电内。稳态下源蓄电恒满，对外行为等价。
-        BigInteger sent = fillSinks(level, net, budget.subtract(lossOf(net, budget)), excludeSink);
-        if (sent.signum() > 0) {
-            source.extractEu(sent, false);
+        BigInteger request = budget.subtract(lossOf(net, budget));
+        if (request.signum() <= 0) {
+            return BigInteger.ZERO;
         }
-        return sent;
+        BigInteger paid = source.extractEu(request, false);
+        if (paid.signum() <= 0) {
+            return BigInteger.ZERO;
+        }
+        return fillSinks(level, net, paid, excludeSink);
     }
 
     /**
@@ -149,12 +171,12 @@ public final class EuCableNet {
         if (level.isClientSide() || amount == null || amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        Net net = collect(level, anchor, EuTier.LV);
+        Net net = collect(level, anchor, EuTier.L0);
         BigInteger available = storedOf(level, net);
         if (net.isEmpty() || available.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        BigInteger budget = net.tier().capacityPerTick().min(available).min(amount);
+        BigInteger budget = net.capacityPerTick().min(available).min(amount);
         if (budget.signum() <= 0) {
             return BigInteger.ZERO;
         }
@@ -175,12 +197,12 @@ public final class EuCableNet {
         if (level.isClientSide() || amount == null || amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        Net net = collect(level, anchor, EuTier.LV);
+        Net net = collect(level, anchor, EuTier.L0);
         if (net.isEmpty() || net.sinks().isEmpty()) {
             return BigInteger.ZERO;
         }
         // 同 push：先用常量与请求量定出上限，再拿它去扫汇空余（见 demandOf 的说明）。
-        BigInteger limit = net.tier().capacityPerTick().min(amount);
+        BigInteger limit = net.capacityPerTick().min(amount);
         if (limit.signum() <= 0) {
             return BigInteger.ZERO;
         }
@@ -197,8 +219,8 @@ public final class EuCableNet {
         if (level.isClientSide()) {
             return BigInteger.ZERO;
         }
-        Net net = collect(level, anchor, EuTier.LV);
-        return net.isEmpty() ? BigInteger.ZERO : storedOf(level, net).min(net.tier().capacityPerTick());
+        Net net = collect(level, anchor, EuTier.L0);
+        return net.isEmpty() ? BigInteger.ZERO : storedOf(level, net).min(net.capacityPerTick());
     }
 
     /** 从 anchor 出发 BFS 收集整个电缆网络（成员坐标 + 邻接源/汇）。
@@ -226,7 +248,6 @@ public final class EuCableNet {
             NET_CACHE_ANCHOR.put(anchor, Net.EMPTY);
             return empty;
         }
-        GlassCableTier tier = anchorCable.tier();
 
         // --- 第一遍：BFS 收集电缆成员 ---
         List<BlockPos> cables = new ArrayList<>();
@@ -280,8 +301,17 @@ public final class EuCableNet {
             }
         }
 
+        // --- 网络额定值：取网内最弱一根电缆（先比耐压，同压比容量），耐压/容量/线损都由它决定 ---
+        GlassCableTier weakest = anchorCable.tier();
+        for (BlockPos cablePos : cables) {
+            GlassCableTier cableTier = cableAt(level, cablePos).tier();
+            if (weaker(cableTier, weakest)) {
+                weakest = cableTier;
+            }
+        }
+
         // 缓存结构（成员/源/汇候选）；汇的实际收电力每次都按调用方给的 packetTier 重判
-        Net base = new Net(tier, cables, sources, sinkCandidates);
+        Net base = new Net(weakest, cables, sources, sinkCandidates);
         // 整张网络的每个成员都指向同一份结构：这样同网络的面板无论从哪根电缆接入都能命中
         for (BlockPos cable : cables) {
             NET_CACHE_ANCHOR.put(cable, base);
@@ -328,7 +358,7 @@ public final class EuCableNet {
         if (amount.signum() <= 0) {
             return BigInteger.ZERO;
         }
-        long lossAmount = Math.round(net.cables().size() * net.tier().lossPerBlock());
+        long lossAmount = Math.round(net.cables().size() * net.weakest().lossPerBlock());
         return BigInteger.valueOf(lossAmount).min(amount);
     }
 
@@ -360,7 +390,8 @@ public final class EuCableNet {
                 // 「最后一个有效汇拿余额」语义保持：index 只数未被排除的汇
                 BigInteger share = index == count - 1 ? amount.subtract(sent).min(room) : perSink.min(room);
                 if (share.signum() > 0) {
-                    sent = sent.add(energy.receiveEu(share, net.packetTier(), false));
+                    sent = sent.add(energy.receiveEuOnFace(
+                            cableFaceOf(level, pos, net), share, net.packetTier(), false));
                 }
             }
             index++;
@@ -420,14 +451,186 @@ public final class EuCableNet {
         return be instanceof IEuEnergy ? (IEuEnergy) be : null;
     }
 
-    /** 一张电缆网络的结构快照：等级、成员电缆坐标、邻接源坐标与邻接能量方块（汇候选）。
+    /** 机器入电的面：取其相邻的任意玻璃电缆方向（同一张网的电缆彼此等价）。 */
+    /** 机器入电的面：取其相邻且属于本次结算网络的玻璃电缆方向（多网混接按本次网判定）。 */
+    private static Direction cableFaceOf(Level level, BlockPos machine, Net net) {
+        for (Direction dir : Direction.values()) {
+            BlockPos side = machine.relative(dir);
+            if (net.cables().contains(side) && level.getBlockEntity(side) instanceof GlassCableTile) {
+                return dir;
+            }
+        }
+        return null;
+    }
+
+    /** 超压熔断：烧毁这根电缆（烧毁无掉落），并清空本 tick 的网络缓存。 */
+    private static void blowCable(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        level.destroyBlock(pos, false);
+        level.levelEvent(2001, pos, Block.getId(state));
+        NET_CACHE_ANCHOR.clear();
+    }
+
+    /** 5~10 倍档单次熔断的最大节数。 */
+    private static final int MAX_FUSE_SEGMENTS = 32;
+
+    /** 10~20 倍档单次汽化的最大节数。 */
+    private static final int MAX_VAPORIZE_SEGMENTS = 64;
+
+    /** 超压 5~10 倍：从接入点起沿网烧毁最多 {@value #MAX_FUSE_SEGMENTS} 节电缆（无掉落）。 */
+    private static void blowNet(Level level, Net net) {
+        int burned = 0;
+        for (BlockPos pos : net.cables()) {
+            if (burned >= MAX_FUSE_SEGMENTS) {
+                break;
+            }
+            if (level.getBlockEntity(pos) instanceof GlassCableTile) {
+                BlockState state = level.getBlockState(pos);
+                level.destroyBlock(pos, false);
+                level.levelEvent(2001, pos, Block.getId(state));
+                burned++;
+            }
+        }
+        NET_CACHE_ANCHOR.clear();
+    }
+
+    /** 超压 10~20 倍：从接入点起最多汽化 {@value #MAX_VAPORIZE_SEGMENTS} 节（不掉落），
+     *  并在最近三节发生半径 2/1/0.5 的爆炸（范围伤害/破坏方块）。 */
+    private static void explodeNet(Level level, Net net) {
+        List<BlockPos> cables = net.cables();
+        int vaporized = 0;
+        for (BlockPos pos : cables) {
+            if (vaporized >= MAX_VAPORIZE_SEGMENTS) {
+                break;
+            }
+            if (level.getBlockEntity(pos) instanceof GlassCableTile) {
+                level.destroyBlock(pos, false);
+                vaporized++;
+            }
+        }
+        NET_CACHE_ANCHOR.clear();
+        float[] radii = {2.0F, 1.0F, 0.5F};
+        for (int i = 0; i < radii.length && i < cables.size(); i++) {
+            BlockPos pos = cables.get(i);
+            level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    radii[i], Level.ExplosionInteraction.BLOCK);
+        }
+    }
+
+    /** &gt;20 倍档爆点分布：半径 3×5 → 2×8 → 1×12 → 0.5×7，共 32 个（越近越大）。 */
+    private static final float[] DETONATION_RADII = {
+            3.0F, 3.0F, 3.0F, 3.0F, 3.0F,                       // 5 × 半径 3
+            2.0F, 2.0F, 2.0F, 2.0F, 2.0F, 2.0F, 2.0F, 2.0F,     // 8 × 半径 2
+            1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F,
+            1.0F, 1.0F, 1.0F,                                    // 12 × 半径 1
+            0.5F, 0.5F, 0.5F, 0.5F, 0.5F, 0.5F, 0.5F             // 7 × 半径 0.5
+    };
+
+    /** 超压 20 倍以上：接入点前 64 节汽化（不掉落），32 个爆点每隔一节布置、由近及远衰减。 */
+    private static void detonateNet(Level level, Net net) {
+        List<BlockPos> cables = net.cables();
+        int zone = Math.min(MAX_VAPORIZE_SEGMENTS, cables.size());
+        for (int i = 0; i < zone; i++) {
+            BlockPos pos = cables.get(i);
+            if (level.getBlockEntity(pos) instanceof GlassCableTile) {
+                level.destroyBlock(pos, false);
+            }
+        }
+        NET_CACHE_ANCHOR.clear();
+        int blasts = Math.min(DETONATION_RADII.length, zone);
+        for (int i = 0; i < blasts; i++) {
+            BlockPos pos = cables.get(Math.min(i * 2, zone - 1));
+            level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    DETONATION_RADII[i], Level.ExplosionInteraction.BLOCK);
+        }
+    }
+
+    /** 2 倍内：整条网暴露加热（温度累积）。烟由各电缆自身的 tick 按
+     *  {@link OverVoltage#spawnOverheatSmoke} 随温度渐变显示，冷却期亦持续可见。 */
+    private static void heatNet(Level level, Net net) {
+        long now = level.getGameTime();
+        for (BlockPos pos : net.cables()) {
+            if (level.getBlockEntity(pos) instanceof GlassCableTile tile) {
+                tile.heatUp(now);
+            }
+        }
+    }
+
+    /**
+     * 超压五档处理（按级差 = 来包电压档 − 电缆耐压档）：
+     * 差 1 级整条网冒烟 + 温度累积（满了熔断网内最热电缆）；差 2 级从接入点烧 32 节；
+     * 差 3 级汽化最近 64 节 + 三连爆炸；差 ≥4 级整条网汽化并连环爆炸。
+     *
+     * @return true = 本次推送被熔断/爆炸拦截，调用方跳过 settle
+     */
+    private static boolean handleOverVoltage(Level level, BlockPos anchorPos,
+                                             GlassCableTile cableTile, EuTier packetTier) {
+        int levels = packetTier.iuTier() - ratedIuTier(cableTile);
+        if (levels <= 0) {
+            return false;
+        }
+        Net net = collect(level, anchorPos, packetTier);
+        if (net.isEmpty()) {
+            return true;
+        }
+        if (levels >= 4) {
+            detonateNet(level, net);             // ≥4 级差：整条网连环爆炸
+        } else if (levels == 3) {
+            explodeNet(level, net);              // 3 级差：汽化最近 64 节 + 三连爆炸
+        } else if (levels == 2) {
+            blowNet(level, net);                 // 2 级差：从接入点烧 32 节
+        } else {
+            heatNet(level, net);                 // 1 级差：整条冒烟 + 温度累积
+            long now = level.getGameTime();
+            boolean tripped = false;
+            BlockPos hottest = null;
+            int hottestHeat = -1;
+            for (BlockPos pos : net.cables()) {
+                if (level.getBlockEntity(pos) instanceof GlassCableTile tile) {
+                    if (tile.heatUp(now)) {
+                        tripped = true;
+                    }
+                    // 并列时取 BFS 序更靠前的（离接入点更近）
+                    if (tile.heat() > hottestHeat) {
+                        hottestHeat = tile.heat();
+                        hottest = pos;
+                    }
+                }
+            }
+            if (tripped && hottest != null) {
+                // 熔断网内最热的电缆：刚接上的冷线不会被优先烧，再接上就接着烧下一根热的
+                blowCable(level, hottest);
+            }
+        }
+        return true;
+    }
+
+    /** 电缆的额定电压（iuTier）= 其面板档的电压等级。 */
+    private static int ratedIuTier(GlassCableTile cable) {
+        return cable.tier().source().voltage().iuTier();
+    }
+
+    /** a 是否比 b 更弱：先比电压等级，同压再比容量——网络短板由此决定。 */
+    private static boolean weaker(GlassCableTier a, GlassCableTier b) {
+        int va = a.source().voltage().iuTier();
+        int vb = b.source().voltage().iuTier();
+        if (va != vb) {
+            return va < vb;
+        }
+        return a.capacityPerTick().compareTo(b.capacityPerTick()) < 0;
+    }
+
+    /** 一张电缆网络的结构快照：额定值、成员电缆坐标、邻接源坐标与邻接能量方块（汇候选）。
+     *  <p>额定值取网内<b>最弱</b>一根电缆（混接按短板计）：传输被它的容量限流，
+     *  线损也按它的每格线损计；超压熔断只作用于直接接源的电缆（见 {@link #blowCable}）。
      *  <p>汇候选是「所有暴露 IEuEnergy 的邻接方块」，是否真能收电取决于电压包等级，
      *  由 {@link #resolveSinks} 按当次调用的 tier 过滤——因此本对象可跨不同 packetTier 复用。 */
     public static final class Net {
 
         static final Net EMPTY = new Net(null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        private final GlassCableTier tier;
+        /** 网内最弱电缆（容量/线损的短板）；EMPTY 网为 null。 */
+        private final GlassCableTier weakest;
         private final List<BlockPos> cables;
         private final List<BlockPos> sources;
         private final List<BlockPos> sinkCandidates;
@@ -436,13 +639,15 @@ public final class EuCableNet {
         private final List<BlockPos> sinks;
 
         /** 结构快照（尚无 packetTier/sinks，由 {@link #resolveSinks} 派生）。 */
-        Net(GlassCableTier tier, List<BlockPos> cables, List<BlockPos> sources, List<BlockPos> sinkCandidates) {
-            this(tier, EuTier.LV, cables, sources, sinkCandidates, java.util.Collections.emptyList());
+        Net(GlassCableTier weakest, List<BlockPos> cables,
+            List<BlockPos> sources, List<BlockPos> sinkCandidates) {
+            this(weakest, EuTier.L0, cables, sources, sinkCandidates,
+                    java.util.Collections.emptyList());
         }
 
-        private Net(GlassCableTier tier, EuTier packetTier, List<BlockPos> cables,
+        private Net(GlassCableTier weakest, EuTier packetTier, List<BlockPos> cables,
                     List<BlockPos> sources, List<BlockPos> sinkCandidates, List<BlockPos> sinks) {
-            this.tier = tier;
+            this.weakest = weakest;
             this.packetTier = packetTier;
             this.cables = cables;
             this.sources = sources;
@@ -457,7 +662,8 @@ public final class EuCableNet {
         /** 按电压包等级过滤汇候选，产出本次调用可用的汇集合。 */
         Net resolveSinks(Level level, EuTier packetTier) {
             if (this.sinkCandidates.isEmpty()) {
-                return new Net(this.tier, packetTier, this.cables, this.sources, this.sinkCandidates, java.util.Collections.emptyList());
+                return new Net(this.weakest, packetTier, this.cables,
+                        this.sources, this.sinkCandidates, java.util.Collections.emptyList());
             }
             List<BlockPos> sinks = new ArrayList<>(this.sinkCandidates.size());
             for (BlockPos pos : this.sinkCandidates) {
@@ -466,11 +672,17 @@ public final class EuCableNet {
                     sinks.add(pos);
                 }
             }
-            return new Net(this.tier, packetTier, this.cables, this.sources, this.sinkCandidates, sinks);
+            return new Net(this.weakest, packetTier, this.cables,
+                    this.sources, this.sinkCandidates, sinks);
         }
 
-        public GlassCableTier tier() {
-            return this.tier;
+        /** 每 tick 传输上限 = 最弱电缆的容量（EMPTY 网为 0）。 */
+        BigInteger capacityPerTick() {
+            return this.weakest == null ? BigInteger.ZERO : this.weakest.capacityPerTick();
+        }
+
+        GlassCableTier weakest() {
+            return this.weakest;
         }
 
         EuTier packetTier() {

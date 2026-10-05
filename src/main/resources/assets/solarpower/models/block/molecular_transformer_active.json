@@ -1,12 +1,3 @@
 {
-  "parent": "minecraft:block/cube",
-  "textures": {
-    "north": "solarpower:block/molecular_transformer_front",
-    "south": "solarpower:block/molecular_transformer_side",
-    "east": "solarpower:block/molecular_transformer_side",
-    "west": "solarpower:block/molecular_transformer_side",
-    "up": "solarpower:block/molecular_transformer_topbottom",
-    "down": "solarpower:block/molecular_transformer_topbottom",
-    "particle": "solarpower:block/molecular_transformer_side"
-  }
+  "parent": "solarpower:block/molecular_transformer"
 }

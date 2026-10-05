@@ -88,7 +88,7 @@ public class MolecularTransformerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction side) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof MolecularTransformerTile tile
                 ? tile.comparatorLevel() : 0;
     }

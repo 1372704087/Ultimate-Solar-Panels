@@ -13,3 +13,8 @@ bin/
 
 # 运行目录
 run/
+
+# 生成器产物
+tools/texturegen/preview/
+tools/texturegen/__pycache__/
+tools/texturegen/.gradle/

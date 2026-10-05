@@ -1,14 +1,14 @@
 package com.example.solarpower.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.example.solarpower.energy.EuFormat;
 import com.example.solarpower.menu.ChargepadMenu;
 import com.example.solarpower.solar.SolarTier;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.math.BigDecimal;
@@ -17,11 +17,11 @@ import java.math.RoundingMode;
 /** 充电座界面：能量条 + 蓄电量/充电速率/状态三行（状态行充电中为绿色）。 */
 public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
 
-    private static final Identifier TEXTURE =
-            Identifier.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.fromNamespaceAndPath("solarpower", "textures/gui/storage_box.png");
 
     private static final int WIDTH = 176;
-    private static final int HEIGHT = 166;
+    private static final int HEIGHT = 74;   // 底图已去掉底部物品栏区（本界面无真实物品槽）
     private static final int BAR_X = 10;
     private static final int BAR_Y = 22;
     private static final int BAR_WIDTH = 156;
@@ -31,7 +31,7 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
     private static final int ROW_RATE_Y = 51;
     private static final int ROW_STATUS_Y = 62;
 
-    private static final int TEXT_COLOR = 0xFF3F444E;
+    private static final int TEXT_COLOR = 0xFF000000;
     private static final int CHARGING_COLOR = 0xFF3FA84F;
 
     private final ChargepadMenu menu;
@@ -41,8 +41,6 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
         this.menu = menu;
         this.imageWidth = WIDTH;
         this.imageHeight = HEIGHT;
-        this.inventoryLabelX = 8;
-        this.inventoryLabelY = 74;
     }
 
     private SolarTier tier() {
@@ -65,7 +63,10 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
+        // 1.21.1 的 blit 不自带 alpha 混合，半透明底图必须手动开混合
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0f, 0f, WIDTH, HEIGHT, 256, 256);
         SolarTier tier = tier();
         BigDecimal capacity = capacityMirror(tier);
         BigDecimal stored = this.menu.stored;
@@ -73,17 +74,19 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
         if (capacity.signum() <= 0 || stored.signum() <= 0) {
             filled = 0;
         } else if (stored.compareTo(capacity) >= 0) {
-            filled = BAR_HEIGHT;
+            filled = BAR_WIDTH;
         } else {
             double ratio = stored.divide(capacity, 4, RoundingMode.DOWN).doubleValue();
-            filled = (int) (ratio * BAR_HEIGHT);
+            filled = (int) (ratio * BAR_WIDTH);
         }
-        filled = Math.max(0, Math.min(BAR_HEIGHT, filled));
+        filled = Math.max(0, Math.min(BAR_WIDTH, filled));
         if (filled > 0) {
-            graphics.fill(this.leftPos + BAR_X, this.topPos + BAR_Y + BAR_HEIGHT - filled,
-                    this.leftPos + BAR_X + BAR_WIDTH, this.topPos + BAR_Y + BAR_HEIGHT,
+            // 从左往右横向填充（原实现锚定底边向上长厚度，看起来像竖条）
+            graphics.fill(this.leftPos + BAR_X, this.topPos + BAR_Y,
+                    this.leftPos + BAR_X + filled, this.topPos + BAR_Y + BAR_HEIGHT,
                     0xFF000000 | tier.accentColor());
         }
+        RenderSystem.disableBlend();
     }
 
     @Override
@@ -93,17 +96,17 @@ public class ChargepadScreen extends AbstractContainerScreen<ChargepadMenu> {
         graphics.drawString(this.font,
                 Component.translatable("gui.solarpower.chargepad.energy",
                         EuFormat.formatEu(this.menu.stored), capacityLabel(tier)),
-                8, ROW_STORED_Y, TEXT_COLOR, true);
+                8, ROW_STORED_Y, TEXT_COLOR, false);
         graphics.drawString(this.font,
                 Component.translatable("gui.solarpower.chargepad.rate",
                         EuFormat.formatEu(tier.maxOutputEu())),
-                8, ROW_RATE_Y, TEXT_COLOR, true);
+                8, ROW_RATE_Y, TEXT_COLOR, false);
         Component status = this.menu.charging
                 ? Component.translatable("gui.solarpower.chargepad.status.charging")
                 : Component.translatable("gui.solarpower.chargepad.status.idle");
         graphics.drawString(this.font,
                 Component.translatable("gui.solarpower.chargepad.status", status),
                 8, ROW_STATUS_Y,
-                this.menu.charging ? CHARGING_COLOR : TEXT_COLOR, true);
+                this.menu.charging ? CHARGING_COLOR : TEXT_COLOR, false);
     }
 }

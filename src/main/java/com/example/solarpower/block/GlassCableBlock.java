@@ -10,8 +10,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +23,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import javax.annotation.Nullable;
 
@@ -82,9 +84,9 @@ public class GlassCableBlock extends Block implements EntityBlock {
         if (connectsTo(neighborState)) {
             return true;
         }
-        // 21.11 起 getCapability 扩展只注入在 Level 上；世界生成期的 LevelReader 一律不连。
+        // getCapability 只对已就绪的 Level 有意义；世界生成期的 LevelReader 一律不连。
         if (level instanceof Level world) {
-            return world.getCapability(net.neoforged.neoforge.capabilities.Capabilities.Energy.BLOCK,
+            return world.getCapability(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK,
                     neighborPos, dir.getOpposite()) != null;
         }
         return false;
@@ -116,9 +118,8 @@ public class GlassCableBlock extends Block implements EntityBlock {
 
     /** 邻居方块变化时刷新该向连接（放置/拆除电缆、面板都会实时伸/收臂）。 */
     @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess,
-                                     BlockPos pos, Direction dir, BlockPos neighborPos, BlockState neighborState,
-                                     RandomSource random) {
+    protected BlockState updateShape(BlockState state, Direction dir, BlockState neighborState,
+                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         return state.setValue(propOf(dir), connects(level, neighborPos, neighborState, dir));
     }
 
@@ -142,7 +143,7 @@ public class GlassCableBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state) {
+    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return false;
     }
 
@@ -150,5 +151,18 @@ public class GlassCableBlock extends Block implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GlassCableTile(pos, state);
+    }
+
+    /** 服务端 ticker：驱动电缆冷却期的冒烟/降温显示。 */
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+                                                                  BlockEntityType<T> type) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return type == ModBlockEntities.GLASS_CABLE.get()
+                ? (BlockEntityTicker<T>) (BlockEntityTicker<GlassCableTile>) (l, p, s, be) -> be.serverTick()
+                : null;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.solarpower.energy;
 
+import net.minecraft.core.Direction;
+
 import java.math.BigInteger;
 
 /**
@@ -37,6 +39,14 @@ public interface IEuEnergy {
      * @return 实际接收的 EU
      */
     BigInteger receiveEu(BigInteger amount, EuTier tier, boolean simulate);
+
+    /**
+     * 带入电方向的注入：{@code face} = 机器接收这个包的面。
+     * 面感知的机器（如变压器按面额定收电）覆写；默认实现忽略方向。
+     */
+    default BigInteger receiveEuOnFace(Direction face, BigInteger amount, EuTier tier, boolean simulate) {
+        return receiveEu(amount, tier, simulate);
+    }
 
     /**
      * 抽取 EU。

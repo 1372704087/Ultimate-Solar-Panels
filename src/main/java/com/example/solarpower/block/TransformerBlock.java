@@ -2,6 +2,7 @@ package com.example.solarpower.block;
 
 import com.example.solarpower.SolarPower;
 import com.example.solarpower.energy.EuTier;
+import com.example.solarpower.solar.SolarTier;
 import com.example.solarpower.menu.TransformerMenu;
 import com.example.solarpower.registry.ModBlockEntities;
 import com.example.solarpower.registry.ModMenus;
@@ -40,21 +41,26 @@ public class TransformerBlock extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private final EuTier tier;
+    private final SolarTier solarTier;
 
-    public TransformerBlock(EuTier tier, Properties props) {
+    public TransformerBlock(EuTier tier, SolarTier solarTier, Properties props) {
         super(props);
         this.tier = tier;
+        this.solarTier = solarTier;
         registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
-    /** 浣庡帇渚ф。浣嶏紙妗ユ帴 tier 鈫?tier+1锛夈€?*/
     public EuTier tier() {
         return this.tier;
     }
 
+    public SolarTier solarTier() {
+        return this.solarTier;
+    }
+
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        return simpleCodec(properties -> new TransformerBlock(this.tier, properties));
+        return simpleCodec(properties -> new TransformerBlock(this.tier, this.solarTier, properties));
     }
 
     @Override
@@ -108,10 +114,7 @@ public class TransformerBlock extends BaseEntityBlock {
                     (id, inv, p) -> new TransformerMenu(id, inv,
                             level.getBlockEntity(pos) instanceof TransformerTile transformer
                                     ? transformer : null),
-                    Component.translatable("block.solarpower."
-                            + com.example.solarpower.registry.ModBlocks
-                                    .representativePanel(this.tier.iuTier()).id()
-                            + "_transformer")),
+                    Component.translatable("block.solarpower." + this.solarTier.id() + "_transformer")),
                     buf -> buf.writeBlockPos(pos));
         }
         return InteractionResult.SUCCESS;
@@ -131,7 +134,7 @@ public class TransformerBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, net.minecraft.core.Direction side) {
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         return level.getBlockEntity(pos) instanceof TransformerTile tile ? tile.comparatorLevel() : 0;
     }
 }

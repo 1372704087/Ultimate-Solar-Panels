@@ -344,8 +344,8 @@
   "gui.solarpower.storage.output": "Output: %s EU/t",
   "gui.solarpower.transformer.low": "Low pool (%s): %s / %s EU",
   "gui.solarpower.transformer.high": "High pool (%s): %s / %s EU",
-  "gui.solarpower.transformer.rate": "Throughput: %s EU/t (bidirectional)",
-  "gui.solarpower.transformer.voltage": "Voltage: %s ↔ %s",
+  "gui.solarpower.transformer.rate": "Throughput: up %s / down %s EU/t",
+  "gui.solarpower.transformer.voltage": "Voltage: T%s %s T%s",
   "gui.solarpower.chargepad.energy": "Energy: %s / %s EU",
   "gui.solarpower.chargepad.rate": "Charge rate: %s EU/t",
   "gui.solarpower.chargepad.status": "Status: %s",
@@ -699,5 +699,13 @@
   "item.solarpower.pantheon_glass_pane": "Pantheon Glass Pane",
   "item.solarpower.mandate_of_heaven_glass_pane": "Mandate of Heaven Glass Pane",
   "item.solarpower.apocalypse_glass_pane": "Apocalypse Glass Pane",
-  "item.solarpower.heavens_end_glass_pane": "Heaven's End Glass Pane"
+  "item.solarpower.heavens_end_glass_pane": "Heaven's End Glass Pane",
+  "gui.solarpower.transformer.mode.0": "Mode: Off (no I/O)",
+  "gui.solarpower.transformer.mode.1": "Mode: Auto (bidirectional conversion)",
+  "gui.solarpower.transformer.mode.2": "Mode: Step-up (lower to own tier)",
+  "tooltip.solarpower.transformer_mode": "Toggle the discharge direction with the button below: Auto / Step-up (LV to HV) / Step-down (HV to LV)",
+  "tooltip.solarpower.low_side": "§aLow side (%s):§7 %s",
+  "tooltip.solarpower.high_side": "§cHigh side (%s):§7 %s",
+  "tooltip.solarpower.cable_fuse": "§cOver-voltage burns cables; >10x vaporizes, >20x chain-explodes!",
+  "gui.solarpower.transformer.mode.3": "Mode: Step-down (own tier to lower)"
 }
